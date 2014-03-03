@@ -25,7 +25,6 @@ else
         .col-xs-5
           -var conflicts = member.hasConflicts(workshop._id, workshopSession)
           -var members = workshop.session(workshopSession)._registered.map(function(val) { if (val && val._id) { return String(val._id); } else { return String(val); }; })
-          p #{members}
           if workshop.allows.indexOf(member.type) == -1
             .btn.btn-xs.btn-warning.btn-disabled.btn-block Ineligible
           else if members.indexOf(String(member._id)) != -1
