@@ -60,6 +60,7 @@ if session.isAdmin
               .label.label-default NA
       .col-xs-5
         b= member.name
+        small.muted= member._group
       .col-xs-5
         a.remove.btn.btn-xs.btn-danger.btn-block(data-member="#{member._id}", data-workshop="#{workshop._id}", data-session="#{workshopSession}")
           .fa.fa-minus
