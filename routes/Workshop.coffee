@@ -83,23 +83,23 @@ WorkshopRoutes = module.exports = {
             when "youth"
               workshop.allows = ["Youth"]
           # Populate Sessions.
-          for x in [1..12]
+          for x in [0..12]
             # x-1 for array indexing.
             session = workshop.session(x)
-            if req.body.enabled[x-1] == 'on'
+            if req.body.enabled[x] == 'on'
               # The workshop is enabled.
               if session
                 # The session exists already, edit it.
-                session.room = req.body.room[x-1]
-                session.venue = req.body.venue[x-1]
-                session.capacity = req.body.capacity[x-1]
+                session.room = req.body.room[x]
+                session.venue = req.body.venue[x]
+                session.capacity = req.body.capacity[x]
               else
                 # The session doesn't exist, create it.
                 workshop.sessions.push {
                   session: x
-                  room: req.body.room[x-1]
-                  venue: req.body.venue[x-1]
-                  capacity: req.body.capacity[x-1]
+                  room: req.body.room[x]
+                  venue: req.body.venue[x]
+                  capacity: req.body.capacity[x]
                 }
             else
               # The session is disabled.
@@ -142,14 +142,14 @@ WorkshopRoutes = module.exports = {
         when "youth"
           workshop.allows = ["Youth"]
       # Populate Sessions.
-      for x in [1..12]
+      for x in [0..12]
         # x-1 for array indexing.
-        if req.body.enabled[x-1] == 'on'
+        if req.body.enabled[x] == 'on'
           workshop.sessions.push {
             session: x
-            room: req.body.room[x-1]
-            venue: req.body.venue[x-1]
-            capacity: req.body.capacity[x-1]
+            room: req.body.room[x]
+            venue: req.body.venue[x]
+            capacity: req.body.capacity[x]
           }
       Workshop.model.create workshop, (err, workshop) ->
         if err

@@ -22,12 +22,13 @@ else
                 .label.label-default NA
         .col-xs-5
           b= member.name
-
         .col-xs-5
           -var conflicts = member.hasConflicts(workshop._id, workshopSession)
+          -var members = workshop.session(workshopSession)._registered.map(function(val) { if (val && val._id) { return String(val._id); } else { return String(val); }; })
+          p #{members}
           if workshop.allows.indexOf(member.type) == -1
             .btn.btn-xs.btn-warning.btn-disabled.btn-block Ineligible
-          else if workshop.session(workshopSession)._registered.indexOf(member._id) != -1
+          else if members.indexOf(String(member._id)) != -1
             a.remove.btn.btn-xs.btn-danger.btn-block(data-member="#{member._id}", data-workshop="#{workshop._id}", data-session="#{workshopSession}")
               .fa.fa-minus
               |  Remove Member
