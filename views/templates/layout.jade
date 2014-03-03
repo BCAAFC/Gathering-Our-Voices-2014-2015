@@ -42,11 +42,14 @@ html
               .row
                 pre.alert.alert-warning= session.message
         block content
-    footer
       .container
-        .row
-          .col-sm-4
-            h3 Organizers
+        .row(style="text-align: center;")
+          img(src="/img/funders.jpg")
+      footer
+        .container
+          .row
+            .col-sm-4
+              h3 Organizers
               .row
                 .col-xs-6
                   a(target="_blank", href="http://www.bcaafc.com/")
@@ -55,35 +58,35 @@ html
                   a(target="_blank", href="http://www.vafcs.org/")
                     img(src="/img/vafcs.png")
               //- TODO: Should be more?
-          .col-sm-4
-            h3 Contact Us
-            address
-              strong BC Association of Aboriginal Friendship Centers
-              br
-              | 551 Chatham St.
-              br
-              | Victoria
-              | BC, V8T 1E1
-              br
-              | Canada
-              br
-              | Phone: (250) 388-5522
-              br
-              | Toll-Free: 1 800 990-2432
-              br
-              | Fax: (250) 388-5502
-              br
-              | Email: 
-              a(href="mailto:dpreston@bcaafc.com") dpreston@bcaafc.com
-          .col-sm-4
-            h3 Other Links
-            ul.list-unstyled
-              li
-                a(href="/faq") FAQ
-              li
-                a(href="/privacy") Privacy Policy
-              li
-                a(href="https://github.com/Hoverbear/gov-2014") Source Code
+            .col-sm-4
+              h3 Contact Us
+              address
+                strong BC Association of Aboriginal Friendship Centers
+                br
+                | 551 Chatham St.
+                br
+                | Victoria
+                | BC, V8T 1E1
+                br
+                | Canada
+                br
+                | Phone: (250) 388-5522
+                br
+                | Toll-Free: 1 800 990-2432
+                br
+                | Fax: (250) 388-5502
+                br
+                | Email: 
+                a(href="mailto:dpreston@bcaafc.com") dpreston@bcaafc.com
+            .col-sm-4
+              h3 Other Links
+              ul.list-unstyled
+                li
+                  a(href="/faq") FAQ
+                li
+                  a(href="/privacy") Privacy Policy
+                li
+                  a(href="https://github.com/Hoverbear/gov-2014") Source Code
     :coffeescript
       $(() -> $('img.lazy').lazyload());
     script.
