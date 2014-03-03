@@ -41,6 +41,30 @@ else
           else
             a.btn.btn-xs.btn-default.btn-disabled.btn-block(href="/account") Complete Info
       br
+    if session.isAdmin
+      h6 All Members
+      for member in workshop.session(workshopSession)._registered
+        .row
+          .col-xs-1
+            span
+              case member.type
+                when "Youth"
+                  .label.label-info Y
+                when "Young Adult"
+                  .label.label-success YA
+                when "Young Chaperone"
+                  .label.label-warning YC
+                when "Chaperone"
+                  .label.label-danger Ch
+                default
+                  .label.label-default NA
+          .col-xs-5
+            b= member.name
+          .col-xs-5
+            a.remove.btn.btn-xs.btn-danger.btn-block(data-member="#{member._id}", data-workshop="#{workshop._id}", data-session="#{workshopSession}")
+              .fa.fa-minus
+              |  Remove Member
+        br
     :coffee
       $(".remove").unbind("click").click ->
         console.log "Remove Clicked"

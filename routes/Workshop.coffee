@@ -29,16 +29,28 @@ WorkshopRoutes = module.exports = {
             bg: "/img/bg/workshop.jpg"
           workshop: workshop
     members: (req, res) ->
-      Workshop.model.findById req.params.id, (err, workshop) ->
-        Group.model.findById(req.session.group._id).populate("_members").exec (err, group) ->
-          unless err or !group?
-            res.render "templates/workshopMembers",
-              session: { group: group }
-              workshop: workshop
-              workshopSession: Number(req.params.session)
-              message: req.query.message || null
-          else
-            res.send "Error. :("
+      if req?.session?.isAdmin
+        Workshop.model.findById(req.params.id).populate("sessions._registered").exec (err, workshop) ->
+          Group.model.findById(req.session.group._id).populate("_members").exec (err, group) ->
+            unless err or !group?
+              res.render "templates/workshopMembers",
+                session: { group: group, isAdmin: req.session.isAdmin }
+                workshop: workshop
+                workshopSession: Number(req.params.session)
+                message: req.query.message || null
+            else
+              res.send "Error. :("
+      else
+        Workshop.model.findById req.params.id, (err, workshop) ->
+          Group.model.findById(req.session.group._id).populate("_members").exec (err, group) ->
+            unless err or !group?
+              res.render "templates/workshopMembers",
+                session: { group: group }
+                workshop: workshop
+                workshopSession: Number(req.params.session)
+                message: req.query.message || null
+            else
+              res.send "Error. :("
     edit: (req, res) ->
       unless !req.query.id
         Workshop.model.findById req.query.id, (err, workshop) ->

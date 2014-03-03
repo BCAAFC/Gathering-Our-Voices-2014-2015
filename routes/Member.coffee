@@ -36,7 +36,7 @@ MemberRoutes = module.exports = {
         message = "That member is not a part of your group."
         res.redirect "/workshop/#{req.params.workshop}?message=#{message}"
     delWorkshop: (req, res) ->
-      if req.session.group._members.indexOf(req.params.member) != -1
+      if req.session.group._members.indexOf(req.params.member) != -1 || req?.session?.isAdmin
         Member.model.findById req.params.member, (err, member) ->
           unless err or !member?
             member.removeWorkshop req.params.workshop, Number(req.params.session), (err, member) ->
