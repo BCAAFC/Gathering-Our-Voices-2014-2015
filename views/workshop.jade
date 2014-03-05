@@ -39,6 +39,8 @@ block content
               h4 Session #{session.session}
               b Time: 
               case session.session
+                when 0
+                  | Wed, March 19, 7:00 am till 8:00 am
                 when 1
                   | Wed, March 19, 9:00 am till noon
                 when 2
@@ -48,7 +50,7 @@ block content
                 when 4
                   | Wed, March 19, 1:30 pm till 4:30 pm
                 when 5
-                  | Wed, March 19, 1:30 pm till 3:30 pm
+                  | Wed, March 19, 1:30 pm till 3:00 pm
                 when 6
                   | Wed, March 19, 3:30 pm till 5:00 pm
                 when 7
@@ -63,6 +65,8 @@ block content
                   | Thurs, March 20, 1:30 pm till 3:00 pm
                 when 12
                   | Thurs, March 20, 3:30 pm till 5:00 pm
+                when 13
+                  | Thurs, March 20, 7:00 am till 8:00 am
               br 
               b Room: 
               | #{session.room}

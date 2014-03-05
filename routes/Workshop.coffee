@@ -83,7 +83,7 @@ WorkshopRoutes = module.exports = {
             when "youth"
               workshop.allows = ["Youth"]
           # Populate Sessions.
-          for x in [0..12]
+          for x in [0..13]
             # x-1 for array indexing.
             session = workshop.session(x)
             if req.body.enabled[x] == 'on'
@@ -142,7 +142,7 @@ WorkshopRoutes = module.exports = {
         when "youth"
           workshop.allows = ["Youth"]
       # Populate Sessions.
-      for x in [0..12]
+      for x in [0..13]
         # x-1 for array indexing.
         if req.body.enabled[x] == 'on'
           workshop.sessions.push {

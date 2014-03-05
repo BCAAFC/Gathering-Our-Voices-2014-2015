@@ -60,7 +60,7 @@ WorkshopSchema = new Schema {
     session:
       type: Number
       min: 0
-      max: 12
+      max: 13
       required: true
     room:
       type: String
