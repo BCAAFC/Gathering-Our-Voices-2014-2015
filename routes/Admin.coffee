@@ -4,17 +4,35 @@ Member = require('../schema/Member')
 Admin = module.exports = {
   get:
     index: (req, res) ->
-      Group.model.find().sort("affiliation").exec (err, groups) ->
-        unless err
-          res.render "admin",
-            session: req.session  
-            head:
-              title: "Admin"
-              caption: "Sure, let me just reach into my magical hat and fix everything..."
-              bg: "/img/bg/admin.jpg"
-            groups: groups
-        else
-          res.send err
+      if req.query?.member
+        member_query = new RegExp(req.query.member, "i")
+        Member.model.findOne(name: member_query).exec (err, member) ->
+          if err or !member
+            res.redirect "/admin?message=Didn't find a group containing that member."
+          else
+            Group.model.find({_members: member._id}).sort("affiliation").exec (err, groups) ->
+              unless err or !groups
+                res.render "admin",
+                  session: req.session  
+                  head:
+                    title: "Admin"
+                    caption: "Sure, let me just reach into my magical hat and fix everything..."
+                    bg: "/img/bg/admin.jpg"
+                  groups: groups
+              else
+                res.send err
+      else
+        Group.model.find().sort("affiliation").exec (err, groups) ->
+          unless err
+            res.render "admin",
+              session: req.session  
+              head:
+                title: "Admin"
+                caption: "Sure, let me just reach into my magical hat and fix everything..."
+                bg: "/img/bg/admin.jpg"
+              groups: groups
+          else
+            res.send err
     manage: (req, res) ->
       Group.model.findById req.params.id, (err, group) ->
         unless err
