@@ -55,7 +55,6 @@ PaymentSchema = new Schema {
     default: ""
   amount:
     type: Number
-    min: 0
     required: true
   type:
     type: String
