@@ -76,7 +76,7 @@ block content
                       a.memberWorkshops.btn.btn-xs.btn-warning.tooltipped(data-toggle="collapse", data-id="#{member._id}") 1+ Workshops
                     else
                       a.memberWorkshops.btn.btn-xs.btn-default.tooltipped(data-toggle="collapse", data-id="#{member._id}") No Workshops!
-                    a.btn.btn-xs.btn-success(href="/member/workshops?id=#{member._id}")
+                    a.btn.btn-xs.btn-success(target="_blank", href="/member/workshops?id=#{member._id}")
                       .fa.fa-print
                   td
                     form(method="POST", action="/member/#{member._id}")
