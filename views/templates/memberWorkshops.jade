@@ -1,3 +1,7 @@
+// Bootstrap
+link(href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/united/bootstrap.min.css", rel="stylesheet")
+link(href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css", rel="stylesheet")
+
 .col-sm-2
 form.col-sm-8
   fieldset
@@ -10,13 +14,17 @@ form.col-sm-8
             tr
               th Session
               th Name
-              th 
+              th Venue
+              th Room
+              th
           tbody
             for workshop in member._workshops
               tr
                 td
                   .label.label-success= workshop.session
                 td= workshop._id.name
+                td= workshop._id.session(workshop.session).venue
+                td= workshop._id.session(workshop.session).room
                 td
                   a.btn.btn-xs.btn-success(href="/workshop/#{workshop._id._id}")
                     .fa.fa-play
