@@ -43,17 +43,20 @@ AccountRoutes = module.exports = {
         group.getCost (err, cost) ->
           group.getPaid (err, paid) ->
             group.stats = {
-              "": 0,
-              "Youth": 0,
-              "Young Adult": 0,
-              "Chaperone": 0,
-              "Young Chaperone": 0,
-              "youthInCare": 0
+              "": {"Early": 0, "Regular": 0},
+              "Youth": {"Early": 0, "Regular": 0},
+              "Young Adult": {"Early": 0, "Regular": 0},
+              "Chaperone": {"Early": 0, "Regular": 0},
+              "Young Chaperone": {"Early": 0, "Regular": 0},
+              "youthInCare": 0,
+              "youthInCareSupport": 0
             }
             group._members.map (val) ->
-              group.stats[val.type]++
+              group.stats[val.type][val._state.ticketType]++
               if val._state.youthInCare
                 group.stats['youthInCare']++
+              if val._state.youthInCareSupport
+                group.stats['youthInCareSupport']++
               return
             # Render
             res.render "printout",

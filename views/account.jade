@@ -2,16 +2,19 @@ extends templates/layout
 
 block content
   if !session.group._state.enoughChaperones
-    #alert.alert.alert-danger You don't have enough Chaperones to support all of your youth. Please find some more!
+    .container
+      .col-xs-12
+        #alert.alert.alert-danger You don't have enough Chaperones to support all of your youth. Please find some more!
   if session.isAdmin
-    .row(style="text-align: center")
-      .btn.btn-group
-        a#back.btn.btn-primary(href="/admin")
-          .fa.fa-backward
-          |  Go Back
-        a#notes.btn.btn-info(href="/notes/#{session.group._id}")
-          .fa.fa-edit
-          |  Notes
+    .container
+      .row(style="text-align: center")
+        .btn.btn-group
+          a#back.btn.btn-primary(href="/admin")
+            .fa.fa-backward
+            |  Go Back
+          a#notes.btn.btn-info(href="/notes/#{session.group._id}")
+            .fa.fa-edit
+            |  Notes
   #listing.container
     p.text-muted If this is your first time at Gathering Our Voices, or you'd like a refresher on attendee specifics, please check our FAQ
       a(href="/faq#attendees")  here.

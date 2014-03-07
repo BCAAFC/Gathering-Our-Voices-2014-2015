@@ -25,51 +25,72 @@ html
     link(href="/css/styles.css", rel="stylesheet")
   body.container
     h1 Gathering Our Voices 2014
+      img.pull-right(src="/img/gov.jpg")
     h2 Information Printout for #{group.affiliation}
     p.lead Primary Contact: #{group.name}
     p Phone: #{group.phone}
     p Email: #{group.email}
     hr
-    .col-sm-5
+    .col-sm-6
       h2 Membership Counts
       table.table
-        tr
-          td
-            .label.label-info Y
-          td Youth
-          td #{group.stats['Youth']}
-        tr
-          td
-            .label.label-success YA
-          td Young Adults
-          td #{group.stats['Young Adult']}
-        tr
-          td
-            .label.label-warning YC
-          td Young Chaperones
-          td #{group.stats['Young Chaperone']}
-        tr
-          td
-            .label.label-danger Ch
-          td Chaperones
-          td #{group.stats['Chaperone']}
-        tr
-          td
-          td Unmarked
-          td #{group.stats['']}
+        thead
+          tr
+            td
+            td Type
+            td Early ($125)
+            td Regular ($175)
+        tbody
+          tr
+            td
+              .label.label-info Y
+            td Youth
+            td #{group.stats['Youth']['Early']}
+            td #{group.stats['Youth']['Regular']}
+          tr
+            td
+              .label.label-success YA
+            td Young Adults
+            td #{group.stats['Young Adult']['Early']}
+            td #{group.stats['Young Adult']['Regular']}
+          tr
+            td
+              .label.label-warning YC
+            td Young Chaperones
+            td #{group.stats['Young Chaperone']['Early']}
+            td #{group.stats['Young Chaperone']['Regular']}
+          tr
+            td
+              .label.label-danger Ch
+            td Chaperones
+            td #{group.stats['Chaperone']['Early']}
+            td #{group.stats['Chaperone']['Regular']}
+          tr
+            td
+            td Unmarked
+            td #{group.stats['']['Early']}
+            td #{group.stats['']['Regular']}
       if group.stats['youthInCare'] != 0
-        p.alert
-          .alert-success Youth In Care Dinner Tickets: #{group.stats['youthInCare']}
-    .col-sm-2
-    .col-sm-5
+        p.alert.alert-success Youth In Care Dinner Tickets: #{group.stats['youthInCare']}
+      if group.stats['youthInCareSupport'] != 0
+        p.alert.alert-success Youth In Care Dinner (Support) Tickets: #{group.stats['youthInCareSupport']}
+    .col-sm-6
       h2 Payment History
       table.table
-        for payment in group._payments
+        thead
           tr
-            td= payment.amount
-            td= payment.number
-            td #{payment.date.day}, #{payment.date.month}, #{payment.date.year}
-            h3 Totals
+            td $CAD
+            td Type
+            td Number
+            td Date
+        tbody
+          for payment in group._payments
+            tr
+              td= payment.amount
+              td= payment.type
+              td= payment.number
+              td #{payment.date.day}, #{payment.date.month}, #{payment.date.year}
+      h3 Totals
       p Cost: $#{cost}
       p Paid: $#{paid}
       p Balance: $#{cost - paid}
