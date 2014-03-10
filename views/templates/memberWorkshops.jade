@@ -13,6 +13,7 @@ link(href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css
             thead
               tr
                 th Session
+                th Time
                 th Name
                 th Venue
                 th Room
@@ -22,6 +23,36 @@ link(href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css
                 tr
                   td
                     .label.label-success= workshop.session
+                  td
+                    case workshop.session
+                      when 0
+                        | Wed, March 19, 7:00 am till 8:00 am
+                      when 1
+                        | Wed, March 19, 9:00 am till noon
+                      when 2
+                        | Wed, March 19, 9:00 am till 10:30 am
+                      when 3
+                        | Wed, March 19, 11:00 am till 12:30 pm
+                      when 4
+                        | Wed, March 19, 1:30 pm till 4:30 pm
+                      when 5
+                        | Wed, March 19, 1:30 pm till 3:00 pm
+                      when 6
+                        | Wed, March 19, 3:30 pm till 5:00 pm
+                      when 7
+                        | Thurs, March 20, 9:00 am till noon
+                      when 8
+                        | Thurs, March 20, 9:00 am till 10:30 am
+                      when 9
+                        | Thurs, March 20, 11:00 am till 12:30 pm
+                      when 10
+                        | Thurs, March 20, 1:30 pm till 4:30 pm
+                      when 11
+                        | Thurs, March 20, 1:30 pm till 3:00 pm
+                      when 12
+                        | Thurs, March 20, 3:30 pm till 5:00 pm
+                      when 13
+                        | Thurs, March 20, 7:00 am till 8:00 am
                   td= workshop._id.name
                   td= workshop._id.session(workshop.session).venue
                   td= workshop._id.session(workshop.session).room
