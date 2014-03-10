@@ -36,7 +36,7 @@ else
               .fa.fa-plus
               |  Add Member
           else if conflicts
-            -var message = "The conflicting workshop is in session " + workshopSession
+            -var message = "The conflicting workshop is in session " + conflicts.session
             a(href="/workshop/#{conflicts._id}?message=#{message}").btn.btn-xs.btn-warning.btn-disabled.btn-block View Conflict
           else
             a.btn.btn-xs.btn-default.btn-disabled.btn-block(href="/account") Complete Info
