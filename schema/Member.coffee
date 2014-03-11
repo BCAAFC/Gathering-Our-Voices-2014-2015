@@ -205,7 +205,7 @@ MemberSchema.methods.addWorkshop = (workshopId, session, next) ->
               if !err
                 @_workshops.push {session: session, _id: workshop._id}
                 @save (err) =>
-                  unless err
+                  if !err
                     next null, @
                   else
                     next err, null
