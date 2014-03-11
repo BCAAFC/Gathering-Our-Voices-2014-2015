@@ -83,4 +83,10 @@ app.listen config.port, () ->
 #         group.save () ->
 #           looper(groups)
 #   looper(groups)
-#       
+# Member = require("./schema/Member")
+# Workshop = require("./schema/Workshop")
+# Member.model.find({}).populate("_workshops._id").exec (err, members) ->
+#   for member in members
+#     for workshop in member._workshops
+#       if workshop._id.session(workshop.session)._registered.indexOf(member._id) == -1
+#         console.log "Member: #{member.name}, Workshop: #{workshop._id.name}, Session: #{workshop.session}, Group: #{member._group}"
