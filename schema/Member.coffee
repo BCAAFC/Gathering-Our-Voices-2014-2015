@@ -175,7 +175,7 @@ Methods
   `MemberSchema.methods.foo =`
 ###
 MemberSchema.methods.hasConflicts = (workshopId, session) ->
-  if session == 0
+  if session == 0 or session == 13
     blocks = []
   else if (session % 3) is 0
     blocks = [session, session-2]
@@ -211,6 +211,7 @@ MemberSchema.methods.addWorkshop = (workshopId, session, next) ->
                 unless err
                   next null, @
                 else
+                  
                   next err, null
             else
               next err, null
