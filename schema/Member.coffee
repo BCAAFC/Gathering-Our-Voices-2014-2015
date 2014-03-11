@@ -201,20 +201,19 @@ MemberSchema.methods.addWorkshop = (workshopId, session, next) ->
           theSession = workshop.session(session)
           if theSession.capacity > theSession._registered.length
             theSession._registered.push @_id
+            workshop.save (err) =>
+              unless err
+                @_workshops.push {session: session, _id: workshop._id}
+                @save (err) =>
+                  unless err
+                    next null, @
+                  else
+                    next err, null
+              else
+                next err, null
           else
             next new Error("That workshop is at capacity"), null
             return # End early.
-          workshop.save (err) =>
-            unless err
-              @_workshops.push {session: session, _id: workshop._id}
-              @save (err) =>
-                unless err
-                  next null, @
-                else
-                  
-                  next err, null
-            else
-              next err, null
         else
           next new Error("Member type not permitted in this workshop."), null
       else
