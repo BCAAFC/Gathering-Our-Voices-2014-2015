@@ -195,14 +195,14 @@ MemberSchema.methods.addWorkshop = (workshopId, session, next) ->
   if not @hasConflicts(workshopId, session)
     # Check that the workshop isn't full, if not, add us there.
     Workshop.model.findById workshopId, (err, workshop) =>
-      unless err or !workshop?
-        unless workshop.allows.indexOf(@type) == -1
+      if !err or !workshop
+        if workshop.allows.indexOf(@type) != -1
           # Figure out the session we want, add the member.
           theSession = workshop.session(session)
           if theSession.capacity > theSession._registered.length
             theSession._registered.push @_id
             workshop.save (err) =>
-              unless err
+              if !err
                 @_workshops.push {session: session, _id: workshop._id}
                 @save (err) =>
                   unless err
@@ -224,16 +224,16 @@ MemberSchema.methods.addWorkshop = (workshopId, session, next) ->
 MemberSchema.methods.removeWorkshop = (workshopId, session, next) ->
   Workshop = require("./Workshop")
   Workshop.model.findById workshopId, (err, workshop) =>
-    unless err or !workshop
+    if !err or !workshop
       index = workshop.session(session)._registered.indexOf(@_id)
       # Remove the member from the workshop.
       workshop.session(session)._registered.splice(index, 1)
       workshop.save (err) =>
-        unless err
+        if !err
           @_workshops = @_workshops.filter (val) =>
             return not (val.session == session and val._id.equals(workshopId))
           @save (err) =>
-            unless err
+            if !err
               next null, @
             else
               next err, null
