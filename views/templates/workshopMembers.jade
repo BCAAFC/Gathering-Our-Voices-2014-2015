@@ -3,10 +3,10 @@ if message
 if session.group._members.length == 0
   p.text-muted There are no members in this group, you should add some first!
 else
-  .container
+  .container(id= workshopSession)
     br
     for member in session.group._members
-      .row(class=member._id)
+      .row
         .col-xs-1
           span
             case member.type
@@ -70,8 +70,7 @@ if session.isAdmin
         br
 :coffee
   $(".remove").unbind("click").click ->
-    $("##{$(this).data('member')} div .remove").unbind("click").text("Reloading...")
-    $("##{$(this).data('member')} div .add").unbind("click").text("Reloading...")
+    $("##{$(this).data('session')} div a").unbind("click").text("Reloading...")
     console.log "Remove Clicked"
     member = $(this).data('member')
     workshop = $(this).data('workshop')
@@ -79,8 +78,7 @@ if session.isAdmin
     $.get "/member/#{member}/del/#{workshop}/#{session}", (data) ->
       $("##{session}-attending").html(data)
   $(".add").unbind("click").click ->
-    $("##{$(this).data('member')} div .remove").unbind("click").text("Reloading...")
-    $("##{$(this).data('member')} div .add").unbind("click").text("Reloading...")
+    $("##{$(this).data('session')} div a").unbind("click").text("Reloading...")
     console.log "Add clicked"
     member = $(this).data('member')
     workshop = $(this).data('workshop')
