@@ -70,8 +70,8 @@ if session.isAdmin
         br
 :coffee
   $(".remove").unbind("click").click ->
-    $("##{$(this).data('member')} .remove").unbind("click").text("Reloading...")
-    $("##{$(this).data('member')} .add").unbind("click").text("Reloading...")
+    $("##{$(this).data('member')} div .remove").unbind("click").text("Reloading...")
+    $("##{$(this).data('member')} div .add").unbind("click").text("Reloading...")
     console.log "Remove Clicked"
     member = $(this).data('member')
     workshop = $(this).data('workshop')
@@ -79,8 +79,8 @@ if session.isAdmin
     $.get "/member/#{member}/del/#{workshop}/#{session}", (data) ->
       $("##{session}-attending").html(data)
   $(".add").unbind("click").click ->
-    $("##{$(this).data('member')} .remove").unbind("click").text("Reloading...")
-    $("##{$(this).data('member')} .add").unbind("click").text("Reloading...")
+    $("##{$(this).data('member')} div .remove").unbind("click").text("Reloading...")
+    $("##{$(this).data('member')} div .add").unbind("click").text("Reloading...")
     console.log "Add clicked"
     member = $(this).data('member')
     workshop = $(this).data('workshop')
