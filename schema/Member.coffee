@@ -213,21 +213,21 @@ MemberSchema.methods.addWorkshop = (workshopId, session, next) ->
               if !err
                 #@_workshops.push {session: session, _id: workshop._id}
                 #@save (err) =>
-                @update {
-                  "_id": @_id 
-                }, {
+                Member.findByIdAndUpdate @_id, {
                   "$push": {
                     "_workshops": {
                       "_id": workshop._id,
                       "session": session
                     }
                   }
-                }, (err) =>
+                }, (err, member) =>
                   if !err
-                    next null, @
+                    next null, member
                   else
+                    console.log "Member" + err
                     next err, null
               else
+                console.log "Workshop" + err
                 next err, null
           else
             next new Error("That workshop is at capacity"), null
@@ -241,24 +241,43 @@ MemberSchema.methods.addWorkshop = (workshopId, session, next) ->
 
 MemberSchema.methods.removeWorkshop = (workshopId, session, next) ->
   Workshop = require("./Workshop")
-  Workshop.model.findById workshopId, (err, workshop) =>
-    if !err or !workshop
-      index = workshop.session(session)._registered.indexOf(@_id)
-      # Remove the member from the workshop.
-      workshop.session(session)._registered.splice(index, 1)
-      workshop.save (err) =>
+  #Workshop.model.findById workshopId, (err, workshop) =>
+  #  if !err or !workshop
+  #    index = workshop.session(session)._registered.indexOf(@_id)
+  #    Remove the member from the workshop.
+  #    workshop.session(session)._registered.splice(index, 1)
+  #    workshop.save (err) =>
+  Workshop.model.update { 
+    "sessions.session": session,
+    "_id": workshopId
+  }, {
+    "$pull": {
+       "sessions.$._registered": @_id
+    }
+  }, (err) =>  
+    if !err
+      Member.findByIdAndUpdate @_id, {
+        "$pull": {
+          "_workshops": {
+            "session": session
+          }
+        }
+      }, (err, member) =>
         if !err
-          @_workshops = @_workshops.filter (val) =>
-            return not (val.session == session and val._id.equals(workshopId))
-          @save (err) =>
-            if !err
-              next null, @
-            else
-              next err, null
+          next null, member
         else
+          console.log err
           next err, null
+#      @_workshops = @_workshops.filter (val) =>
+#        return not (val.session == session and val._id.equals(workshopId))
+#      @save (err) =>
+#        if !err
+#          next null, @
+#        else
+#          next err, null
     else
-      next err || new Error("Workshop doesn't exist"), null
+     next err, null
+
 
 ###
 Pre/Post Middleware
