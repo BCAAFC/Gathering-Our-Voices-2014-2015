@@ -6,7 +6,7 @@ else
   .container
     br
     for member in session.group._members
-      .row
+      .row(class=member._id)
         .col-xs-1
           span
             case member.type
@@ -70,8 +70,8 @@ if session.isAdmin
         br
 :coffee
   $(".remove").unbind("click").click ->
-    $(".remove").unbind("click").text("Reloading...")
-    $(".add").unbind("click").text("Reloading...")
+    $("##{$(this).data('member')} .remove").unbind("click").text("Reloading...")
+    $("##{$(this).data('member')} .add").unbind("click").text("Reloading...")
     console.log "Remove Clicked"
     member = $(this).data('member')
     workshop = $(this).data('workshop')
@@ -79,8 +79,8 @@ if session.isAdmin
     $.get "/member/#{member}/del/#{workshop}/#{session}", (data) ->
       $("##{session}-attending").html(data)
   $(".add").unbind("click").click ->
-    $(".remove").unbind("click").text("Reloading...")
-    $(".add").unbind("click").text("Reloading...")
+    $("##{$(this).data('member')} .remove").unbind("click").text("Reloading...")
+    $("##{$(this).data('member')} .add").unbind("click").text("Reloading...")
     console.log "Add clicked"
     member = $(this).data('member')
     workshop = $(this).data('workshop')
