@@ -200,11 +200,29 @@ MemberSchema.methods.addWorkshop = (workshopId, session, next) ->
           # Figure out the session we want, add the member.
           theSession = workshop.session(session)
           if theSession.capacity > theSession._registered.length
-            theSession._registered.push @_id
-            workshop.save (err) =>
+            #theSession._registered.push @_id
+            #workshop.save (err) =>
+            Workshop.model.update { 
+                "sessions.session": session
+                "_id": workshopId,
+            }, {
+              "$push": {
+                "sessions.$._registered": @_id
+              }
+            }, (err) =>
               if !err
-                @_workshops.push {session: session, _id: workshop._id}
-                @save (err) =>
+                #@_workshops.push {session: session, _id: workshop._id}
+                #@save (err) =>
+                @update {
+                  "_id": @_id 
+                }, {
+                  "$push": {
+                    "_workshops": {
+                      "_id": workshop._id,
+                      "session": session
+                    }
+                  }
+                }, (err) =>
                   if !err
                     next null, @
                   else
