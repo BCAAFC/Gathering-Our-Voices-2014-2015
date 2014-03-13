@@ -3,8 +3,12 @@ extends templates/layout
 block content
   .container
     .row(style="text-align: center;")
-      a.btn.btn-primary(href="/admin")
-        | Go Back
+      .btn-group
+        a.btn.btn-info(href="/admin")
+          | Go Back
+        a.btn.btn-primary(href="/manage/#{group._id}")
+          .fa.fa-edit
+          |  Manage
     .row
       .col-sm-2
       .col-sm-8
