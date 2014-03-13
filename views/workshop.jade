@@ -31,7 +31,7 @@ block content
     .row
       h2 Sessions
       #sessions.panel-group
-        for session, index in workshop
+        for session, index in workshop.sessions
           if index % 3 == 0
             .row
           .col-sm-4(style="margin-top:0px")
