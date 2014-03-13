@@ -19,7 +19,7 @@ link(href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css
                 th Room
                 th
             tbody
-              for workshop in member._workshops
+              for workshop in member._workshops.sort(function(a, b){ if (a.session < b.session) { return -1 } else { return 1 } })
                 tr
                   td
                     .label.label-success= workshop.session
