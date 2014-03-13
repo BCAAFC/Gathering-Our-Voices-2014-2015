@@ -26,7 +26,6 @@ html
   body
     #wrap
       header
-        img(style="display: none;", src="/img/gov.jpg")
         .navbar-wrapper
           .container
             include navbar
@@ -45,6 +44,7 @@ html
         block content
       .container
         .row(style="text-align: center;")
+          img(style="height: 0px; width: 0px;", src="/img/gov.jpg")
           img(src="/img/funders.jpg")
       footer
         .container
