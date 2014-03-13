@@ -31,7 +31,7 @@ block content
     .row
       h2 Sessions
       #sessions.panel-group
-        for session, index in workshop.sessions
+        for session, index in workshop.sessions.sort(function(a, b){ if (a.session < b.session) { return -1 } else { return 1 } })
           if index % 3 == 0
             .row
           .col-sm-4(style="margin-top:0px")
