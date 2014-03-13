@@ -117,6 +117,14 @@ Pre/Post Middleware
   `MemberSchema.pre 'bar', (next) ->`
   `MemberSchema.post 'bar', (next) ->`
 ###
+WorkshopSchema.pre "save", (next) ->
+  @.sessions = @.sessions.sort (a, b) ->
+    if (a.session < b.session)
+      -1
+    else
+      1
+  next()
+  
 WorkshopSchema.pre "remove", (next) ->
   Member = require("./Member")
   # Remove all members from the workshop
