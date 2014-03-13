@@ -165,7 +165,9 @@ GroupSchema = new Schema {
         "Group Ok",
         "Group Called"
         "Workshops Complete",
-        "Workshops Incomplete"
+        "Workshops Incomplete",
+        "Cancelled",
+        "Talent Show"
       ]
     payment:
       type: String
