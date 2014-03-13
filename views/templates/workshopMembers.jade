@@ -31,6 +31,10 @@ else
             a.remove.btn.btn-xs.btn-danger.btn-block(data-member="#{member._id}", data-workshop="#{workshop._id}", data-session="#{workshopSession}")
               .fa.fa-minus
               |  Remove Member
+          else if workshop.session(workshopSession)._registered.length >= workshop.session(workshopSession).capacity
+            a.btn.btn-xs.btn-default.btn-block
+              .fa.fa-dot-circle-o
+              |  Workshop Full
           else if !conflicts && member._state.complete
             a.add.btn.btn-xs.btn-success.btn-block(data-member="#{member._id}", data-workshop="#{workshop._id}", data-session="#{workshopSession}")
               .fa.fa-plus
