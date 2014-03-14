@@ -137,20 +137,67 @@ AccountRoutes = module.exports = {
                 to: [{email: group.email, name: group.name}, {email: "dpreston@bcaafc.com", name: "Della Preston"}, {email: "klow@bcaafc.com", name: "Kerri Low"}]
                 from_email: 'gatheringourvoices@bcaafc.com'
                 subject: "GOV2014 Registration"
-                html: "<h4>Thank you for submitting your online registration!</h4>
-                  <p>The Gathering Our Voices Team will review your registration and contact you via email regarding the following:</p>
-                    <ul>
-                      <li>Member Information: You can add group members from the \"Account\" Page. When adding a new member, all that is required is a name, which you're free to make a placeholder. We ask that you try to populate your group with members (even placeholders!) as soon as you can for a number of reasons. First, so we can have more accurate estimations for catering and bookings, second, you won't have to get all of the information from your members right away. Members which are incomplete will be marked appropriately with a red label, you can just click on that label (or the complete label) at any time to edit their information.</li>
-                      <li>Payment: You can view your current payment status from the \"Account\" Page, just hit the orange \"Manage Payments\" button.</li>
-                      <li>Workshops: Starting in late January / early February, the team will have confirmed facilitators for workshops. At this point we will start to populate the listings on the \"Workshops\" page. Members with <b>complete</b> information will be permitted to register in workshops automatically. We will send out an email when this begins.</li>
-                    </ul>
-                  <p>If you have any questions take a look at our <a href=\"http://gatheringourvoices.bcaafc.com/faq\">FAQ</a>, or connect with me!</p>
-                  <br>
-                  <p>In friendship,</p>
-                  <p>Kerri Low</p>
-                  <p>Conference Registration Coordinator</p>
-                  <p>Phone: (250) 388-5522 or toll-free: 1-800-990-2432</p>
-                  <a href=\"mailto:klow@bcaafc.com\">klow@bcaafc.com</p>"
+                html: "
+<h2>Thank you for submitting your online registration!</h2>
+The Gathering Our Voices Team will review your registration and contact you via email regarding the following:
+
+<ul>
+ <li>Member Information: You can add group members from the \"Account\" Page. When adding a new member, all that is required is a name, which you're free to make a placeholder. We ask that you try to populate your group with members (even placeholders!) as soon as you can for a number of reasons. First, so we can have more accurate estimations for catering and bookings, second, you won't have to get all of the information from your members right away. Members which are incomplete will be marked appropriately with a red label, you can just click on that label (or the complete label) at any time to edit their information.</li>
+  <li>Payment: You can view your current payment status from the \"Account\" Page, just hit the orange \"Manage Payments\" button.</li>
+  <li>Workshops: You may join workshops <b>immediately</b> after completing a members information.</li>
+</ul>
+
+If you have any questions take a look at our FAQ, or connect with me!
+
+<h2>Delegate registration: Complete by March 14 – (onsite changes will be limited)</h2>
+Please complete your members registration including all detailed information. You can manage you registration from your mobile devices for easy access and convenience.
+ 
+<h2>Payments: DUE March 18, 2014</h2>
+For the groups and delegates registered by February 7th, we will honor the early registration fee until March 18th. If payment is not receive by March 18th, all delegates will be charged the regular registration fee of $175 and payment will be due 10 business day later: April 1, 2014.
+<br>
+For the groups and delegates that register after February 7th, you will be required to pay the regular registration fee of $175 also due March 18th.
+<br>
+<b>On-site payment will be accepted by VISA, MasterCard, Cheque or Money Order. We cannot accept cash onsite.</b>
+<br>
+Question contacts Kerri Low at 250-388-5522 or 1-900-990-2432
+ 
+<h2>Workshop registration: Complete by March 14  - (onsite changes and spaces will be limited, sign up early)</h2>
+The full workshop schedule has been released! To sign up for workshops each delegate will need their full personal information complete. The workshop listings page can be view by all delegates, but only the primary contact can register the members into workshops. We encourage primary contacts to share this link with your youth so they can view the workshops. Also be prepared for active workshops: bring running shoes, shorts, water bottles & active wear.
+<br>
+Workshop Page:  https://gatheringourvoices.bcaafc.com/workshops
+<br>
+For information about workshops contact Greg Forsberg, Workshops and Logistics Coordinator at gatheringourvoices@bcaafc.com or by telephone: 250-388-5522 or 1-800-990-2432.
+<br>
+<br>
+<b>Book your accommodations:</b>
+<br>
+Book at the Fairmont Vancouver ($189/night) - https://resweb.passkey.com/go/gatheringourvoices
+<br>
+Book at the Hyatt Regency Vancouver ($189/night) - https://resweb.passkey.com/go/gov2014
+
+<h2>Please reviews before coming to the conference with your group!</h2>
+<b>Personal Conduct:</b>
+Since your personal conduct, both in and out of the conference, reflects upon your community, please take a moment to review the code of conduct and distribute this to your group and your chaperones. Please ensure that as guests, your group members respect our hosts, volunteers, speakers, and peers to create an enjoyable and memorable event.
+ 
+<b>Code of Conduct:</b>
+<ul>
+  <li>Weapons brought into conference venues and/or criminal activity of any kind will not be tolerated.</li>
+  <li>Please refrain from wearing any non- prescription cosmetic lenses that alter or cover the eyes.</li>
+  <li>There will be zero tolerance for drugs & alcohol use by delegates, chaperones, and guests during the event.  We will also not tolerate any bullying, violence or acts of harassment. Offending participants, along with their group, will be asked to leave in such circumstances.</li>
+  <li>Offenders of the Code of Conduct will have all privileges suspended and may be removed from the conference with no refund.</li>
+</ul>
+ 
+On Thursday, March 20th there will be a dance for all youth and young adults. Please take a moment to review the code of conduct specific to this event.
+ 
+<h2>Youth Dance Party:</h2>
+<ul>
+  <li>Door Open at 7:00 pm and will close at 8:30 pm. Re-entry will not be permitted. </li>
+  <li>Chaperones are required to attend with their youth under 18 years of age.  Youth without chaperones WILL NOT be admitted.  Chaperones must also leave with their youth at the end of the night.</li>
+  <li>All youth and chaperones will be searched prior to their entry to the dance and will be required to check all bags, purses, sweaters and jackets.</li>
+  <li>We do not allow the consumption of energy drinks.</li>
+  <li>Please refrain from wearing any non- prescription cosmetic lenses that alter or cover the eyes.</li>
+</ul>
+                "
               }
             }, (err, response) ->
               console.log err if err
