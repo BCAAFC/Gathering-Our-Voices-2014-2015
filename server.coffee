@@ -73,6 +73,7 @@ require("./routes")(app)
 app.listen config.port, () ->
   console.log "Listening on port #{config.port}."
   
+## Redo flags
 # Group = require("./schema/Group")
 # Group.model.find {}, (err, groups) ->
 #   looper = (groups) ->
@@ -83,6 +84,8 @@ app.listen config.port, () ->
 #         group.save () ->
 #           looper(groups)
 #   looper(groups)
+
+## Check for Bugs
 # Member = require("./schema/Member")
 # Workshop = require("./schema/Workshop")
 # Member.model.find({}).populate("_workshops._id").exec (err, members) ->
@@ -90,3 +93,15 @@ app.listen config.port, () ->
 #     for workshop in member._workshops
 #       if workshop._id.session(workshop.session)._registered.indexOf(member._id) == -1
 #         console.log "Member: #{member.name}, Workshop: #{workshop._id.name}, Session: #{workshop.session}, Group: #{member._group}"
+
+## Get Allergies
+# Member = require("./schema/Member")
+# Member.model.find({}).exec (err, members) ->
+#   allergyList = []
+#   for member in members
+#     for allergy in member.emergencyInfo.allergies
+#       if allergyList.indexOf(allergy) == -1
+#         allergyList.push(allergy)
+#   for allergy in allergyList
+#     console.log allergy
+#       
