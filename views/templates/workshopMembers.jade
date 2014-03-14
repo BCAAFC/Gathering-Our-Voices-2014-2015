@@ -75,7 +75,6 @@ if session.isAdmin
 :coffee
   $(".remove").unbind("click").click ->
     $("##{$(this).data('session')} div a").unbind("click").text("Reloading...")
-    console.log "Remove Clicked"
     member = $(this).data('member')
     workshop = $(this).data('workshop')
     session = $(this).data('session')
@@ -83,7 +82,6 @@ if session.isAdmin
       $("##{session}-attending").html(data)
   $(".add").unbind("click").click ->
     $("##{$(this).data('session')} div a").unbind("click").text("Reloading...")
-    console.log "Add clicked"
     member = $(this).data('member')
     workshop = $(this).data('workshop')
     session = $(this).data('session')
