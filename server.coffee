@@ -94,14 +94,23 @@ app.listen config.port, () ->
 #       if workshop._id.session(workshop.session)._registered.indexOf(member._id) == -1
 #         console.log "Member: #{member.name}, Workshop: #{workshop._id.name}, Session: #{workshop.session}, Group: #{member._group}"
 
-## Get Allergies
+## Workshop Bugs
+# Member = require("./schema/Member")
+# Workshop = require("./schema/Workshop")
+# Workshop.model.find({}).exec (err, workshops) ->
+#   checked = 0
+#   for workshop in workshops
+#     for session in workshop.sessions
+#       for item, index in session._registered
+#         checked += 1
+#         if session._registered.indexOf(item) != index
+#           console.log "There is a double, #{workshop.name}, #{session}"
+#   console.log checked
+
+# Get Allergies / Medical Conditions
 # Member = require("./schema/Member")
 # Member.model.find({}).exec (err, members) ->
 #   allergyList = []
 #   for member in members
-#     for allergy in member.emergencyInfo.allergies
-#       if allergyList.indexOf(allergy) == -1
-#         allergyList.push(allergy)
-#   for allergy in allergyList
-#     console.log allergy
+#     console.log "#{member.name}  #{(allergy for allergy in member.emergencyInfo.allergies)}  #{(condition for condition in member.emergencyInfo.conditions)}"
 #       
