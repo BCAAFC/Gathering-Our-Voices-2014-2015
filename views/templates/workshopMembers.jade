@@ -25,7 +25,9 @@ else
         .col-xs-5
           -var conflicts = member.hasConflicts(workshop._id, workshopSession)
           -var members = workshop.session(workshopSession)._registered.map(function(val) { if (val && val._id) { return String(val._id); } else { return String(val); }; })
-          if workshop.allows.indexOf(member.type) == -1
+          if member.type == null || member.type == undefined || member.type == ""
+            a.btn.btn-xs.btn-default.btn-disabled.btn-block(href="/account") Complete Info
+          else if workshop.allows.indexOf(member.type) == -1
             .btn.btn-xs.btn-warning.btn-disabled.btn-block Ineligible
           else if members.indexOf(String(member._id)) != -1
             a.remove.btn.btn-xs.btn-danger.btn-block(data-member="#{member._id}", data-workshop="#{workshop._id}", data-session="#{workshopSession}")
@@ -39,6 +41,10 @@ else
             a.add.btn.btn-xs.btn-success.btn-block(data-member="#{member._id}", data-workshop="#{workshop._id}", data-session="#{workshopSession}")
               .fa.fa-plus
               |  Add Member
+          else if !conflicts
+            a.add.btn.btn-xs.btn-success.btn-block(data-member="#{member._id}", data-workshop="#{workshop._id}", data-session="#{workshopSession}")
+              .fa.fa-plus
+              |  Add (BYPASS)
           else if conflicts
             -var message = "The conflicting workshop is in session " + conflicts.session
             a(href="/workshop/#{conflicts._id}?message=#{message}").btn.btn-xs.btn-warning.btn-disabled.btn-block View Conflict
