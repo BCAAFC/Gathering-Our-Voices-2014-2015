@@ -114,6 +114,9 @@ AccountRoutes = module.exports = {
   post:
     login: (req, res) ->
       if req.body.passwordConfirm? and req.body.passwordConfirm is req.body.password
+        # Site is archived.
+        return res.redirect "/register?message=This site has been archived, please email ahobden@bcaafc.com if you think this is in error."
+        
         # Creating a new group.
         # Do some basic sanitization of input.
         Group.model.create {
