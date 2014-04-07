@@ -1,25 +1,32 @@
-nav.navbar.navbar-default#nav(role="navigation", style="width: 100%; margins: 0 auto; text-align: center;" data-spy="affix" data-offset-top="350")
-    ul.nav.navbar-nav
-      li
-        a(href="/") Home
-      li
-        a(href="/news") News
-      li
-        a(href="/about") About
-      li
-        a(href="/schedule") Schedule
-      li
-        a(href="/venues") Venues
-      li
-        a(href="/workshops") Workshops
-      if session && session.group
-        li
-          a(href="/account") Account
-        li
-          a(href="/logout") Log out
-      else
-        li
-          a(href="/register") Register
-      if session && session.isAdmin
-        li
-          a(href="/admin") Admin
+nav.navbar.navbar-default#nav(role="navigation", style="width: 100%; margins: 0 auto;" data-spy="affix" data-offset-top="350")
+    .container-fluid
+      button(type="button", class="navbar-toggle", data-toggle="collapse", data-target="#CollapseNav")
+        span(class="sr-only") Toggle navigation
+        span(class="icon-bar")
+        span(class="icon-bar")
+        span(class="icon-bar")
+      .collapse.navbar-collapse#CollapseNav
+        ul.nav.navbar-nav
+          li
+            a(href="/") Home
+          li
+            a(href="/news") News
+          li
+            a(href="/about") About
+          li
+            a(href="/schedule") Schedule
+          li
+            a(href="/venues") Venues
+          li
+            a(href="/workshops") Workshops
+          if session && session.group
+            li
+              a(href="/account") Account
+            li
+              a(href="/logout") Log out
+          else
+            li
+              a(href="/register") Register
+          if session && session.isAdmin
+            li
+              a(href="/admin") Admin
