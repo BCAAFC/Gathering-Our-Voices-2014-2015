@@ -112,11 +112,8 @@ AccountRoutes = module.exports = {
         else
           res.redirect "/register"
   post:
-    login: (req, res) ->
+    register: (req, res) ->
       if req.body.passwordConfirm? and req.body.passwordConfirm is req.body.password
-        # Site is archived.
-        return res.redirect "/register?message=This site has been archived, please email ahobden@bcaafc.com if you think this is in error."
-        
         # Creating a new group.
         # Do some basic sanitization of input.
         Group.model.create {
@@ -218,16 +215,16 @@ On Thursday, March 20th there will be a dance for all youth and young adults. Pl
             else
               message = "Something went wrong that normally doesn't... Try again?"
             res.redirect "/register?message=#{message}"
-      else
-        # Logging into an exiting group.
-        Group.model.login req.body.email, req.body.password, (err, group) ->
-          unless err? or !group?
-            req.session.isAdmin = true if group.isAdmin()
-            req.session.group = group
-            res.redirect "/account"
-          else
-            message = "We were unable to log you in. Either your password, email, or both are incorrect."
-            res.redirect "/register?message=#{message}"
+    login: (req, res) ->
+      # Logging into an exiting group.
+      Group.model.login req.body.email, req.body.password, (err, group) ->
+        unless err? or !group?
+          req.session.isAdmin = true if group.isAdmin()
+          req.session.group = group
+          res.redirect "/account"
+        else
+          message = "We were unable to log you in. Either your password, email, or both are incorrect."
+          res.redirect "/register?message=#{message}"
   put:
     account: (req, res) ->
       Group.model.findById req.session.group._id, (err, group) ->

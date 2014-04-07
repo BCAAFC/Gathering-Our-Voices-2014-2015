@@ -21,8 +21,9 @@ routes = module.exports = (app) ->
   Account = require("./routes/Account")
   app.get   "/register",  Account.get.register  # Gets a registration/login page.
   # # Register/Login/Logout
-  app.post  "/login",     Account.post.login    #
-  app.get  "/logout",     Account.get.logout   #
+  app.post  "/login",     Account.post.login      #
+  app.post  "/register",  Account.post.register   #
+  app.get   "/logout",    Account.get.logout      #
   # Printout
   app.get   "/printout",  Middle.auth, Account.get.printout
   # # Recovery
