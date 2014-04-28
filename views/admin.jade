@@ -105,5 +105,7 @@ block content
             tr
               td(colspan='8')
                 p Total # of Groups: #{groups.length}
-    :coffee
-      $(".tooltipped").tooltip()
+    script.
+      $(function() {
+        $('.tooltipped').tooltip();
+      });

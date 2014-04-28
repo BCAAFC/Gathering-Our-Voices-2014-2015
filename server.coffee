@@ -2,13 +2,20 @@
 Gathering Our Voices 2014
 ###
 # Dependencies
-express  = require("express")
-fs       = require("fs")
-mongoose = require("mongoose")
-redis    = require("redis")
-RedisStore = require("connect-redis")(express)
-url      = require("url")
-newrelic = require('newrelic');
+express         = require("express")
+fs              = require("fs")
+mongoose        = require("mongoose")
+redis           = require("redis")
+# Express Bits
+session         = require('express-session')
+bodyParser      = require('body-parser')
+cookieParser    = require('cookie-parser')
+methodOverride  = require('method-override')
+compression     = require('compression')
+# End of Express Bits
+RedisStore      = require("connect-redis")(session)
+url             = require("url")
+newrelic        = require('newrelic');
 
 # Config Vars
 config = require("./config")
@@ -40,22 +47,22 @@ app.use (req, res, next) ->
     res.redirect('https://' + req.host + req.url)
   else
     next()
-app.use express.logger("dev")
-app.use express.bodyParser()
-app.use express.methodOverride() # Allows PUT/DELETE in forms.
-app.use express.cookieParser(config.secret)
-app.use express.session(
-  secret: config.secret
-  store: new RedisStore {client: redisClient}
-)
+
+app.use bodyParser()
+app.use methodOverride() # Allows PUT/DELETE in forms.
+app.use cookieParser(config.secret)
+app.use session secret: config.secret, store: new RedisStore {client: redisClient}
 app.use (req, res, next) ->
   if req.query.message
     req.session.message = req.query.message
   else
     req.session.message = null
   next()
-app.use express.compress()
-app.use app.router    # Normal Routes
+app.use compression()
+
+# Load Routes
+require("./routes")(app)
+
 app.use express.static "#{__dirname}/static", { maxAge: 86400000 * 4 } # 4 days.
 app.use (req, res) -> # 404 Error
   res.status 404
@@ -66,8 +73,6 @@ app.use (req, res) -> # 404 Error
 app.set "views", "#{__dirname}/views"
 app.set "view engine", "jade"
 
-# Load Routes
-require("./routes")(app)
 
 # Listen on the configured port.
 app.listen config.port, () ->

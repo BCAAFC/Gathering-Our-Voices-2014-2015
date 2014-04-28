@@ -100,47 +100,51 @@ block content
         p A gathering of this size means an incredible opportunity to find new peers, employers, educators, teachers, elders, and most of all, friends. A bustling career and education fair, an elders lounge, and more will be ready for you to explore.
         p Then, return to your community with newfound skills, a broader world view, and new friends to keep in touch with.
     hr.featurette-divider
-    
-    :coffeescript
-      gov_time = new Date(2014, 2, 18, 18, 0, 0) # March 18 2014 6:00pm
-      time_in_second = 1000
-      time_in_minute = (time_in_second * 60)
-      time_in_hour = (time_in_minute * 60)
-      time_in_day = (time_in_hour * 24)
-      
-      if new Date() < gov_time
-        countdown = () ->
-          number = Date.parse(gov_time) - Date.parse(new Date())
-          days = Math.floor(number / time_in_day)
-          number -= days * time_in_day
-          
-          hours = Math.floor(number / time_in_hour)
-          if hours > 23
-            hours = 23
-          number -= hours * time_in_hour
-          if hours < 10
-            hours = "0" + hours
 
-          minutes = Math.floor(number / time_in_minute)
-          if minutes > 59
-            hours = 59
-          number -= minutes * time_in_minute
-          if minutes < 10
-            minutes = "0" + minutes
-          
-          seconds = Math.floor(number / time_in_second)
-          if seconds > 59
-            seconds = 59
-          number -= seconds * time_in_second
-          if seconds < 10
-            seconds = "0" + seconds
+    script.
+      // Closure!
+      (function() {
+        'use strict';
+        // This code is ugly and hackish, I'm sorry. :(
+        var gov_time = new Date(2015, 2, 18, 18, 0, 0), // March 18, 2015, 6:00pm
+          time_in_second = 1000,
+          time_in_minute = (time_in_second * 60),
+          time_in_hour = (time_in_minute * 60),
+          time_in_day = (time_in_hour * 24);
+
+        if (new Date() < gov_time) {
+          var countdown = function countdown() {
+            // num_of_ms is our "remaining balance", we'll subtract from it.
+            var num_of_ms = Date.parse(gov_time) - Date.parse(new Date()),
+              // We need ~whole~ numbers for this. So we'll take the floor. This is the number of whole days.
+              num_of_days = Math.floor(num_of_ms / time_in_day),
+              num_of_hours = undefined,
+              num_of_minutes = undefined,
+              num_of_seconds = undefined;
             
-          $(".timer").html(
-            days + " days " + hours + ":" + minutes + ":" + seconds + " until GOV 2014!"
-          )
-          setTimeout(countdown, 1000)
-        setTimeout(countdown, 1000)
-      else
-        $(".timer").html(
-          "GOV 2014 has begun!"
-        )
+            num_of_ms -= num_of_days * time_in_day;
+            // Find number of hours.
+            num_of_hours = Math.floor(num_of_ms / time_in_hour); // Must be under 24.
+            num_of_ms -= num_of_hours * time_in_hour;
+            // Find number of minutes.
+            num_of_minutes = Math.floor(num_of_ms / time_in_minute); // Must be under 60.
+            num_of_ms -= num_of_minutes * time_in_minute;
+            // Find the number of seconds.
+            num_of_seconds = Math.floor(num_of_ms / time_in_second); // Must be under 60.
+            // We don't care about the remaining num_of_ms.
+
+            // Format the string.
+            $('.timer').html(
+                num_of_days + " Days " +
+                ((num_of_hours <= 9) ? '0' + num_of_hours : num_of_hours) + ":" +
+                ((num_of_minutes <= 9) ? '0' + num_of_minutes : num_of_minutes) + ":" +
+                ((num_of_seconds <= 9) ? '0' + num_of_seconds : num_of_seconds) + 
+                " Until GOV 2015!"
+              );
+              setTimeout(countdown, 3000);
+            };
+            countdown();
+        } else {
+          $('.timer').html("GOV 2015 has begun!");
+        }
+      })();

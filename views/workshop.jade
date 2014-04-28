@@ -103,11 +103,15 @@ block content
             br
             br
 
-
-    :coffeescript
-      $('a.manage').click ->
-        unless $("##{$(this).data("session")}-attending").hasClass('in')
-          $.get "/workshop/members/#{$(this).data("id")}/#{$(this).data("session")}", (data) =>
-            $("##{$(this).data("session")}-attending").html(data)
-
+    script.
+      $(function() {
+        'use strict';
+        $('a.manage').click(function() {
+          var session = $(this).data('session'),
+            id = $(this).data('id');
+          $.get('/workshop/members/' + id + '/' + session, function(data) {
+            $('#' + session + '-attending').html(data);
+          });
+        });
+      });
         

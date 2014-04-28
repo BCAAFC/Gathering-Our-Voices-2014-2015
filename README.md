@@ -1,6 +1,6 @@
 # Gathering Our Voices #
 
-[![Build Status](https://travis-ci.org/BCAAFC/Gathering-Our-Voices.png?branch=master)](https://travis-ci.org/BCAAFC/Gathering-Our-Voices)
+[![Build Status](https://travis-ci.org/BCAAFC/Gathering-Our-Voices.png?branch=master)](https://travis-ci.org/BCAAFC/Gathering-Our-Voices )
 
 Welcome, this is the whole source for the GOV 2014 Website. First of all, we'd like to thank Github for providing this source repository, Heroku for hosting our application, and Travis-CI for unit testing.
 

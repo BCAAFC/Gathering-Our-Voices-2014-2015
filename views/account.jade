@@ -221,32 +221,64 @@ block content
       #payments.collapse.container
     .panel
       #memberWorkshops.collapse.container
-  :coffee
-    $("#allowRemove").click ->
-      state = $('.removeButton').attr('disabled')
-      $('.removeButton').attr('disabled', !state)
-    $(".tooltipped").tooltip()
-    $("a.edit").click ->
-      $("#panels .in").collapse('hide')
-      $.get "/member?id=#{$(this).data("id")}", (data) =>
-        $("#member").html(data).collapse('show').one 'shown.bs.collapse', () ->
-          $(document).scrollTop( $("#member").offset().top )
-    $("a#add").click ->
-      $("#panels .in").collapse('hide')
-      $.get "/member", (data) =>
-        $("#member").html(data).collapse('show').one 'shown.bs.collapse', () ->
-          $(document).scrollTop( $("#member").offset().top )
-    $("a#payment").click -> 
-      $("#panels .in").collapse('hide')
-      $.get "/payments", (data) =>
-        $("#payments").html(data).collapse('show').one 'shown.bs.collapse', () ->
-          $(document).scrollTop( $("#payments").offset().top )
-    $("a#group").click -> 
-      $("#panels .in").collapse('hide')
-      $("#details").collapse('show').one 'shown.bs.collapse', () ->
-        $(document).scrollTop( $("#details").offset().top )
-    $("a.memberWorkshops").click -> 
-      $("#panels .in").collapse('hide')
-      $.get "/member/workshops?id=#{$(this).data("id")}", (data) =>
-        $("#memberWorkshops").html(data).collapse('show').one 'shown.bs.collapse', () ->
-          $(document).scrollTop( $("#memberWorkshops").offset().top )
+  
+  script.
+    $(function() {
+      'use strict';
+      // Enable or disable removing members for safety.
+      $('#allowRemove').click(function() {
+        var state = $('.removeButton').attr('disabled');
+        $('.removeButton').attr('disabled', !state);
+      });
+
+      // Enable tooltips.
+      $('.tooltipped').tooltip();
+
+      // Setup member editing.
+      $('a.edit').click(function() {
+        $('#panels .in').collapse('hide');
+        $.get('/member?id=' + $(this).data('id'), function(data) {
+          $('#member').html(data).collapse('show').one('shown.bs.collapse', function() {
+            $(document).scrollTop( $('#member').offset().top );
+          });
+        });
+      });
+
+      // Setup member adding.
+      $('a#add').click(function() {
+        $('#panels .in').collapse('hide');
+        $.get('/member', function(data) {
+          $('#member').html(data).collapse('show').one('shown.bs.collapse', function() {
+            $(document).scrollTop( $('#member').offset().top );
+          });
+        });
+      });
+
+      // Setup payment adding.
+      $('a#payment').click(function() {
+        $('#panels .in').collapse('hide');
+        $.get('/payments', function(data) {
+          $('#member').html(data).collapse('show').one('shown.bs.collapse', function() {
+            $(document).scrollTop( $('#member').offset().top );
+          });
+        });
+      });
+
+      // Setup group details panel.
+      $('a#group').click(function() {
+        $('panels .in').collapse('hide');
+        $('#details').collapse('show').one('shown.bs.collapse', function() {
+          $(document).scrollTop( $('#details').offset().top );
+        });
+      });
+
+      $('a.memberWorkshops').click(function() {
+        $('#panels .in').collapse('hide');
+        $.get('/member/workshops?id=' + $(this).data('id'), function(data) {
+          $('#memberWorkshops').html(data).collapse('show').one('shown.bs.collapse', function() {
+            $(document).scrollTop( $('#memberWorkshops').offset().top );
+          });
+        });
+      });
+    });
+

@@ -140,9 +140,12 @@ block content
               a.btn.btn-info.btn-block(data-toggle="collapse", href="#admin") 
                 i.fa.fa-plus
                 |  Add Workshop
-
-    :coffee
-      $('.tooltipped').tooltip()
+    
+    script.
+      $(function() {
+        'use strict';
+        $('.tooltipped').tooltip();
+      });
       
     if session.isAdmin
       .row
@@ -150,7 +153,12 @@ block content
           .panel
             #admin.collapse
               include templates/workshopForm
-      :coffee
-        $("a.edit").click ->
-          $.get "/workshop?id=#{$(this).data('id')}", (data) =>
-            $("#admin").html(data).collapse('show')
+      script.
+        $(function() {
+          'use strict';
+          $('a.edit').click(function() {
+            $.get("/workshop?id=" + $(this).data('id'), function(data) {
+              $('#admin').html(data).collapse('show');
+            });
+          });
+        });

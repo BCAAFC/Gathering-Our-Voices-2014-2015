@@ -78,18 +78,28 @@ if session.isAdmin
           .fa.fa-minus
           |  Remove Member
         br
-:coffee
-  $(".remove").unbind("click").click ->
-    $("##{$(this).data('session')} div a").unbind("click").text("Reloading...")
-    member = $(this).data('member')
-    workshop = $(this).data('workshop')
-    session = $(this).data('session')
-    $.get "/member/#{member}/del/#{workshop}/#{session}", (data) ->
-      $("##{session}-attending").html(data)
-  $(".add").unbind("click").click ->
-    $("##{$(this).data('session')} div a").unbind("click").text("Reloading...")
-    member = $(this).data('member')
-    workshop = $(this).data('workshop')
-    session = $(this).data('session')
-    $.get "/member/#{member}/add/#{workshop}/#{session}", (data) ->
-      $("##{session}-attending").html(data)
+
+script.
+  $(function() {
+    'use strict';
+    $('.remove').unbind('click').click(function() {
+      var member = $(this).data('member'),
+        workshop = $(this).data('workshop'),
+        session = $(this).data('session');
+      // Disable the buttons until we hear back.
+      $('#' + $(this).data('session') + ' div a').unbind('click').text('Confirming...');
+      $.get('/member/' + member + '/del/' + workshop + '/' + session, function(data) {
+        $('#' + session + '-attending').html(data);
+      });
+    });
+    $('.add').unbind('click').click(function() {
+      var member = $(this).data('member'),
+        workshop = $(this).data('workshop'),
+        session = $(this).data('session');
+      // Disable the buttons until we hear back.
+      $('#' + $(this).data('session') + ' div a').unbind('click').text('Confirming...');
+      $.get('/member/' + member + '/add/' + workshop + '/' + session, function(data) {
+        $('#' + session + '-attending').html(data);
+      });
+    });
+  });
