@@ -257,9 +257,9 @@ GroupSchema.methods.getCost = (next) ->
       # Accumulate ticket prices.
       due = members.map( (val) ->
         if val._state.ticketType is "Early"
-          price = 125
+          price = 150
         else
-          price = 175
+          price = 200
         return price
       ).reduce( (sum, val, index) ->
         unless (index+1) % 6 is 0

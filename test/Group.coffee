@@ -171,7 +171,7 @@ describe "Group", ->
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
-            should.equal cost, 125
+            should.equal cost, 150
             done()
     it "Should accurately price four members", (done) ->
       # Add three more.
@@ -193,7 +193,7 @@ describe "Group", ->
             # Test
             Group.model.findById testGroup, (err, group) ->
               group.getCost (err, cost) ->
-                should.equal cost, 125 * 4
+                should.equal cost, 150 * 4
                 done()
     it "Should accurately price five members", (done) -> 
       # Add 2 more
@@ -204,7 +204,7 @@ describe "Group", ->
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
-            should.equal cost, 125 * 5
+            should.equal cost, 150 * 5
             done()
     it "Should accurately price six members", (done) -> 
       # Add 2 more
@@ -215,7 +215,7 @@ describe "Group", ->
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
-            should.equal cost, 125 * 5 # They should get one free!
+            should.equal cost, 150 * 5 # They should get one free!
             done()
     it "Should accurately price seven members", (done) -> 
       # Add 2 more
@@ -226,7 +226,7 @@ describe "Group", ->
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
-            should.equal cost, 125 * 6 # They should get one free!
+            should.equal cost, 150 * 6 # They should get one free!
             done()
     it "Should accurately price eight members", (done) -> 
       # Add 2 more
@@ -237,7 +237,7 @@ describe "Group", ->
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
-            should.equal cost, 125 * 7 # They should get one free!
+            should.equal cost, 150 * 7 # They should get one free!
             done()
     it "Should accurately price nine members", (done) -> 
       # Add 2 more
@@ -248,7 +248,7 @@ describe "Group", ->
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
-            should.equal cost, 125 * 8 # They should get one free!
+            should.equal cost, 150 * 8 # They should get one free!
             done()
     it "Should accurately price ten members", (done) -> 
       # Add 2 more
@@ -259,7 +259,7 @@ describe "Group", ->
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
-            should.equal cost, 125 * 9 # They should get one free!
+            should.equal cost, 150 * 9 # They should get one free!
             done()
     it "Should accurately price eleven members", (done) -> 
       # Add 2 more
@@ -270,7 +270,7 @@ describe "Group", ->
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
-            should.equal cost, 125 * 10 # They should get one free!
+            should.equal cost, 150 * 10 # They should get one free!
             done()
     it "Should accurately price twelve members", (done) -> 
       # Add 2 more
@@ -281,7 +281,7 @@ describe "Group", ->
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
-            should.equal cost, 125 * 10 # They should get one free!
+            should.equal cost, 150 * 10 # They should get one free!
             done()
     it "Should accurately price thirteen members", (done) -> 
       # Add 2 more
@@ -292,7 +292,7 @@ describe "Group", ->
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
-            should.equal cost, 125 * 11 # They should get one free!
+            should.equal cost, 150 * 11 # They should get one free!
             done()
 
   describe "Group.find -> group.getPaid()", ->
@@ -339,7 +339,7 @@ describe "Group", ->
         should.not.exist err
         should.exist group
         group.getBalance (err, balance) ->
-          should.equal balance, (125*11 - 100)
+          should.equal balance, (150*11 - 100)
           done()
 
   describe "Group.find -> group.checkFlags", ->
