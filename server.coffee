@@ -25,7 +25,7 @@ app = module.exports = express()
 
 # Mongoose
 mongoose.connect config.db, (err) ->
-  unless err
+  if !err
     console.log "Connected to #{config.db} database"
   else
     console.log err
