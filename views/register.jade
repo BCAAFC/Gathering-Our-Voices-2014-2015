@@ -110,8 +110,9 @@ block content
                   i.fa.fa.fa-check
                   |  Register
 
-  :coffeescript
-    $('#recover').click ->
-      email = $('#email').val()
-      $.get "/recover/#{email}", (data) ->
-        alert data
+  script
+    :coffeescript
+      $('#recover').click ->
+        email = $('#email').val()
+        $.get "/recover/#{email}", (data) ->
+          alert data
