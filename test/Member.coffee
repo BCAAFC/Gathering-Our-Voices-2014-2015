@@ -112,7 +112,7 @@ describe "Member", ->
     it "Should register EarlyBirds appropriately", (done) ->
       member = boilerplate.member(testGroup, "early@bar.baz")
       member._state = {}
-      member._state.registrationDate = Date.UTC(2015,1,1,1) # Early Bird
+      member._state.registrationDate = Date.UTC(2015,0,1,1) # Early Bird
       Member.model.create member, (err, member) ->
         should.not.exist err
         should.equal member._state.ticketType, "Early"
