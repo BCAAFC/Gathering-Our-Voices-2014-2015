@@ -2,236 +2,127 @@ extends templates/layout
 
 block content
   .container.marketing
-    .row(style="text-align: center")
-      .btn-group
-        a.btn.btn-primary.btn-lg(href="#day1") Day 1
-        a.btn.btn-primary.btn-lg(href="#day2") Day 2
-        a.btn.btn-primary.btn-lg(href="#day3") Day 3
-        a.btn.btn-primary.btn-lg(href="#day4") Day 4
-      br
-      br
-      a.btn.btn-large.btn-info(href="/documents/agenda_small.pdf") Download Agenda
-    hr.featurette-divider
-
+    
     #day1.row.featurette
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 1: 
-          | Registration
-        p.lead March 18th, 9:00am - 4:00pm, Hyatt Regency
+      h2.featurette-heading Day 1 
+      h3 March 18th
+      .col-sm-6
+        h3 Registration
+        p.lead TBD - TBD, TBD
         ul
           li Check in
           li Verify your details
           li Fill remaining workshop slots (optional!)
           li Get delegate bags
           li Meet new friends
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/reg.jpg", style="max-width: 100%")
-
-
-
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 1: 
-          | Opening Ceremonies & Reception, presented by First Nations Health Authority
-        p.lead March 18th, 5:00 pm - 6:00 pm, Orpheum Theatre - Doors Open
-        p.lead March 18th, 6:00pm - 8:30pm, Orpheum Theatre - Welcome to the territory, Keynote speakers, followed by a reception        
-        ul
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/opening.jpg", style="max-width: 100%")
-
-
-    hr.featurette-divider
-    #day2.row.featurette
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/breakfast.jpg", style="max-width: 100%")
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 2: 
-          | Breakfast presented in part by New Relationship Trust
-        p.lead March 19th, 7:00am - 9:00am, Fairmont Hotel, British Room
-        p Before you start your busy day, drop in for breakfast.
-        p
-
-
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/career.jpg", style="max-width: 100%")
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 2: 
-          | Career and Education Fair, presented by BC Hydro
-        p.lead March 19th, 9:00am-5:00pm, Hyatt Regency, Regency Foyer & Fairmont Hotel, BC Foyer
-        p Explore post-secondary institutions, training centres, and possibile job opportunities. The Career and Education Fair is open to all delegates including: youth, young adults, and chaperones. Numerous exihibitors will be on hand including:
-        ul
-          li University of Victoria
-          li Camosun College
-          li University of B.C.
-          li RCMP
-          li CSIS
-          li A curated selection of arts and crafts vendors
-          li ...and more!
-
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/workshop1.jpg", style="max-width: 100%")
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 2: 
-          | Workshop Sessions 1,2,3
-        p.lead March 19th, 9:00am - 12:30pm, Hyatt Regency and Fairmont Hotel
-        p Attend the workshops you chose after registering your group and submitting your payment.
-        p Please see the "Workshops" page to register in workshops.
-        p Be sure to check-out the Wellness Journey Program, you could win prizes!
-        p Chaperones do not attend workshops unless the workshop allows chaperones.  The chaperone's role is to drop off their youth to workshops and pick them up from workshops.
-        p
         
+        hr
+        h3 Opening Ceremonies & Reception
+        p.lead TBD - TBD, TBD
+        ul
+          li Doors open at 5:00 pm.
+          li Ceremony starts 6:00 pm.
+      .col-sm-6
+        img.img-rounded(src="/img/schedule/opening.jpg", style="max-width: 100%")
+
+
+    hr.featurette-divider
     
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/lunch.jpg", style="max-width: 100%")
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 2: 
-          | Lunch Presented in part by New Relationship Trust
-        p.lead March 19th, 12:00pm - 1:30pm, Hyatt, Regency C
-        p Take a breather and grab a bite to eat.
-        p
+    #day2.row.featurette
+      .row.text-right
+        h2.featurette-heading Day 2
+        h3 March 19th
+        .col-sm-6(style="text-align: center")
+          img.img-rounded(src="/img/schedule/career.jpg", style="max-width: 100%")
+          br(style="display: block; margin: 50px;")
+          img.img-rounded.lazy(src="/img/schedule/workshop2.jpg", style="max-width: 100%")
+        .col-sm-6
+          h3 Breakfast
+          p.lead TBD - TBD, TBD
+          p Before you start your busy day, drop in for breakfast.
+          
+          hr
+          h3 Career and Education Fair
+          p.lead TBD - TBD, TBD 
+          p Explore post-secondary institutions, training centres, and possibile job opportunities. The Career and Education Fair is open to all delegates including: youth, young adults, and chaperones.
 
+          hr
+          h3 Workshop Sessions 1,2,3
+          p.lead TBD - TBD, TBD
+          p Attend the workshops you chose after registering your group and submitting your payment.
+          hr
+          h3 Lunch
+          p.lead TBD - TBD, TBD
+          p Take a breather and grab a bite to eat.
 
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/workshop2.jpg", style="max-width: 100%")
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 2: 
-          | Workshop Sessions 4,5,6
-        p.lead March 19th, 1:30pm - 5:00pm, Hyatt Regency and Fairmont Hotel
-        p Attend the workshops you chose after registering your group and submitting your payment.
-        p Please see the "Workshops" page to register in workshops.
-        p Be sure to check-out the Wellness Journey program, you could win prizes!
-        p Chaperones do not attend workshops unless the workshop allows chaperones.  The chaperone's role is to drop off their youth to workshops and pick them up from workshops.
-        p
+          hr
+          h3 Workshop Sessions 4,5,6
+          p.lead TBD - TBD, TBD
+          p Attend the workshops you chose after registering your group and submitting your payment.
 
-
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/talent_show.jpg", style="max-width: 100%")
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 2: 
-          | Youth Talent Showcase, presented by the Vancouver Foundation
-        p.lead March 19th, 7:00 pm, Orpheum Theatre - Doors Open
-        p.lead March 19th, 8:00 pm - 10:30 pm, Orpheum Theatre - 601 Smite St.
-        p This is a fun-filled night and all delegates are invited.
-        p
-          | Interested in performing at this year's Talent Showcase? 
-          a(href="http://www.bcaafc.com/images/stories/PDFs/GOV/2014/iGov%20Youth%20Showcase%20Registration%20Form%202014.pdf") Apply Here
-
+          hr
+          h3 Youth Talent Showcase, presented by the Vancouver Foundation
+          p.lead TBD - TBD, TBD
+          p This is a fun-filled night and all delegates are invited.
+          ul
+            li Doors Open 7:00 pm
+            li Event Begins 8:00 pm
 
     hr.featurette-divider
     #day3.row.featurette
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 3: 
-          | Breakfast presented in part by New Relationship Trust
-        p.lead March 19th, 7:00am - 9:00am, Fairmont Hotel, British Room
-        p Before you start your busy day, drop in for breakfast.
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/breakfast.jpg", style="max-width: 100%")
+      .row
+        h2.featurette-heading Day 3
+        h3 March 20th
+        .col-sm-6
+          h3 Breakfast
+          p.lead TBD - TBD, TBD
+          p Before you start your busy day, drop in for breakfast.
+     
+          hr
+          h3 Career and Education Fair
+          p.lead TBD - TBD, TBD
+          p Explore post-secondary institutions, training centres, and possibile job opportunities. The Career and Education Fair is open to all delegates including: youth, young adults, and chaperones.
 
-
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 3: 
-          | Career and Education Fair, presented by BC Hydro
-        p.lead March 20th, 9:00am - 5:00pm, Hyatt Regency Foyer & Fairmont Hotel, BC Foyer
-        p Explore post-secondary institutions, training centres, and possibile job opportunities. The Career and Education Fair is open to all delegates including: youth, young adults, and chaperones.  Numerous exihibitors will be on hand including:
-        ul
-          li University of Victoria
-          li Camosun College
-          li University of B.C.
-          li RCMP
-          li CSIS
-          li A curated selection of arts and crafts vendors
-          li ...and more!
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/career.jpg", style="max-width: 100%")
-
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 3: 
-          | Workshop Sessions 7,8,9
-        p.lead March 20th, 9:00am - 12:30pm, Hyatt Regency and Fairmont Hotel
-        p Attend the workshops you chose after registering your group and submitting your payment.
-        p Please see the "Workshops" page to register in workshops.
-        p Be sure to check-out the Wellness Journey Program, you could win prizes!
-        p Chaperones do not attend workshops unless the workshop allows chaperones.  The chaperone's role is to drop off their youth to workshops and pick them up from workshops.
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/workshop3.jpg", style="max-width: 100%")
+          hr
+          h3 Workshop Sessions 7,8,9
+          p.lead TBD - TBD, TBD
+          p Attend the workshops you chose after registering your group and submitting your payment.
           
+          hr
+          h3 Lunch
+          p.lead TBD - TBD, TBD
+          p Take a breather and grab a bite to eat.
+        
+          hr
+          h3 Workshop Sessions 10,11,12
+          p.lead TBD - TBD, TBD
+          p Attend the workshops you chose after registering your group and submitting your payment.
 
 
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 3: 
-          | Lunch, presented in part by New Relationship Trust
-        p.lead March 20th, 12:00pm-1:30pm, Hyatt, Regency C
-        p Take a breather and grab a bite to eat.
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/lunch.jpg", style="max-width: 100%")
+          hr
+          h3 Youth Dance
+          p.lead TBD - TBD, TBD
+          p Take some time to practice your favorite dance moves as you enjoy the night with your friends, old and new. Beats, Bass, and Melody included as well as a live performance from 7:45pm-8:30pm (Performer TBA!)
+          p.text-muted Note: This is a <emph>strictly</emph> substance free dance that is limited to delegates only.  Youth must have their chaperones with them to attend.  Facilictators and exhibitors do not attend this event.
+        .col-sm-6(style="text-align: center")
+          img.img-rounded(src="/img/schedule/workshop3.jpg", style="max-width: 100%")
+          br(style="display: block; margin: 50px;")
+          img.img-rounded(src="/img/schedule/workshop4.jpg", style="max-width: 100%")
 
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 3: 
-          | Workshop Sessions 10,11,12
-        p.lead March 20th, 1:30pm-5:00pm, Hyatt Regency and Fairmont Hotel
-        p Attend the workshops you chose after registering your group and submitting your payment.
-        p Please see the "Workshops" page to register in workshops.
-        p Be sure to check-out the Wellness Journey program, you could win prizes!
-        p Chaperones do not attend workshops unless the workshop allows chaperones.  The chaperone's role is to drop off their youth to workshops and pick them up from workshops.
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/workshop4.jpg", style="max-width: 100%")
           
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 3: 
-          | Youth Dance
-        p.lead March 20th, 7:00pm - 11:00pm, Hyatt Regency, Regency Ballroom
-        p Take some time to practice your favorite dance moves as you enjoy the night with your friends, old and new. Beats, Bass, and Melody included as well as a live performance from 7:45pm-8:30pm (Performer TBA!)
-        p.text-muted Note: This is a <emph>strictly</emph> substance free dance that is limited to delegates only.  Youth must have their chaperones with them to attend.  Facilictators and exhibitors do not attend this event.
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/dance.jpg", style="max-width: 100%")
 
     hr.featurette-divider
     #day4.row.featurette
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/schedule/closing.jpg", style="max-width: 100%")
-      .col-sm-7
-        h2.featurette-heading
-          span.text-muted Day 4: 
-          | Cultural Morning & Closing Ceremonies
-        p.lead March 21th, 9:00am-12:00pm, Hyatt Regency, Regency Ballroom
-        p The cultural morning is an opportunity to witness different cultural presentations.
-        p We will honour youth and present awards.
-        p Attending delegates will also be eligible for the Grand Prize Draw.  (If they have completed their Exhibitor Passports!)
-        p
+      .row.text-right
+        h2 Day 4
+        h3 March 21st
+        .col-sm-6(style="text-align: center")
+          img.img-rounded(src="/img/schedule/closing.jpg", style="max-width: 100%")
+        .col-sm-6
+          h3 Cultural Morning & Closing Ceremonies
+          p.lead TBD - TBD, TBD
+          p The cultural morning is an opportunity to witness different cultural presentations.
+          p We will honour youth and present awards.
+          p Attending delegates will also be eligible for the Grand Prize Draw.  (If they have completed their Exhibitor Passports!)
         
     hr.featurette-divider
