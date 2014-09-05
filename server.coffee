@@ -48,10 +48,15 @@ app.use (req, res, next) ->
   else
     next()
 
-app.use bodyParser()
+app.use bodyParser.json()
+app.use bodyParser.urlencoded(extended: true)
 app.use methodOverride() # Allows PUT/DELETE in forms.
 app.use cookieParser(config.secret)
-app.use session secret: config.secret, store: new RedisStore {client: redisClient}
+app.use session 
+  secret: config.secret,
+  store: new RedisStore {client: redisClient}
+  resave: true,
+  saveUninitialized: true
 app.use (req, res, next) ->
   if req.query.message
     req.session.message = req.query.message
