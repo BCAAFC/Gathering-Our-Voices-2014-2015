@@ -41,7 +41,6 @@
     "method-override": "2.2.0",
     "mocha": "1.21.4",
     "mongoose": "3.8.8",
-    "newrelic": "1.10.3",
     "node-mandrill": "1.0.1",
     "redis": "0.12.1",
     "should": "4.0.4"

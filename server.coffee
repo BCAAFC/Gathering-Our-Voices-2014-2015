@@ -15,7 +15,6 @@ compression     = require('compression')
 # End of Express Bits
 RedisStore      = require("connect-redis")(session)
 url             = require("url")
-newrelic        = require('newrelic');
 
 # Config Vars
 config = require("./config")
