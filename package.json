@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "node bin/gov",
-    "test": "node node_modules/.bin/mocha --compilers coffee:coffee-script --reporter spec"
+    "test": "node node_modules/.bin/mocha --compilers coffee:coffee-script/register --reporter spec"
   },
   "repository": {
     "type": "git",
