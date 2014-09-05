@@ -3,47 +3,45 @@ extends templates/layout
 block content
   .container
     .row
-      .col-sm-4(style="text-align: center")
-        .row
-          img.img-rounded.lazy(src="/img/index/register.jpg", style="height: 150px")
-          h3 Group Registration
-          p Come share your spirit with us in Prince Geoerge by registering today. Register 5 delegates and the 6th is free!
-          p
-            .btn-group
-              a.btn.btn-primary(href="/register") Register
-              a.btn.btn-primary(target="_blank", href="/documents/reg-package.pdf") Get Package
-        .row
-          img.img-rounded.lazy(src="/img/index/volunteer.jpg", style="height: 150px")
-          h3 Volunteer or Exhibit
-          p Interested in making this year a success? Please join us by volunteering! Are you a business or organization? Become an exhibitor!
-          p
-            .btn-group
-              a.btn.btn-primary(target="_blank", href="https://docs.google.com/forms/d/1_b46YWz2thw4qbjjJ7DGyHg3TztlkyohrnTieCn3xTA/viewform") Volunteer
-              a.btn.btn-primary(target="_blank", href="http://www.bcaafc.com/images/stories/PDFs/GOV/2014/GOV%202014%20-%20Exhibitor%20Application.doc") Exhibit
-      .col-sm-4#gov-logo-center
+      .col-sm-12.text-center
         p.lead.timer
-        img(src="/img/gov.png", style="max-width: 100%")
-      .col-sm-4(style="text-align: center")
-        .row
-          img.img-rounded.lazy(src="/img/index/workshop_reg.jpg", style="height: 150px")
-          h3 Explore Workshops
-          p Curious what you can learn at GOV? Take a look at our diverse range of facilitators and workshops, or sign up to facilitate one!
-          p
-            .btn-group
-              a.btn.btn-primary(href="/workshops") Workshops
-              a.btn.btn-primary(target="_blank", href="http://www.bcaafc.com/images/stories/PDFs/GOV/2014/GOV%202014%20-%20Facilitator%20Application.doc") Facilitate
-        .row
-          img.img-rounded.lazy(src="/img/index/social-media.jpg", style="height: 150px")
-          h3 Get Connected
-          p Join us on Twitter or Facebook. Interact with the team, ask questions, or just keep up to date!
-          p
-            .btn-group
-              a.btn.btn-primary(target="_blank", href="https://twitter.com/GOV_Conference")
-                i.fa.fa-twitter
-                |  Twitter
-              a.btn.btn-primary(target="_blank", href="https://www.facebook.com/gatheringourvoices")
-                i.fa.fa-facebook
-                |  Facebook
+    .row
+      .col-sm-3(style="text-align: center")
+        img.img-rounded.lazy(src="/img/index/register.jpg", style="height: 150px")
+        h4 Group Registration
+        p Come share your spirit with us in Prince Geoerge by registering today. Register 5 delegates and the 6th is free!
+        p
+          .btn-group
+            a.btn.btn-primary(href="/register") Register
+            a.btn.btn-primary(target="_blank", href="/documents/reg-package.pdf") Get Package
+      .col-sm-3(style="text-align: center")
+        img.img-rounded.lazy(src="/img/index/volunteer.jpg", style="height: 150px")
+        h4 Volunteer or Exhibit
+        p Interested in making this year a success? Please join us by volunteering! Or, become an exhibitor for your organization!
+        p
+          .btn-group
+            a.btn.btn-primary(target="_blank", href="https://docs.google.com/forms/d/1_b46YWz2thw4qbjjJ7DGyHg3TztlkyohrnTieCn3xTA/viewform") Volunteer
+            a.btn.btn-primary(target="_blank", href="http://www.bcaafc.com/images/stories/PDFs/GOV/2014/GOV%202014%20-%20Exhibitor%20Application.doc") Exhibit
+      .col-sm-3(style="text-align: center")
+        img.img-rounded.lazy(src="/img/index/workshop_reg.jpg", style="height: 150px")
+        h4 Explore Workshops
+        p Curious what you can learn at GOV? Take a look at our diverse range of facilitators and workshops, or sign up to facilitate one!
+        p
+          .btn-group
+            a.btn.btn-primary(href="/workshops") Workshops
+            a.btn.btn-primary(target="_blank", href="http://www.bcaafc.com/images/stories/PDFs/GOV/2014/GOV%202014%20-%20Facilitator%20Application.doc") Facilitate
+      .col-sm-3(style="text-align: center")
+        img.img-rounded.lazy(src="/img/index/social-media.jpg", style="height: 150px")
+        h4 Get Connected
+        p Join us on Twitter or Facebook. Interact with the team, ask questions, or just keep up to date!
+        p
+          .btn-group
+            a.btn.btn-primary(target="_blank", href="https://twitter.com/GOV_Conference")
+              i.fa.fa-twitter
+              |  Twitter
+            a.btn.btn-primary(target="_blank", href="https://www.facebook.com/gatheringourvoices")
+              i.fa.fa-facebook
+              |  Facebook
     br
     .row
       .col-sm-6.col-sm-offset-3(style="text-align: center") Want to hear the latest news from GOV? 
@@ -65,11 +63,11 @@ block content
         br
         br
       .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/index/participate.jpg", style="max-width: 100%;")
+        img.img-rounded.lazy(src="/img/index/participate.jpg", style="max-width: 100%;")
     hr.featurette-divider
     .row.featurette
       .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/index/learn.jpg", style="max-width: 100%;")
+        img.img-rounded.lazy(src="/img/index/learn.jpg", style="max-width: 100%;")
       .col-sm-7
         h2.featurette-heading
           | Learn 
@@ -86,11 +84,11 @@ block content
         p We're working our tails off to find you the best and brightest from our communities to motivate your dreams, uplift your spirit, and help you make a better tomorrow. But you won't just learn from speakers, elders, or workshop facilitators, you'll also learn from your peers and other delegates to the conference as well, just as they learn from you. We all carry a story, how will you share yours?
         p In 2013 we hosted the likes of J.R. LaRose, Evan Adams, Grand Chief Stewart Phillip, Linsay Willier. The schedule hasn't been confirmed for this year yet, so please stay tuned!
       .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/index/listen.jpg", style="max-width: 100%;")
+        img.img-rounded.lazy(src="/img/index/listen.jpg", style="max-width: 100%;")
     hr.featurette-divider
     .row.featurette
       .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(data-original="/img/index/connect.jpg", style="max-width: 100%;")
+        img.img-rounded.lazy(src="/img/index/connect.jpg", style="max-width: 100%;")
       .col-sm-7
         h2.featurette-heading
           | Connect 
