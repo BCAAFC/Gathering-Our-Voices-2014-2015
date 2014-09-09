@@ -40,6 +40,13 @@ General = module.exports = {
           caption: "Organizing a discussion is one thing, creating a space for the free exchange of ideas is something truly powerful"
           bg: "/img/bg/venues.jpg"
 
+    accommodations: (req, res) ->
+      res.render "accommodations",
+        session: req.session  
+        head:
+          title: "Accommodations"
+          caption: "Rest your head, rest your mind."
+    
     privacy: (req, res) ->
       res.render "privacy",
         session: req.session

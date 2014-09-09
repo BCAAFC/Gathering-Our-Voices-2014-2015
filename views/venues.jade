@@ -2,33 +2,42 @@ extends templates/layout
 
 block content
   .container.marketing
-    .row.text-center.featurette
-      .btn-group
-        a.btn.btn-info(href="#workshop-venues") Workshop Venues
-        a.btn.btn-info(href="#accommodation") Accommodation Venues
-        a.btn.btn-info(href="#city") City of Prince George
-      br
-      br
+
 
     .row.featurette
       .col-sm-7
-        h2.featurette-heading
-          | Fairmont Hotel 
-          span.text-muted Vancouver
-        p.lead 900 West Georgia Street, Vancouver, B.C.
-          a(target="_blank", href="http://goo.gl/maps/cxGJl")  -- Map
-        p Tel: 1-800-441-1414
-        p Rates: Single/Double $189.00 ($35/Additional Adult)
-          br
-          span.text-muted (Available until February 15)
-        p Amenities: Fitness Centre, Indoor Pool, Restaurants
-        p Reservation Code: Gathering Our Voices Aboriginal Youth Conference
-        br
-        a(target="_blank", href="https://resweb.passkey.com/go/gatheringourvoices") Book at Conference Rate
-        br
-        a(target="_blank", href="http://www.fairmont.com/hotel-vancouver/") Website
+        h2.featurette-heading The City of Prince George
+        ul
+          li
+            a(href="http://princegeorge.ca/Pages/default.aspx") City of Prince George
+          li
+            a(href="http://www.pgnfc.com/") Prince George Native Friendship Centre Society
+            br
+            | 1-250-564-3568
+          li
+            a(href="http://tourismpg.com/") Tourism Prince George
+            br
+            | 1-250-562-3700
+          li
+            a(href="http://www.pgairport.ca/") Prince George Airport (YXS)
+            br
+            | 250-963-2400
+          li
+            a(href="http://www.drivebc.ca/#mapView&z=7&ll=54.188155481071504,-122.16796875000001") Drive BC (Road Conditions)
+            br
+            | 1-800-550-4997
+          li
+            | Nechako Medical Clinic Ltd
+            br
+            | 1-250-563-3399
+          li
+            a(href="http://www.northernhealth.ca/OurServices/Facilities.aspx?FacilityID=53") University Hospital of Northern BC
+            br
+            | 1-250-565-2000
+
+
       .col-sm-5(style="text-align: center")
-        img.img-rounded(src="/img/venues/fairmont.jpg", style="width: 100%")
+        iframe.img-rounded(src="https://mapsengine.google.com/map/embed?mid=zgOn5am8hxSg.k89JLyptpBaI", width="100%", height="480")
     
     hr.featurette-divider
     
