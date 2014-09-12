@@ -1,0 +1,93 @@
+{{> top}}
+
+{{#if session.group._state.enoughChaperones }}
+  <div class="container">
+    <div class="col-xs-12">
+      <div id="alert" class="alert alert-danger">
+        You don't have enough Chaperones to support all of your youth. Please find some more!
+      </div> <!-- alert alert-danger -->
+    </div> <!-- col-xs-12 -->
+  </div> <!-- container -->
+{{/if}}
+
+{{#if session.isAdmin }}
+  <div class="container">
+    <div class="row text-center">
+      <div class="btn btn-group">
+        <a id="back" class="btn btn-primary" href="/admin">
+          <i class="fa fa-backward"></i>
+          Go back
+        </a>
+        <a id="notes" class="btn btn-info" href="/notes/{{session.group._id}}">
+          <i class="fa fa-edit"></i>
+          Notes
+        </a>
+      </div> <!-- btn btn-group -->
+    </div> <!-- row text-center -->
+  </div> <!-- container -->
+{{/if}}
+
+<div id="listing" class="container">
+  <p class="text-muted">If this is your first time at Gathering Our Voices, or you'd like a refresher on attendee specifics, please check our FAQ <a href="/faq#attendees">here.</a></p>
+  <div class="row">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Ticket</th>
+            <th>Information
+              <br><small class="text-muted">Click to edit!</small>
+            </th>
+            <th>Workshops
+              <br><small class="text-muted">Click to view!</small>
+            </th>
+            <th>Remove
+              <br><small class="text-muted">Allow?</small>
+              <button id="allowRemove" class="btn btn-xs btn-link">
+                <i class="fa fa-times-circle"></i>
+              </button>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each members}}
+            <tr>
+              <td>{{this.name}}</td>
+              <td>
+                {{#if (this.type == "Youth")}}
+                  <span class="label label-info">Y</span>
+                {{else}} {{#if this.type == "Young Adult"}}
+                  <span class="label label-success">YA</span>
+                {{else}} {{#if this.type == "Young Chaperone"}}
+                  <span class="label label-warning">YC</span>
+                {{else}} {{#if this.type == "Chaperone"}}
+                  <span class="label label-danger">Ch</span>
+                {{else}}
+                  <span class="label label-default">NA</span>
+                {{/if}}{{/if}}{{/if}}{{/if}}
+              </td>
+              <td><span class="label label-default">
+                  {{this._state.ticketType}}
+              </span></td>
+              <td>
+                {{#if member._state.complete}}
+                  <a class="edit btn btn-sm btn-danger tooltipped" data-id="{{member._id}}" data-toggle="collapse">Complete</a>
+                {{else}}
+                  <a class="edit btn btn-sm btn-danger tooltipped" data-id="{{member._id}}" data-toggle="collapse">Incomplete</a>
+                {{/if}}
+              </td>
+              <td>
+                {{#if member._workshops.length >= 4}}
+
+
+              </td>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div> <!-- #listing container -->
+
+{{> bottom}}
