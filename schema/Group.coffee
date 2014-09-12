@@ -106,7 +106,7 @@ GroupSchema = new Schema {
       "Other"
     ]
     default: "Other"
-  registrationDate: 
+  registrationDate:
     # Why not use a Date? Because Javascript dates are gross.
     # Besides, we only care about day, month, year.
     day:
@@ -188,9 +188,13 @@ GroupSchema = new Schema {
     youthInCare:
       type: Number
       default: 0
+      min: 0
+      max: 200
     youthInCareSupport:
       type: Number
       default: 0
+      min: 0
+      max: 200
   # Aggregations
   _members: # A list of members.
     type: [
@@ -198,7 +202,7 @@ GroupSchema = new Schema {
       ref: "Member"
     ]
     default: []
-  _payments: 
+  _payments:
     type: [ # A list of payments.
       type: ObjectId
       ref: "Payment"
@@ -286,8 +290,6 @@ GroupSchema.methods.checkFlags = (next, the_member, action) ->
   Member.model.find _id: $in: @_members, (err, members) =>
     youth = 0
     chaps = 0
-    youthInCare = 0
-    youthInCareSupport = 0
     # If it's a new member
     if the_member && action && action == "New"
       if the_member.type == "Youth"
@@ -300,19 +302,9 @@ GroupSchema.methods.checkFlags = (next, the_member, action) ->
           chaps += 1
         else
           chaps -= 1
-      # Is this a YIC?
-      if the_member?._state?.youthInCare
-        youthInCare += 1
-      if the_member?._state?.youthInCareSupport
-        youthInCareSupport += 1
     members.map (val) ->
       # If it's an edited member, we need to handle it specifically.
       if the_member && String(val._id) == String(the_member._id)
-        # Is this a YIC?
-        if (val?._state?.youthInCare and the_member?._state?.youthInCare) or the_member?._state?.youthInCare
-          youthInCare += 1
-        if (val?._state?.youthInCareSupport and the_member?._state?.youthInCareSupport) or the_member?._state?.youthInCareSupport
-          youthInCareSupport += 1
         if action == "Edit"
           # Need to add their new count instead.
           if the_member.type == "Youth"
@@ -325,14 +317,7 @@ GroupSchema.methods.checkFlags = (next, the_member, action) ->
         chaps += 1
       else if val.type == "Youth"
         youth +=1
-      # Is this a YIC?
-      if val?._state?.youthInCare && !(String(val._id) == String(the_member?._id))
-        youthInCare += 1
-      if val?._state?.youthInCareSupport && !(String(val._id) == String(the_member?._id))
-        youthInCareSupport += 1
       return
-    @_state.youthInCare = youthInCare
-    @_state.youthInCareSupport = youthInCareSupport
     if youth > 0
       @_state.enoughChaperones = ((youth / 5) <= chaps)
       next ((youth / 5) <= chaps)

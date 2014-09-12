@@ -138,12 +138,6 @@ MemberSchema = new Schema {
     registrationDate:
       type: Date
       default: Date.now
-    youthInCare:
-      type: Boolean
-      default: false
-    youthInCareSupport:
-      type: Boolean
-      default: false
   # Aggregations
   _workshops:
     type: [ # Store both the session and the id itself.
@@ -202,7 +196,7 @@ MemberSchema.methods.addWorkshop = (workshopId, session, next) ->
           if theSession.capacity > theSession._registered.length
             #theSession._registered.push @_id
             #workshop.save (err) =>
-            Workshop.model.update { 
+            Workshop.model.update {
                 "sessions.session": session
                 "_id": workshopId,
             }, {
@@ -247,14 +241,14 @@ MemberSchema.methods.removeWorkshop = (workshopId, session, next) ->
   #    Remove the member from the workshop.
   #    workshop.session(session)._registered.splice(index, 1)
   #    workshop.save (err) =>
-  Workshop.model.update { 
+  Workshop.model.update {
     "sessions.session": session,
     "_id": workshopId
   }, {
     "$pull": {
        "sessions.$._registered": @_id
     }
-  }, (err) =>  
+  }, (err) =>
     if !err
       Member.findByIdAndUpdate @_id, {
         "$pull": {

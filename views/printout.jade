@@ -17,7 +17,7 @@ html
     //if lt IE 9
       script(src="/js/html5shiv.min.js")
     // jQuery
-    
+
     // Bootstrap
     link(href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/united/bootstrap.min.css", rel="stylesheet")
     link(href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css", rel="stylesheet")
@@ -70,10 +70,6 @@ html
             td Unmarked
             td #{group.stats['']['Early']}
             td #{group.stats['']['Regular']}
-      if group.stats['youthInCare'] != 0
-        p.alert.alert-success Youth In Care Dinner Tickets: #{group.stats['youthInCare']}
-      if group.stats['youthInCareSupport'] != 0
-        p.alert.alert-success Youth In Care Dinner (Support) Tickets: #{group.stats['youthInCareSupport']}
     .col-sm-6
       h2 Payment History
       table.table

@@ -68,9 +68,6 @@ MemberRoutes = module.exports = {
         res.redirect "/account?message=#{message}"
   post:
     member: (req, res) ->
-      # Is it a youth in care?
-      inCare = (req.body.youthInCare == "Yes")
-      inCareSupport = (req.body.youthInCareSupport == "Yes")
       Member.model.create {
         name:         req.body.name
         _group:       req.session.group._id
@@ -90,9 +87,6 @@ MemberRoutes = module.exports = {
           medicalNum: req.body.emergMedicalNum
           allergies:  req.body.emergAllergies
           conditions: req.body.emergConditions
-        _state:
-          youthInCare: inCare
-          youthInCareSupport: inCareSupport
       }, (err, member) ->
         if err?
           message = "Couldn't properly create that member... Try again?"
@@ -109,7 +103,7 @@ MemberRoutes = module.exports = {
               # Couldn't refresh group.
               message = "Couldn't grab your new group information. Could you please log out and back in?"
               res.redirect "/account?message=#{message}"
-          
+
   put:
     member: (req, res) ->
       unless !req.body.id?
@@ -155,7 +149,7 @@ MemberRoutes = module.exports = {
                   # Couldn't save member
                   message = "Couldn't save that member's new information. Could you try again?"
                   res.redirect "/account?message=#{message}"
-       
+
             else
               # Member is not in the group.
               message = "That member is not a part of your group."

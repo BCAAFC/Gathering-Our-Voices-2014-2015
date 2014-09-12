@@ -3,12 +3,12 @@ extends templates/layout
 block content
   .container
     .row
-      p(style="text-align: center;") First time visiting? You might want to take a look at the 
-        a(href="/documents/reg-package.pdf", target="_blank") registration package. 
-        | Struggling with something? Take a look at our 
+      p(style="text-align: center;") First time visiting? You might want to take a look at the
+        a(href="/documents/reg-package.pdf", target="_blank") registration package.
+        | Struggling with something? Take a look at our
         a(href="/faq") FAQ
-        
-        
+
+
     .well.col-md-4.pull-right(style="padding-left: 25px; padding-right: 25px; padding-top: 25px")
       form.form(method="POST", action="/login")
         legend Log In
@@ -23,10 +23,10 @@ block content
           button.btn.btn-primary.btn-block(type="submit")
             i.fa.fa.fa-check
             |  Log In
-        p If you forgot your password, don't worry it's ok. Enter your email above, then click 
+        p If you forgot your password, don't worry it's ok. Enter your email above, then click
           a#recover here
-            
-            
+
+
     form.form.container(method="POST", action="/register")
         .row
           .col-md-7
@@ -37,32 +37,32 @@ block content
             legend Login Details
             .form-group
               label.control-label Email Address*
-              input#email.form-control(type="email", name="email", placeholder="someone@somewhere.ca", autofocus, required)
+              input#email.form-control(type="email" name="email" placeholder="someone@somewhere.ca" autofocus, required)
             .form-group
               label Password*
-              input.form-control(type="password", name="password", placeholder="My Secret Password")
+              input.form-control(type="password" name="password" placeholder="My Secret Password" required)
             .form-group
               label Password Confirmation*
-              input.form-control(type="password", name="passwordConfirm", placeholder="My Secret Password")
+              input.form-control(type="password" name="passwordConfirm" placeholder="My Secret Password" required)
         .row
           .col-md-12
             fieldset
               legend Group Details
               .form-group
                 label Primary Contact Name*
-                input.form-control(type="text", name="name", placeholder="Foo Bar")
+                input.form-control(type="text" name="name" placeholder="Foo Bar" required)
               .form-group
                 label Affiliation*
-                input.form-control(type="text", name="affiliation", placeholder="Some Organization")
+                input.form-control(type="text" name="affiliation" placeholder="Some Organization" required)
               .form-group
                 label Street Address*
-                input.form-control(type="text", name="address", placeholder="123 Fake St.")
+                input.form-control(type="text" name="address" placeholder="123 Fake St." required)
               .form-group
                 label City*
-                input.form-control(type="text", name="city", placeholder="Vancouver")
+                input.form-control(type="text", name="city", placeholder="Vancouver" required)
               .form-group
                 label Region*
-                select.form-control(name="region")
+                select.form-control(name="region" required)
                   option(value="") Please choose...
                   option(value="North") North
                   option(value="Interior") Interior
@@ -72,7 +72,7 @@ block content
                   option(value="Out of Province") Out of Province
               .form-group
                 label Province*
-                select.form-control(name="province")
+                select.form-control(name="province" required)
                   option(value="") Please choose...
                   option(value="British Columbia") British Columbia
                   option(value="Alberta") Alberta
@@ -90,23 +90,23 @@ block content
                   option(value="Other (Outside Canada)") Other (Outside Canada)
               .form-group
                 label Postal Code*
-                input.form-control(type="text", name="postalCode", placeholder="A1B 2C3")
+                input.form-control(type="text", name="postalCode" placeholder="A1B 2C3" required)
               .form-group
                 label Daytime Phone #*
-                input.form-control(type="text", name="phone", placeholder="(123) 456-7980")
+                input.form-control(type="text", name="phone" placeholder="(123) 456-7980" required)
               .form-group
                 label Fax # (Optional)
-                input.form-control(type="text", name="fax", placeholder="(123) 456-7890")
+                input.form-control(type="text", name="fax" placeholder="(123) 456-7890")
               .form-group
                 label Group Type*
-                select.form-control(name="affiliationType")
+                select.form-control(name="affiliationType" required)
                   option(value="") Please Choose...
                   option(value="Friendship Centre") Friendship Centre
                   option(value="Off-reserve") Off-reserve
                   option(value="On-reserve") On-reserve
                   option(value="Other") Other
               .form-group
-                button.btn.btn-primary.btn-block(type="submit")
+                button.btn.btn-primary.btn-block(type="submit" required)
                   i.fa.fa.fa-check
                   |  Register
 

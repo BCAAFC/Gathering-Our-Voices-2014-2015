@@ -10,7 +10,7 @@ block content
       .col-sm-12
         #typeChart(style="height: 400px; width: 100%;")
       .col-sm-12
-        p.lead Youth, Young Adults, Young Chaperones, and Chaperones 
+        p.lead Youth, Young Adults, Young Chaperones, and Chaperones
         table.table.table-striped
           thead
             tr
@@ -30,7 +30,7 @@ block content
                 td= val['']
                 td= val['Male'] + val['Female'] + val['Other'] + val['']
             tr
-              td 
+              td
                 emph Totals:
               td= totals['Male']
               td= totals['Female']
@@ -68,14 +68,14 @@ block content
                 td= val['']
                 td= val['Male'] + val['Female'] + val['Other'] + val['']
             tr
-              td 
+              td
                 emph Totals:
               td= totals['Male']
               td= totals['Female']
               td= totals['Other']
               td= totals['']
               td= totals['Male'] + totals['Female'] + totals['Other'] + totals['']
-    
+
     hr.featurette-divider
 
     .row.featurette
@@ -106,16 +106,16 @@ block content
                 td= val['']
                 td= val['Male'] + val['Female'] + val['Other'] + val['']
             tr
-              td 
+              td
                 emph Totals:
               td= totals['Male']
               td= totals['Female']
               td= totals['Other']
               td= totals['']
               td= totals['Male'] + totals['Female'] + totals['Other'] + totals['']
-              
+
     hr.featurette-divider
-    
+
     hr.featurette-divider
 
     .row.featurette
@@ -124,9 +124,7 @@ block content
           | Youth
           span.text-muted  In Care
       .col-sm-12
-        p There are #{youthInCareCount} youth in care currently. There are #{youthInCareSupportCount} support people coming as well.
-        p.lead This means #{youthInCareCount + youthInCareSupportCount} are coming to the YIC feast.
-
+        p Youth in Care aren't built in yet!
     .row.featurette
       .col-sm-12
         h2.featurette-heading
@@ -134,7 +132,7 @@ block content
           span.text-muted  Over Time
       .col-sm-12
         #dateChart(style="height: 400px; width: 100%;")
-    
+
     hr.featurette-divider
     //- Google Charts Tools
     script(type="text/javascript" src="https://www.google.com/jsapi")
@@ -210,7 +208,7 @@ block content
         var total = 0;
         dates = dates.map(function(val, index) {
           total += val;
-          return [index, total, new Date(Date.UTC(2013, 8, 1) + (86400000 * index)).toString() + ": " + total]; // 
+          return [index, total, new Date(Date.UTC(2013, 8, 1) + (86400000 * index)).toString() + ": " + total]; //
         })
         dates.unshift(["Days since Sept 1, 2013", "Members", { type: 'string', role: 'tooltip' } ])
         var data = google.visualization.arrayToDataTable(dates);
@@ -221,5 +219,5 @@ block content
 
         var chart = new google.visualization.LineChart(document.getElementById('dateChart'));
         chart.draw(data, options);
-        
+
       }
