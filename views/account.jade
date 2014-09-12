@@ -26,15 +26,15 @@ block content
               th Name
               th Type
               th Ticket
-              th 
+              th
                 | Information
                 br
                 small.text-muted Click to edit!
-              th 
+              th
                 | Workshops
                 br
                 small.text-muted Click to view!
-              th 
+              th
                 | Remove
                 br
                 small.text-muted Allow?
@@ -66,7 +66,7 @@ block content
                     .label.label-default= member._state.ticketType
                   td
                     if member._state.complete
-                      a.edit.btn.btn-sm.btn-success.tooltipped(data-id=member._id, data-toggle="collapse") Complete 
+                      a.edit.btn.btn-sm.btn-success.tooltipped(data-id=member._id, data-toggle="collapse") Complete
                     else
                       a.edit.btn.btn-sm.btn-danger.tooltipped(data-id=member._id, data-toggle="collapse") Incomplete
                   td
@@ -86,32 +86,32 @@ block content
                         i.fa.fa-trash-o
                         |  Delete
               tr
-                td(colspan="2") 
+                td(colspan="2")
                   b.lead Totals
-                td 
+                td
                   .label.label-info Y
                   |  Youth: #{counts[0]}
-                td 
+                td
                   .label.label-success YA
                   |  Young Adults: #{counts[1]}
-                td 
+                td
                   .label.label-warning YC
                   |  Young Chaperones: #{counts[2]}
-                td 
+                td
                   .label.label-danger Ch
-                  |  Chaperones: #{counts[3]} 
+                  |  Chaperones: #{counts[3]}
             else
               tr
                 td.warning(colspan="6") You currently don't have any members. To add members, please hit the big green "Add a member" button.
     #controls
       .row(style="text-align: center")
         .col-sm-3(style="padding-top: 15px")
-          a#add.btn.btn-success(data-toggle="collapse") 
+          a#add.btn.btn-success(data-toggle="collapse")
             .fa.fa-plus
             |  Add a member
-        
+
         .col-sm-3(style="padding-top: 15px")
-          a#group.btn.btn-info(data-toggle="collapse") 
+          a#group.btn.btn-info(data-toggle="collapse")
             .fa.fa-edit
             |  Edit Group Details
         .col-sm-3(style="padding-top: 15px")
@@ -130,8 +130,8 @@ block content
 
     .panel
       #details.collapse.container
-        form(action="/account", method="POST")
-          input(type="hidden", name="_method", value="put")
+        form(action="/account", method="POST" enctype="application/x-www-form-urlencoded")
+          input(type="hidden", name="_method", value="PUT")
           fieldset
             legend(style="text-align: center") Login Details
             p(style="text-align: center") Please don't fill in the password unless you intend to change it!
@@ -211,6 +211,18 @@ block content
                     option(value="Off-reserve", selected=session.group.affiliationType == "Off-reserve") Off-reserve
                     option(value="On-reserve", selected=session.group.affiliationType == "On-reserve") On-reserve
                     option(value="Other", selected=session.group.affiliationType == "Other") Other
+          fieldset
+            legend.text-center Youth In Care Feast
+            p One of the events taking place during the conference is a special feast to honour youth in care. Some of this groups delegates are or have been a youth in the care of the Ministry of Children and Family Development or an Aboriginal Delegated Agency and would like to attend the feast, please add the number below.
+            .row
+              .col-sm-4.col-sm-offset-2
+                .form-group
+                  label Youth In Care
+                  input.form-control(type="number", name="youthInCare" value="#{session.group.youthInCare || 0}" min="0" max="#{session.group._members.length}" step="1")
+              .col-sm-4
+                .form-group
+                  label Youth In Care Support
+                  input.form-control(type="number", name="youthInCareSupport" value="#{session.group.youthInCareSupport || 0}" min="0" max="#{session.group._members.length}" step="1")
           .row
             .col-sm-4
             .form-group.col-sm-4
@@ -221,7 +233,7 @@ block content
       #payments.collapse.container
     .panel
       #memberWorkshops.collapse.container
-  
+
   script.
     $(function() {
       'use strict';
@@ -281,4 +293,3 @@ block content
         });
       });
     });
-

@@ -13,7 +13,7 @@ Admin = module.exports = {
             Group.model.find({_members: member._id}).sort("affiliation").exec (err, groups) ->
               unless err or !groups
                 res.render "admin",
-                  session: req.session  
+                  session: req.session
                   head:
                     title: "Admin"
                     caption: "Sure, let me just reach into my magical hat and fix everything..."
@@ -25,7 +25,7 @@ Admin = module.exports = {
         Group.model.find().sort("affiliation").exec (err, groups) ->
           unless err
             res.render "admin",
-              session: req.session  
+              session: req.session
               head:
                 title: "Admin"
                 caption: "Sure, let me just reach into my magical hat and fix everything..."
@@ -207,52 +207,51 @@ Admin = module.exports = {
         'Other':  0
         '':       0
       }
-      youthInCareCount = 0
-      youthInCareSupportCount = 0
-      # Days between Sept 1 and Mar 21.
-      num_of_days = 203
-      dates = Array.apply(null, new Array(num_of_days)).map(Number.prototype.valueOf,0);
-      Member.model.find({}).populate("_group").exec (err, members) ->
-        members.map (val) ->
-          # Types
-          types[val.type][val.gender] += 1
-          # Ages
-          if !val.birthDate.year
-            ages[''][val.gender] += 1
-          else if ((val.birthDate.year - 2014) * -1) <= 24
-            ages[(val.birthDate.year - 2014) * -1][val.gender] += 1
-          else
-            ages['over'][val.gender] += 1
-          # Regions
-          regions[val._group.region][val.gender] += 1
-          # Totals
-          totals[val.gender] += 1
-          # Dates
-          normalized = Date.parse(val._state.registrationDate) - Date.UTC(2013, 8, 1)
-          normalized = normalized / Date.UTC(1970, 0, 2)
-          normalized = Math.floor(normalized)
-          dates[normalized] += 1
-          # Youth In care?
-          if val._state.youthInCare
-            youthInCareCount += 1
-          if val._state.youthInCareSupport
-            youthInCareSupportCount += 1
-        res.render "statistics", {
-          # Normal Stuff
-          session: req.session
-          head:
-            title: "Statistics"
-            caption: "Say it with me \"I am a data nerd\""
-            bg: "/img/bg/statistics.jpg"
-          # Stats
-          types: types
-          ages: ages
-          regions: regions
-          totals: totals
-          dates: dates
-          youthInCareCount: youthInCareCount
-          youthInCareSupportCount: youthInCareSupportCount
-        }
+      Group.model.find({}).select("youthInCare youthInCareSupport").exec (err, groups) ->
+        youthInCareCount = 0
+        youthInCareSupportCount = 0
+        groups.map (group) ->
+          youthInCareCount += group.youthInCare
+          youthInCareSupportCount += group.youthInCareSupport
+        # Days between Sept 1 and Mar 21.
+        num_of_days = 203
+        dates = Array.apply(null, new Array(num_of_days)).map(Number.prototype.valueOf,0);
+        Member.model.find({}).populate("_group").exec (err, members) ->
+          members.map (val) ->
+            # Types
+            types[val.type][val.gender] += 1
+            # Ages
+            if !val.birthDate.year
+              ages[''][val.gender] += 1
+            else if ((val.birthDate.year - 2015) * -1) <= 24
+              ages[(val.birthDate.year - 2015) * -1][val.gender] += 1
+            else
+              ages['over'][val.gender] += 1
+            # Regions
+            regions[val._group.region][val.gender] += 1
+            # Totals
+            totals[val.gender] += 1
+            # Dates
+            normalized = Date.parse(val._state.registrationDate) - Date.UTC(2014, 8, 1)
+            normalized = normalized / Date.UTC(1970, 0, 2)
+            normalized = Math.floor(normalized)
+            dates[normalized] += 1
+          res.render "statistics", {
+            # Normal Stuff
+            session: req.session
+            head:
+              title: "Statistics"
+              caption: "Say it with me \"I am a data nerd\""
+              bg: "/img/bg/statistics.jpg"
+            # Stats
+            types: types
+            ages: ages
+            regions: regions
+            totals: totals
+            dates: dates
+            youthInCareCount: youthInCareCount
+            youthInCareSupportCount: youthInCareSupportCount
+          }
 
   put:
     notes: (req, res) ->
@@ -265,7 +264,7 @@ Admin = module.exports = {
           group.save (err) ->
             unless err
               res.redirect "/notes/#{group._id}"
-            else  
+            else
               res.send err
         else
           res.send err

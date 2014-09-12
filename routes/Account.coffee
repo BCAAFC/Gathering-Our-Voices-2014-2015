@@ -151,7 +151,7 @@ If you have any questions take a look at our FAQ, or connect with me!
 
 <h2>Delegate registration: Complete by March 14 – (onsite changes will be limited)</h2>
 Please complete your members registration including all detailed information. You can manage you registration from your mobile devices for easy access and convenience.
- 
+
 <h2>Payments: DUE March 18, 2014</h2>
 For the groups and delegates registered by February 7th, we will honor the early registration fee until March 18th. If payment is not receive by March 18th, all delegates will be charged the regular registration fee of $175 and payment will be due 10 business day later: April 1, 2014.
 <br>
@@ -160,7 +160,7 @@ For the groups and delegates that register after February 7th, you will be requi
 <b>On-site payment will be accepted by VISA, MasterCard, Cheque or Money Order. We cannot accept cash onsite.</b>
 <br>
 Question contacts Kerri Low at 250-388-5522 or 1-900-990-2432
- 
+
 <h2>Workshop registration: Complete by March 14  - (onsite changes and spaces will be limited, sign up early)</h2>
 The full workshop schedule has been released! To sign up for workshops each delegate will need their full personal information complete. The workshop listings page can be view by all delegates, but only the primary contact can register the members into workshops. We encourage primary contacts to share this link with your youth so they can view the workshops. Also be prepared for active workshops: bring running shoes, shorts, water bottles & active wear.
 <br>
@@ -178,7 +178,7 @@ Book at the Hyatt Regency Vancouver ($189/night) - https://resweb.passkey.com/go
 <h2>Please reviews before coming to the conference with your group!</h2>
 <b>Personal Conduct:</b>
 Since your personal conduct, both in and out of the conference, reflects upon your community, please take a moment to review the code of conduct and distribute this to your group and your chaperones. Please ensure that as guests, your group members respect our hosts, volunteers, speakers, and peers to create an enjoyable and memorable event.
- 
+
 <b>Code of Conduct:</b>
 <ul>
   <li>Weapons brought into conference venues and/or criminal activity of any kind will not be tolerated.</li>
@@ -186,9 +186,9 @@ Since your personal conduct, both in and out of the conference, reflects upon yo
   <li>There will be zero tolerance for drugs & alcohol use by delegates, chaperones, and guests during the event.  We will also not tolerate any bullying, violence or acts of harassment. Offending participants, along with their group, will be asked to leave in such circumstances.</li>
   <li>Offenders of the Code of Conduct will have all privileges suspended and may be removed from the conference with no refund.</li>
 </ul>
- 
+
 On Thursday, March 20th there will be a dance for all youth and young adults. Please take a moment to review the code of conduct specific to this event.
- 
+
 <h2>Youth Dance Party:</h2>
 <ul>
   <li>Door Open at 7:00 pm and will close at 8:30 pm. Re-entry will not be permitted. </li>
@@ -228,7 +228,7 @@ On Thursday, March 20th there will be a dance for all youth and young adults. Pl
   put:
     account: (req, res) ->
       Group.model.findById req.session.group._id, (err, group) ->
-        unless err or !group?
+        if !err && group?
           # Login Details
           group.email = req.body.email
           group.password = req.body.password if req.body.password == req.body.passwordConfirm
@@ -243,12 +243,14 @@ On Thursday, March 20th there will be a dance for all youth and young adults. Pl
           group.phone = req.body.phone
           group.fax = req.body.fax
           group.affiliationType = req.body.affiliationType
+          group.youthInCare = Number(req.body.youthInCare)
+          group.youthInCareSupport = Number(req.body.youthInCareSupport)
           group.save (err, group) ->
             unless err
               req.session.group = group
               res.redirect "/account"
             else
-              message = # TODO
+              message = "Failure to save."
               res.redirect "/account?message=#{message}"
         else
           # TODO

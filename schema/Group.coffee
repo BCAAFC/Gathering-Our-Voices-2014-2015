@@ -185,16 +185,16 @@ GroupSchema = new Schema {
     enoughChaperones:
       type: Boolean
       default: true
-    youthInCare:
-      type: Number
-      default: 0
-      min: 0
-      max: 200
-    youthInCareSupport:
-      type: Number
-      default: 0
-      min: 0
-      max: 200
+  youthInCare:
+    type: Number
+    default: 0
+    min: 0
+    max: 200
+  youthInCareSupport:
+    type: Number
+    default: 0
+    min: 0
+    max: 200
   # Aggregations
   _members: # A list of members.
     type: [

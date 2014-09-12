@@ -9,10 +9,10 @@ block content
             label Search by Member Name: (Partial Matches allowed)
             input.form-control(type="text", name="member", placeholder="Della Preston")
       .btn-group.pull-right
-        a.btn.btn-success(href="/statistics") 
+        a.btn.btn-success(href="/statistics")
           .fa.fa-bar-chart-o
           |  View Statistics
-        a.pull-right.btn.btn-warning(href="/emails") 
+        a.pull-right.btn.btn-warning(href="/emails")
           .fa.fa-mail-reply-all
           |  Get Email Addresses
     .row
@@ -22,7 +22,7 @@ block content
             tr
               //- Checked in?
               th Checkin
-              //- Enough Chaperones? 
+              //- Enough Chaperones?
               th Chap
               th Mems
               th Affiliation
@@ -45,15 +45,14 @@ block content
                   if group._state.payment != "Recieved"
                     .label.label-danger.tooltipped(data-toggle="tooltip", title="Payment not recieved!!")
                       .fa.fa-exclamation
-                  if group._state.youthInCare
+                  if group.youthInCare > 0 || group.youthInCareSupport > 0
                     .label.label-success.tooltipped(data-toggle="tooltip", title="This group has Youth In Care!")
                       .fa.fa-flag
-                      |  
-                      | #{group._state.youthInCare} + #{group._state.youthInCareSupport}
+                      |  #{group.youthInCare} + #{group.youthInCareSupport}
                 td
                   case group._state.enoughChaperones
                     when true
-                      .label.label-success 
+                      .label.label-success
                         .fa.fa-check
                     when false
                       .label.label-danger
