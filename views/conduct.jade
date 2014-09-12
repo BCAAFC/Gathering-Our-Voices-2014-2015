@@ -1,0 +1,13 @@
+extends templates/layout
+
+block content
+  .container
+    .row
+      .col-sm-12
+        h1 Code of Conduct
+        p TODO
+        if session && session.group
+          if !session.group._state.agreedToConduct
+            a.btn.btn-block.btn-primary(href="/conduct/agree") I agree to the code of conduct on behalf of my group.
+          else
+            .btn.btn-block.btn-success Already Agreed

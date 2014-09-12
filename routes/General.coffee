@@ -2,12 +2,15 @@ General = module.exports = {
   get:
     index: (req, res) ->
       res.render "index",
-        session: req.session  
+        session: req.session
         head:
           title: "Gathering Our Voices 2014"
-          caption: "March 18-21st, 2014 in Vancouver BC. The 12th annual gathering of Aboriginal Youth."  
+          caption: "March 18-21st, 2014 in Vancouver BC. The 12th annual gathering of Aboriginal Youth."
           bg: "/img/bg/index.jpg"
-
+    conduct: (req, res) ->
+      res.render "conduct",
+        title: "Code of Conduct"
+        session: req.session
     about: (req, res) ->
       res.render "about",
         session: req.session
@@ -26,7 +29,7 @@ General = module.exports = {
 
     schedule: (req, res) ->
       res.render "schedule",
-        session: req.session  
+        session: req.session
         head:
           title: "Schedule"
           caption: "Get the low down on what's happening, wherever you are"
@@ -34,7 +37,7 @@ General = module.exports = {
 
     venues: (req, res) ->
       res.render "venues",
-        session: req.session  
+        session: req.session
         head:
           title: "Venues"
           caption: "Organizing a discussion is one thing, creating a space for the free exchange of ideas is something truly powerful"
@@ -42,11 +45,11 @@ General = module.exports = {
 
     accommodations: (req, res) ->
       res.render "accommodations",
-        session: req.session  
+        session: req.session
         head:
           title: "Accommodations"
           caption: "Rest your head, rest your mind."
-    
+
     privacy: (req, res) ->
       res.render "privacy",
         session: req.session

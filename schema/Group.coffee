@@ -185,6 +185,10 @@ GroupSchema = new Schema {
     enoughChaperones:
       type: Boolean
       default: true
+    agreedToConduct:
+      # Agreed to the Code of Conduct?
+      type: Boolean
+      default: false
   youthInCare:
     type: Number
     default: 0

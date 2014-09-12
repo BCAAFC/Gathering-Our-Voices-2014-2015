@@ -23,11 +23,22 @@ AccountRoutes = module.exports = {
           title: "Registration"
           caption: "Get started with your group, or access your existing cohort."
           bg: "/img/bg/register.jpg"
+    conductAgree: (req, res) ->
+      Group.model.findById(req.session.group._id).exec (err, group) ->
+        group._state.agreedToConduct = true
+        group.save (err) ->
+          if (err)
+            res.send "There was an error, we're very sorry. Please let us know about this? Mail ahobden@bcaafc.com with your group name."
+          else
+            res.redirect "/account"
     logout: (req, res) ->
       req.session.regenerate ->
         res.redirect "/"
     account: (req, res) ->
       Group.model.findById(req.session.group._id).populate("_members").exec (err, group) ->
+        if !group._state.agreedToConduct
+          res.redirect "/conduct"
+          return # Early
         res.render "account",
           session: req.session
           head:

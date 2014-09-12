@@ -8,6 +8,7 @@ routes = module.exports = (app) ->
   General = require("./routes/General")
   app.get   "/",          General.get.index     # Welcome page
   app.get   "/news",      General.get.news      # News page
+  app.get   "/conduct",   General.get.conduct   # Conduct page
   app.get   "/about",     General.get.about     # About page
   app.get   "/schedule",  General.get.schedule  # Schedule page
   app.get   "/privacy",   General.get.privacy   # Privacy Policy
@@ -27,8 +28,9 @@ routes = module.exports = (app) ->
   app.get   "/logout",    Account.get.logout      #
   # Printout
   app.get   "/printout",  Middle.auth, Account.get.printout
+  app.get   "/conduct/agree",   Account.get.conductAgree   # Conduct page
   # # Recovery
-  app.get   "/recover/:email",  Account.get.recover   # Start recovery 
+  app.get   "/recover/:email",  Account.get.recover   # Start recovery
   app.get   "/recovery/:hash",  Account.get.recovery # Finish recovery
   # # Edit/See details
   app.get   "/account",   Middle.auth, Account.get.account   # Edit group details.
@@ -50,7 +52,7 @@ routes = module.exports = (app) ->
   app.post     "/workshop",      Middle.admin, Workshop.post.workshop   # Displays :id details
   app.put      "/workshop",      Middle.admin, Workshop.put.workshop    # Displays information about the :workshop.
   app.get      "/workshop/delete/:id",  Middle.admin, Workshop.delete.workshop # Delete's :id
-  
+
   ###
   Member Routes
   ###
