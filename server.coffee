@@ -50,9 +50,7 @@ app.use (req, res, next) ->
 app.use bodyParser.json()
 app.use bodyParser.urlencoded(extended: true)
 app.use(methodOverride (req, res) ->  # Allows PUT/DELETE in forms.
-  console.log(req.body)
   if req.body?._method?
-    console.log("ISAMETHOD")
     # look in urlencoded POST bodies and delete it
     method = req.body._method
     delete req.body._method

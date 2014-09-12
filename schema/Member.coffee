@@ -282,7 +282,7 @@ Pre/Post Middleware
 ###
 MemberSchema.pre "save", (next) ->
   # Ensure they're not too young.
-  if @birthDate["year"]? and @birthDate["year"] == 2000
+  if @birthDate["year"]? and @birthDate["year"] == 2001
     if @birthDate["month"]? and ["January", "February", "March"].indexOf(@birthDate["month"]) == -1
       next(new Error("Too young."))
   Group = require("./Group")
