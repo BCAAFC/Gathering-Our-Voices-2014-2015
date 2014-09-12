@@ -51,7 +51,7 @@ app.use bodyParser.json()
 app.use bodyParser.urlencoded(extended: true)
 app.use methodOverride() # Allows PUT/DELETE in forms.
 app.use cookieParser(config.secret)
-app.use session 
+app.use session
   secret: config.secret,
   store: new RedisStore {client: redisClient}
   resave: true,
@@ -81,7 +81,7 @@ app.set "view engine", "jade"
 # Listen on the configured port.
 app.listen config.port, () ->
   console.log "Listening on port #{config.port}."
-  
+
 ## Redo flags
 # Group = require("./schema/Group")
 # Group.model.find {}, (err, groups) ->
@@ -122,4 +122,4 @@ app.listen config.port, () ->
 #   allergyList = []
 #   for member in members
 #     console.log "#{member.name}  #{(allergy for allergy in member.emergencyInfo.allergies)}  #{(condition for condition in member.emergencyInfo.conditions)}"
-#       
+#
