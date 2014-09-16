@@ -15,7 +15,9 @@
   },
   "scripts": {
     "start": "node bin/gov",
-    "test": "node node_modules/.bin/mocha --compilers coffee:coffee-script/register --reporter spec"
+    "test": "node node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register --reporter spec",
+    "bootstrap": "node_modules/less/bin/lessc -x lib/bootstrap/less/bootstrap.less > static/css/bootstrap.min.css && node_modules/uglify-js/bin/uglifyjs -x lib/bootstrap/js/{transition,alert,affix,button,carousel,collapse,dropdown,modal,tooltip,popover,scrollspy,tab}.js > static/js/bootstrap.min.js",
+    "font-awesome": "node_modules/less/bin/lessc -x lib/font-awesome/less/font-awesome.less > static/css/font-awesome.min.css && cp -r lib/font-awesome/fonts static/fonts"
   },
   "repository": {
     "type": "git",
@@ -38,12 +40,16 @@
     "express-session": "1.7.6",
     "hbs": "2.7.0",
     "hiredis": "0.1.17",
-    "marked": "^0.3.2",
+    "marked": "0.3.2",
     "method-override": "2.2.0",
     "mocha": "1.21.4",
     "mongoose": "3.8.8",
     "node-mandrill": "1.0.1",
     "redis": "0.12.1",
     "should": "4.0.4"
+  },
+  "devDependencies": {
+    "less": "1.7.5",
+    "uglify-js": "2.4.15"
   }
 }
