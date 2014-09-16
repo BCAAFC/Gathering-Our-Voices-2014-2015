@@ -12,7 +12,6 @@ Setup
 # Third Party Dependencies
 mongoose = require("mongoose")
 bcrypt   = require("bcrypt")
-config   = require("../config")
 # Aliases
 Schema   = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
@@ -330,8 +329,7 @@ GroupSchema.methods.checkFlags = (next, the_member, action) ->
       next true
 
 GroupSchema.methods.isAdmin = () ->
-  config = require("../config")
-  return (config.admins.indexOf(@email) != -1)
+  return (process.env.ADMINS.indexOf(@email) != -1)
 
 ###
 Validators

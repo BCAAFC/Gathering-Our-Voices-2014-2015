@@ -29,6 +29,7 @@
     "url": "https://github.com/BCAAFC/Gathering-Our-Voices/issues"
   },
   "dependencies": {
+    "async": "0.9.0",
     "assert": "1.1.2",
     "bcrypt": "0.8.0",
     "body-parser": "1.7.0",
@@ -46,10 +47,15 @@
     "mongoose": "3.8.8",
     "node-mandrill": "1.0.1",
     "redis": "0.12.1",
-    "should": "4.0.4"
+    "should": "4.0.4",
+    "lodash": "2.4.1"
   },
   "devDependencies": {
     "less": "1.7.5",
     "uglify-js": "2.4.15"
+  },
+  "jshintConfig": {
+    "latedef": "nofunc",
+    "node": true
   }
 }
