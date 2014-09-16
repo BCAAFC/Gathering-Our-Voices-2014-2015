@@ -3,11 +3,10 @@ Group = require("../schema/Group")
 ## We need Mandrill for mailouts ##
 # Get Redis working
 redis = require('redis')
-config = require('../config')
-if config.redis
+if process.env.REDIS
   url    = require("url")
-  redisURL = url.parse(config.redis)
-  redisClient = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true})
+  redisURL = url.parse(process.env.REDIS)
+  redisClient = redis.createClient(redisURL.port || 6379, redisURL.hostname, {no_ready_check: true})
   redisClient.auth(redisURL.auth.split(":")[1])
 else
   redisClient = redis.createClient()
