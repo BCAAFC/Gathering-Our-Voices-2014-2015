@@ -73,9 +73,9 @@ function redis(callback, data) {
 }
 
 function httpd(callback, data) {
-  var app = require('express')();
+  var server = require('express')();
   // Ensure that requests that should be SSL use SSL.
-  app.use(function ensureSecurity(req, res, next) {
+  server.use(function ensureSecurity(req, res, next) {
     if (process.env.SSL && req.headers['x-forwarded-proto'] !== 'https' && req.hostname !== 'localhost') {
       res.redirect('https://' + req.hostname + req.url);
     } else {
@@ -83,10 +83,10 @@ function httpd(callback, data) {
     }
   });
   // Parsers for JSON/URL.
-  app.use(require('body-parser').json());
-  app.use(require('body-parser').urlencoded({extended: true}));
+  server.use(require('body-parser').json());
+  server.use(require('body-parser').urlencoded({extended: true}));
   // Allow PUT/DELETE in forms.
-  app.use(require('method-override')(function methodOverrider(req, res) {
+  server.use(require('method-override')(function methodOverrider(req, res) {
     if (req.body && typeof req.body === 'object' && '_method' in req.body) {
       // look in urlencoded POST bodies and delete it
       var method = req.body._method;
@@ -94,21 +94,21 @@ function httpd(callback, data) {
       return method;
     }
   }));
-  app.use(require('cookie-parser')(process.env.SECRET));
+  server.use(require('cookie-parser')(process.env.SECRET));
   // Session handling.
   var session = require('express-session'),
       RedisStore = require('connect-redis')(session);
-  app.use(require('express-session')({
+  server.use(require('express-session')({
     secret: process.env.SECRET,
     store: new RedisStore({client: data.redis}),
     resave: true,
     saveUninitialized: true
   }));
   // View engine
-  app.set('views', './views');
-  app.set('view engine', 'jade');
+  server.set('views', './views');
+  server.set('view engine', 'jade');
   // TODO: Improve/Remove this.
-  app.use(function message(req, res, next) {
+  server.use(function message(req, res, next) {
     if (req.query.message) {
       req.session.message = req.query.message;
     } else {
@@ -116,9 +116,9 @@ function httpd(callback, data) {
     }
     next();
   });
-  app.use(require('express').static('./static', {maxAge: 86400000 * 4}));
+  server.use(require('express').static('./static', {maxAge: 86400000 * 4}));
   // Pass along the application.
-  callback(null, app);
+  callback(null, server);
 }
 
 function routes(callback, data) {
