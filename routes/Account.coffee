@@ -30,6 +30,7 @@ AccountRoutes = module.exports = {
           if (err)
             res.send "There was an error, we're very sorry. Please let us know about this? Mail ahobden@bcaafc.com with your group name."
           else
+            req.session.group = group
             res.redirect "/account"
     logout: (req, res) ->
       req.session.regenerate ->

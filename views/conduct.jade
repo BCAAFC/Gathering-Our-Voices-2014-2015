@@ -5,9 +5,10 @@ block content
     .row
       .col-sm-12
         h1 Code of Conduct
-        p TODO
+        p TODO #{session.group._state.agreedToConduct}
         if session && session.group
           if !session.group._state.agreedToConduct
             a.btn.btn-block.btn-primary(href="/conduct/agree") I agree to the code of conduct on behalf of my group.
           else
-            .btn.btn-block.btn-success Already Agreed
+            a.btn.btn-block.btn-success(href="/account") Already Agreed
+        hr.featurette-divider
