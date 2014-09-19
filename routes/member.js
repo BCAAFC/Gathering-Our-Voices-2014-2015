@@ -118,6 +118,7 @@ module.exports = function(data) {
               Group.model.findById(member._group).exec(function (err, group) {
                 if (!err && group) {
                   req.session.group = group;
+                  res.redirect('/account');
                 } else {
                   var message = 'Sorry, there was an error refreshing your group. You might need to relog.';
                   res.redirect('/account?message=' + message);

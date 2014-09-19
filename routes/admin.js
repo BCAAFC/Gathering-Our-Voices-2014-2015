@@ -8,10 +8,8 @@ module.exports = function(data) {
         Group = require('../schema/Group'),
         Member = require('../schema/Member'),
         util = require('./util');
-    // All routes here will be administrator routes.
-    router.use(util.admin);
 
-    router.get('/admin', function (req, res) {
+    router.get('/admin', util.admin, function (req, res) {
       // TODO: Searching for a member.
       Group.model.find().sort('affiliation').exec(function (err, groups) {
         if (!err) {
@@ -27,7 +25,7 @@ module.exports = function(data) {
       });
     });
 
-    router.get('/manage/:id', function (req, res) {
+    router.get('/manage/:id', util.admin, function (req, res) {
       Group.model.findById(req.params.id).exec(function (err, group) {
         if (!err && group) {
           // Maintain administrator status.
@@ -41,7 +39,7 @@ module.exports = function(data) {
     });
 
     router.route('/notes/:id')
-      .get(function (req, res) {
+      .get(util.admin, function (req, res) {
         Group.model.findById(req.params.id).exec(function (err, group) {
           if (!err && group) {
             res.render('notes', {
@@ -54,7 +52,7 @@ module.exports = function(data) {
             console.error(err);
           }
         });
-      }).put(function (req, res) {
+      }).put(util.admin, function (req, res) {
         Group.model.findById(req.params.id).exec(function (err, group) {
           if (!err && group) {
             group._notes = req.body.notes;
@@ -76,7 +74,7 @@ module.exports = function(data) {
         });
       });
 
-    router.get('/statistics', function (req, res) {
+    router.get('/statistics', util.admin, function (req, res) {
       async.auto({
         groups: groups,
         members: members
@@ -167,7 +165,7 @@ module.exports = function(data) {
       }
     });
 
-    router.get('/emails', function (req, res) {
+    router.get('/emails', util.admin, function (req, res) {
       async.auto({
         groups: Group.model.find({}).select('name email').exec,
         members: Member.model.find({email: {$exists: true}}).select('name email').exec
