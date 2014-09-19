@@ -19,7 +19,7 @@ module.exports = {
     }
   },
   admin: function (req, res, next) {
-    if (req.session && req.ression.group && req.session.isAdmin) {
+    if (req.session && req.session.group && req.session.isAdmin) {
       next();
     } else {
       var message = "You're not an administrator, and thusly cannot do this action.";

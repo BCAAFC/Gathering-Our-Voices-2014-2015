@@ -42,6 +42,7 @@ GroupSchema = new Schema {
     type: String
     trim: true
     required: true
+    index: true
   address:
     type: String
     trim: true
@@ -255,10 +256,10 @@ GroupSchema.methods.getPaid = (next) ->
         sum += payment.amount
       next err, sum
     else
-      next err, -1
+      next err, null
 
 GroupSchema.methods.getCost = (next) ->
-  Member = require("./Member")
+  Member = require("./Member")  
   Member.model.find _id: $in: @_members, (err, members) ->
     unless err
       # Accumulate ticket prices.
@@ -277,7 +278,7 @@ GroupSchema.methods.getCost = (next) ->
       # Determine free tickets
       next null, due
     else
-      next err, -1
+      next err, null
 
 GroupSchema.methods.getBalance = (next) ->
   @getCost (err, cost) =>

@@ -68,6 +68,7 @@ function redis(callback, data) {
   }
   // Wait and pass along the client.
   client.on('ready', function () {
+    console.log('Connected to redis');
     callback(null, client);
   });
 }
@@ -122,11 +123,13 @@ function httpd(callback, data) {
 }
 
 function routes(callback, data) {
-  require('./routes')(data.httpd);
+  _(['account', 'admin', 'general', 'member', 'payment', 'workshop']).each(function (val) {
+    data.httpd.use(require('./routes/' + val)(data));
+  });
   data.httpd.use(function notFoundHandler(req, res) {
     res.status(404);
     console.warn('Page does not exist.');
-    res.send('This page does not exist.');
+    res.send('Path `' + req.originalUrl + '`does not exist.');
   });
   callback(null);
 }

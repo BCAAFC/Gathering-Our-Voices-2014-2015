@@ -1,4 +1,4 @@
-form(action="/member", method="POST")
+form(action="/member#{(member) ? '/' + member._id : ''}", method="POST")
   if member
     input(type="hidden", name="_method", value="put")
     input(type="hidden", name="id", value=member._id)

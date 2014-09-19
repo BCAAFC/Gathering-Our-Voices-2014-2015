@@ -66,9 +66,9 @@ block content
                     .label.label-default= member._state.ticketType
                   td
                     if member._state.complete
-                      a.edit.btn.btn-sm.btn-success.tooltipped(data-id=member._id, data-toggle="collapse") Complete
+                      a.edit.btn.btn-sm.btn-success.tooltipped(data-id="#{member._id}", data-toggle="collapse") Complete
                     else
-                      a.edit.btn.btn-sm.btn-danger.tooltipped(data-id=member._id, data-toggle="collapse") Incomplete
+                      a.edit.btn.btn-sm.btn-danger.tooltipped(data-id="#{member._id}", data-toggle="collapse") Incomplete
                   td
                     if member._workshops.length >= 4
                       a.memberWorkshops.btn.btn-sm.btn-success.tooltipped(data-toggle="collapse", data-id="#{member._id}") 4+ Workshops
@@ -249,7 +249,7 @@ block content
       // Setup member editing.
       $('a.edit').click(function() {
         $('#panels .in').collapse('hide');
-        $.get('/member?id=' + $(this).data('id'), function(data) {
+        $.get('/member/' + $(this).data('id'), function(data) {
           $('#member').html(data).collapse('show').one('shown.bs.collapse', function() {
             $(document).scrollTop( $('#member').offset().top );
           });
@@ -286,7 +286,7 @@ block content
 
       $('a.memberWorkshops').click(function() {
         $('#panels .in').collapse('hide');
-        $.get('/member/workshops?id=' + $(this).data('id'), function(data) {
+        $.get('/member/' + $(this).data('id') + '/workshops', function(data) {
           $('#memberWorkshops').html(data).collapse('show').one('shown.bs.collapse', function() {
             $(document).scrollTop( $('#memberWorkshops').offset().top );
           });

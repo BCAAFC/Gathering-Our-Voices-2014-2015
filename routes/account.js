@@ -69,7 +69,7 @@ module.exports = function(data) {
     });
   });
 
-  router.post('/conduct/agree', util.auth, function (req, res) {
+  router.get('/conduct/agree', util.auth, function (req, res) {
     Group.model.findById(req.session.group._id).exec(function (err, group) {
       if (err) {
         res.send('Sorry, there was an error finding your group. Try again?');
@@ -95,8 +95,8 @@ module.exports = function(data) {
       .exec(function (err, group) {
         if (!err && group) {
           async.auto({
-            cost: group.getCost,
-            paid: group.getPaid
+            cost: group.getCost.bind(group),
+            paid: group.getPaid.bind(group)
           }, function complete(err, data) {
             if (err) {
               res.send('Sorry, there was an error getting payment details your group. Try again?');
@@ -170,7 +170,8 @@ module.exports = function(data) {
             } else {
               res.render('account', {
                 session: req.session,
-                title: 'Account'
+                title: 'Account',
+                members: group._members
               });
             }
           } else {

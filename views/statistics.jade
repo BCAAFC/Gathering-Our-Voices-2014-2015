@@ -209,13 +209,13 @@ block content
         var total = 0;
         dates = dates.map(function(val, index) {
           total += val;
-          return [index, total, new Date(Date.UTC(2013, 8, 1) + (86400000 * index)).toString() + ": " + total]; //
+          return [index, total, new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + total]; //
         })
-        dates.unshift(["Days since Sept 1, 2013", "Members", { type: 'string', role: 'tooltip' } ])
+        dates.unshift(["Days since Sept 1, 2014", "Members", { type: 'string', role: 'tooltip' } ])
         var data = google.visualization.arrayToDataTable(dates);
 
         var options = {
-          title: 'Members over time (since Sept 1, 2013)'
+          title: 'Members over time (since Sept 1, 2014)'
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('dateChart'));

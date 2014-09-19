@@ -15,15 +15,21 @@ module.exports = function(data) {
       .exec(function (err, group) {
         if (!err && group) {
           async.auto({
-            paid: group.getPaid,
-            cost: group.getCost
+            paid: group.getPaid.bind(group),
+            cost: group.getCost.bind(group)
           }, function complete(err, data) {
-            res.render('templates/payments', {
-              title: 'Payments',
-              session: req.session,
-              cost: data.cost,
-              paid: data.paid
-            });
+            if (!err && data.paid !== null && data.cost !== null) {
+              res.render('templates/payments', {
+                title: 'Payments',
+                session: req.session,
+                group: group,
+                cost: data.cost,
+                paid: data.paid
+              });
+            } else {
+              res.send('Sorry, there was an error, please try again.');
+              console.error(err);
+            }
           });
         } else {
           res.send('Sorry, there was an error finding your group. Try again?');
