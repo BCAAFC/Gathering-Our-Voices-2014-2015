@@ -4,7 +4,8 @@ var async = require('async'),
     _ = require('lodash');
 
 module.exports = function(data) {
-  var router = require('express').Router();
+  var router = require('express').Router(),
+      News = require('../schema/News');
 
   router.get('/', function (req, res) {
     res.render('index', {
@@ -14,9 +15,12 @@ module.exports = function(data) {
   });
 
   router.get('/news', function (req, res) {
-    res.render('news', {
-      title: 'News',
-      session: req.session
+    News.find({}).sort('-date').exec(function (err, news) {
+      res.render('news', {
+        title: 'News',
+        session: req.session,
+        news: news
+      });
     });
   });
 

@@ -86,6 +86,7 @@ function httpd(callback, data) {
   // Parsers for JSON/URL.
   server.use(require('body-parser').json());
   server.use(require('body-parser').urlencoded({extended: true}));
+  server.use(require('multer')());
   // Allow PUT/DELETE in forms.
   server.use(require('method-override')(function methodOverrider(req, res) {
     if (req.body && typeof req.body === 'object' && '_method' in req.body) {

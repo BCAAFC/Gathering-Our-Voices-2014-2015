@@ -153,9 +153,7 @@ module.exports = function(data) {
             // Dates
             var normalized = Date.parse(val._state.registrationDate) - startDate;
             normalized = normalized / (24*60*60*1000); // One day
-            console.log('Pre math: ' + normalized);
             normalized = Math.floor(normalized);
-            console.log('Adding to index ' + normalized);
             summation.dates[normalized] += 1;
             // Must return summation.
             return summation;
@@ -179,6 +177,41 @@ module.exports = function(data) {
           });
         } else {
           res.send('There was an error fetching this.');
+          console.error(err);
+        }
+      });
+    });
+
+    router.post('/news', util.admin, function (req, res) {
+      var News = require('../schema/News'),
+          fs = require('fs'),
+          imageMagick = require('gm').subClass({imageMagick: true});
+      // Prep image
+      imageMagick(req.files.image.path).resize(470).toBuffer('jpeg', function (err, buffer) {
+        // Create news
+        News.create({
+          title: req.body.title,
+          content: req.body.content,
+          date: new Date(req.body.date),
+          author: req.body.author,
+          image: buffer.toString('base64')
+        }, function (err, news) {
+          if (!err) {
+            res.redirect('/news');
+          } else {
+            res.send('There was an error:\n' + err);
+            console.error(err);
+          }
+        });
+      });
+    });
+
+    router.get('/news/del/:id', util.admin, function (req, res) {
+      require('../schema/News').remove({_id: req.params.id}).exec(function (err) {
+        if (!err) {
+          res.redirect('/news');
+        } else {
+          res.send('There was an error:\n' + err);
           console.error(err);
         }
       });
