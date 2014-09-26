@@ -259,8 +259,8 @@ GroupSchema.methods.getPaid = (next) ->
       next err, null
 
 GroupSchema.methods.getCost = (next) ->
-  Member = require("./Member")  
-  Member.model.find _id: $in: @_members, (err, members) ->
+  Member = require("./Member")
+  Member.find _id: $in: @_members, (err, members) ->
     unless err
       # Accumulate ticket prices.
       due = members.map( (val) ->
@@ -291,7 +291,7 @@ GroupSchema.methods.getBalance = (next) ->
 GroupSchema.methods.checkFlags = (next, the_member, action) ->
   Member = require("./Member")
   # Member counts
-  Member.model.find _id: $in: @_members, (err, members) =>
+  Member.find _id: $in: @_members, (err, members) =>
     youth = 0
     chaps = 0
     # If it's a new member
@@ -364,7 +364,7 @@ GroupSchema.pre "remove", (next) ->
   processMembers = () ->
     Member = require("./Member")
     # Remove all members and payments.
-    Member.model.find _id: $in: memberIds, (err, members) =>
+    Member.find _id: $in: memberIds, (err, members) =>
       errs = []
       memLooper = (members) =>
         member = members.shift()

@@ -11,7 +11,7 @@ module.exports = function(data) {
 
   router.route('/member')
     .post(util.auth, function (req, res) {
-      Member.model.create({
+      Member.create({
         name:         req.body.name,
         _group:       req.session.group._id,
         type:         req.body.type,
@@ -60,7 +60,7 @@ module.exports = function(data) {
     });
   router.route('/member/:id')
     .get(util.inGroup, function (req, res) {
-      Member.model.findById(req.params.id).exec(function (err, member) {
+      Member.findById(req.params.id).exec(function (err, member) {
         if (!err && member) {
           // Populated form.
           res.render('templates/member', {
@@ -74,7 +74,7 @@ module.exports = function(data) {
       });
     })
     .put(util.inGroup, function (req, res) {
-      Member.model.findById(req.body.id).exec(function (err, member) {
+      Member.findById(req.body.id).exec(function (err, member) {
         if (!err && member) {
           member.name =                       req.body.name;
           member._group =                     req.session.group._id;
@@ -111,7 +111,7 @@ module.exports = function(data) {
       });
     })
     .delete(util.inGroup, function (req, res) {
-      Member.model.findById(req.params.id).exec(function (err, member) {
+      Member.findById(req.params.id).exec(function (err, member) {
         if (!err && member) {
           member.remove(function (err) {
             if (!err) {
@@ -137,7 +137,7 @@ module.exports = function(data) {
     });
 
   router.get('/member/:id/workshops', util.auth, function (req, res) {
-    Member.model.findById(req.params.id)
+    Member.findById(req.params.id)
       .populate("_workshops._id").exec(function (err, member) {
         if (!err && member) {
           res.render('templates/memberWorkshops', {
@@ -152,7 +152,7 @@ module.exports = function(data) {
   });
 
   router.get('/member/:id/add/:workshop/:session', util.inGroup, function (req, res) {
-    Member.model.findById(req.params.id).exec(function (err, member) {
+    Member.findById(req.params.id).exec(function (err, member) {
       if (!err && member) {
         member.addWorkshop(req.params.workshop, Number(req.params.session), function (err, member) {
           var message;
@@ -171,7 +171,7 @@ module.exports = function(data) {
   });
 
   router.get('/member/:id/del/:workshop/:session', util.inGroup, function (req, res) {
-    Member.model.findById(req.params.id).exec(function (err, member) {
+    Member.findById(req.params.id).exec(function (err, member) {
       if (!err && member) {
         member.removeWorkshop(req.params.workshop, Number(req.params.session), function (err, member) {
           var message;

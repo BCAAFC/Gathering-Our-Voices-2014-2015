@@ -109,7 +109,7 @@ module.exports = function(data) {
       function members(callback) {
         var startDate = new Date('Sept 01 2014'),
             stopDate = new Date('Mar 21 2015');
-        Member.model.find({}).populate('_group').exec(function (err, members) {
+        Member.find({}).populate('_group').exec(function (err, members) {
           // Cleverness below!
           var ages = _.range(14, 24+1).concat(['over', '']),
               regions = ['North', 'Fraser', 'Interior', 'Vancouver Coastal',
@@ -168,7 +168,7 @@ module.exports = function(data) {
     router.get('/emails', util.admin, function (req, res) {
       async.auto({
         groups: Group.model.find({}).select('name email').exec,
-        members: Member.model.find({email: {$exists: true}}).select('name email').exec
+        members: Member.find({email: {$exists: true}}).select('name email').exec
       }, function complete(err, data) {
         if (!err) {
           res.render('emails', {

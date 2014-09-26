@@ -166,7 +166,7 @@ describe "Group", ->
     it "Should accurately price a single member", (done) ->
       theMember = boilerplate.member(testGroup, "single@bar.baz")
       theMember._state.ticketType = "Early"
-      Member.model.create theMember, (err, member) ->
+      Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
         Group.model.findById testGroup, (err, group) ->
@@ -177,17 +177,17 @@ describe "Group", ->
       # Add three more.
       theMember = boilerplate.member(testGroup, "single@bar.baz")
       theMember._state.ticketType = "Early"
-      Member.model.create theMember, (err, member) ->
+      Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
         theMember = boilerplate.member(testGroup, "single@bar.baz")
         theMember._state.ticketType = "Early"
-        Member.model.create theMember, (err, member) ->
+        Member.create theMember, (err, member) ->
           should.not.exist err
           should.exist member
           theMember = boilerplate.member(testGroup, "single@bar.baz")
           theMember._state.ticketType = "Early"
-          Member.model.create theMember, (err, member) ->
+          Member.create theMember, (err, member) ->
             should.not.exist err
             should.exist member
             # Test
@@ -195,99 +195,99 @@ describe "Group", ->
               group.getCost (err, cost) ->
                 should.equal cost, 150 * 4
                 done()
-    it "Should accurately price five members", (done) -> 
+    it "Should accurately price five members", (done) ->
       # Add 2 more
       theMember = boilerplate.member(testGroup, "single@bar.baz")
       theMember._state.ticketType = "Early"
-      Member.model.create theMember, (err, member) ->
+      Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 5
             done()
-    it "Should accurately price six members", (done) -> 
+    it "Should accurately price six members", (done) ->
       # Add 2 more
       theMember = boilerplate.member(testGroup, "single@bar.baz")
       theMember._state.ticketType = "Early"
-      Member.model.create theMember, (err, member) ->
+      Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 5 # They should get one free!
             done()
-    it "Should accurately price seven members", (done) -> 
+    it "Should accurately price seven members", (done) ->
       # Add 2 more
       theMember = boilerplate.member(testGroup, "single@bar.baz")
       theMember._state.ticketType = "Early"
-      Member.model.create theMember, (err, member) ->
+      Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 6 # They should get one free!
             done()
-    it "Should accurately price eight members", (done) -> 
+    it "Should accurately price eight members", (done) ->
       # Add 2 more
       theMember = boilerplate.member(testGroup, "single@bar.baz")
       theMember._state.ticketType = "Early"
-      Member.model.create theMember, (err, member) ->
+      Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 7 # They should get one free!
             done()
-    it "Should accurately price nine members", (done) -> 
+    it "Should accurately price nine members", (done) ->
       # Add 2 more
       theMember = boilerplate.member(testGroup, "single@bar.baz")
       theMember._state.ticketType = "Early"
-      Member.model.create theMember, (err, member) ->
+      Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 8 # They should get one free!
             done()
-    it "Should accurately price ten members", (done) -> 
+    it "Should accurately price ten members", (done) ->
       # Add 2 more
       theMember = boilerplate.member(testGroup, "single@bar.baz")
       theMember._state.ticketType = "Early"
-      Member.model.create theMember, (err, member) ->
+      Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 9 # They should get one free!
             done()
-    it "Should accurately price eleven members", (done) -> 
+    it "Should accurately price eleven members", (done) ->
       # Add 2 more
       theMember = boilerplate.member(testGroup, "single@bar.baz")
       theMember._state.ticketType = "Early"
-      Member.model.create theMember, (err, member) ->
+      Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 10 # They should get one free!
             done()
-    it "Should accurately price twelve members", (done) -> 
+    it "Should accurately price twelve members", (done) ->
       # Add 2 more
       theMember = boilerplate.member(testGroup, "single@bar.baz")
       theMember._state.ticketType = "Early"
-      Member.model.create theMember, (err, member) ->
+      Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
         Group.model.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 10 # They should get one free!
             done()
-    it "Should accurately price thirteen members", (done) -> 
+    it "Should accurately price thirteen members", (done) ->
       # Add 2 more
       theMember = boilerplate.member(testGroup, "single@bar.baz")
       theMember._state.ticketType = "Early"
-      Member.model.create theMember, (err, member) ->
+      Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
         Group.model.findById testGroup, (err, group) ->
@@ -347,7 +347,7 @@ describe "Group", ->
       Group.model.findById testGroup, (err, group) ->
         # Has 13 young adults right now, should be balanced.
         # First youth
-        Member.model.create {
+        Member.create {
           name: "UNbalancing"
           type: "Youth"
           _group: group._id
@@ -360,31 +360,31 @@ describe "Group", ->
       Group.model.findById testGroup, (err, group) ->
         # Has 13 young adults right now, should be balanced.
         # Second youth
-        Member.model.create {
+        Member.create {
           name: "Balancing"
           type: "Youth"
           _group: group._id
         }, (err) ->
           # Third youth
-          Member.model.create {
+          Member.create {
             name: "Balancing"
             type: "Youth"
             _group: group._id
           }, (err) ->
             # Fourth youth
-            Member.model.create {
+            Member.create {
               name: "Balancing"
               type: "Youth"
               _group: group._id
             }, (err) ->
               # Fifth youth
-              Member.model.create {
+              Member.create {
                 name: "Balancing"
                 type: "Youth"
                 _group: group._id
               }, (err) ->
                 # First Chaperone
-                Member.model.create {
+                Member.create {
                   name: "Balancing"
                   type: "Chaperone"
                   _group: group._id
@@ -393,7 +393,7 @@ describe "Group", ->
                     group.checkFlags (val) ->
                       should.equal val, true
                       done()
-  
+
   describe "Group.find -> group.remove()", ->
     it "Should remove the group, it's members, and payments", (done) ->
       Group.model.findById testGroup, (err, group) ->
@@ -401,7 +401,7 @@ describe "Group", ->
         should.exist group
         group.remove (err) ->
           should.not.exist err
-          Member.model.find _group: testGroup, (err, members) ->
+          Member.find _group: testGroup, (err, members) ->
             should.equal members.length, 0
             should.not.exist err
             Payment.model.find _group: testGroup, (err, payments) ->

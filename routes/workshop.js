@@ -19,7 +19,7 @@ module.exports = function(data) {
         query.description = new RegExp(req.query.query, 'i');
       }
       // Build output.
-      Workshop.model.find(query).sort('name').exec(function (err, workshops) {
+      Workshop.find(query).sort('name').exec(function (err, workshops) {
         if (!err) {
           res.render('workshops', {
             title: 'Workshops',
@@ -34,7 +34,7 @@ module.exports = function(data) {
     });
 
     router.get('/workshop/:id', function (req, res) {
-      Workshop.model.findById(req.params.id).exec(function (err, workshop) {
+      Workshop.findById(req.params.id).exec(function (err, workshop) {
         if (!err && workshop) {
           res.render('workshop', {
             title: "Workshop Details",
@@ -52,7 +52,7 @@ module.exports = function(data) {
       if (req.session.isAdmin) {
         // Admins can see all members in the workshop.
         async.auto({
-          workshop: Workshop.model.findById(req.params.id).populate("sessions._registered").exec,
+          workshop: Workshop.findById(req.params.id).populate("sessions._registered").exec,
           group: Group.model.findById(req.session.group._id).populate("_members").exec
         }, function complete(err, data) {
           if (!err && data.group && data.workshop) {
@@ -70,7 +70,7 @@ module.exports = function(data) {
       } else {
         // Normal users can only see their group
         async.auto({
-          workshop: Workshop.model.findById(req.params.id).exec,
+          workshop: Workshop.findById(req.params.id).exec,
           group: Group.model.findById(req.session.group._id).populate("_members").exec
         }, function complete(err, data) {
           if (!err && data.workshop && data.group) {
@@ -112,7 +112,7 @@ module.exports = function(data) {
     router.route('/workshop')
       .get(util.admin, function (req, res) {
         if (req.query.id) {
-          Workshop.model.findById(req.query.id).exec(function (err, workshop) {
+          Workshop.findById(req.query.id).exec(function (err, workshop) {
             if (!err && workshop) {
               res.render('templates/workshopForm', {
                 session: req.session,
@@ -151,7 +151,7 @@ module.exports = function(data) {
         });
       })
       .put(util.admin, function (req, res) {
-        Workshop.model.findById(req.body.id).exec(function (err, workshop) {
+        Workshop.findById(req.body.id).exec(function (err, workshop) {
           if (!err && workshop) {
             workshop.name = req.body.name;
             workshop.host = req.body.host;
@@ -199,7 +199,7 @@ module.exports = function(data) {
       });
 
     router.delete('/workshop/delete/:id', util.admin, function (req, res) {
-      Workshop.model.findById(req.params.id).exec(function (err, workshop) {
+      Workshop.findById(req.params.id).exec(function (err, workshop) {
         if (!err && workshop) {
           workshop.remove(function (err) {
             if (!err) {

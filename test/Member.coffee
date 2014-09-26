@@ -46,8 +46,8 @@ Tests
 describe "Member", ->
   testGroup = null
   before (done) ->
-    Workshop.model.remove {}, (err) ->
-      Member.model.remove {}, (err) ->
+    Workshop.remove {}, (err) ->
+      Member.remove {}, (err) ->
         Group.model.create {
           email:          "memberTest@bar.baz"
           password:       "foo"
@@ -65,7 +65,7 @@ describe "Member", ->
   
   describe "Member.create", ->
     it "Should create a new member with valid info", (done) ->
-      Member.model.create boilerplate.member(testGroup, "foo@bar.baz"), (err, member) =>
+      Member.create boilerplate.member(testGroup, "foo@bar.baz"), (err, member) =>
         should.not.exist err
         should.equal member.name, "Foo"
         should.equal member.type, "Youth"
@@ -79,7 +79,7 @@ describe "Member", ->
         should.exist member.emergencyInfo
         done()
     it "Should not create a new member with not valid info", (done) ->
-      Member.model.create {
+      Member.create {
         #name: "Foo"
         type: "Youth"
         gender: "Male"
@@ -103,7 +103,7 @@ describe "Member", ->
         should.not.exist member
         done()
     it "Should add the member to the group it is created with", (done) ->
-      Member.model.findOne email: "foo@bar.baz", (err, members) ->
+      Member.findOne email: "foo@bar.baz", (err, members) ->
         should.not.exist err
         should.exist members._group
         Group.model.findById members._group, (err, group) ->
@@ -113,7 +113,7 @@ describe "Member", ->
       member = boilerplate.member(testGroup, "early@bar.baz")
       member._state = {}
       member._state.registrationDate = Date.UTC(2015,0,1,1) # Early Bird
-      Member.model.create member, (err, member) ->
+      Member.create member, (err, member) ->
         should.not.exist err
         should.equal member._state.ticketType, "Early"
         done()
@@ -121,7 +121,7 @@ describe "Member", ->
       member = boilerplate.member(testGroup, "early@bar.baz")
       member._state = {}
       member._state.registrationDate = Date.UTC(2015,3,1,1) # Early Bird
-      Member.model.create member, (err, member) ->
+      Member.create member, (err, member) ->
         should.not.exist err
         should.equal member._state.ticketType, "Regular"
         done()
@@ -129,7 +129,7 @@ describe "Member", ->
   describe "Member.hasConflicts", ->
     testWorkshop = null
     before (done) ->
-      Workshop.model.create {
+      Workshop.create {
         name: "canRegister test"
         host: "Bob"
         description: "Make some beaver hats, with Bob. It'll be fantastical."
@@ -180,7 +180,7 @@ describe "Member", ->
         done()
 
     it "Should properly block sessions", (done) ->
-      Member.model.create boilerplate.member(testGroup, "Food@bar.baz"), (err, member) =>
+      Member.create boilerplate.member(testGroup, "Food@bar.baz"), (err, member) =>
         member.hasConflicts(testWorkshop, 1).should.not.be.ok # False
         member.hasConflicts(testWorkshop, 2).should.not.be.ok 
         member.hasConflicts(testWorkshop, 3).should.not.be.ok 
@@ -207,7 +207,7 @@ describe "Member", ->
 
   describe "Member.find -> member.save()", ->
     it "Should verify completeness", (done) ->
-      Member.model.create {
+      Member.create {
         name: "Foo"
         type: "Youth"
         # gender: "Male"
@@ -244,7 +244,7 @@ describe "Member", ->
     testMember = null
     before (done) ->
       # Make a workshop, since we don't have one.
-      Workshop.model.create {
+      Workshop.create {
         name: "addWorkshop test"
         host: "Bob"
         description: "Make some beaver hats, with Bob. It'll be fantastical."
@@ -262,39 +262,39 @@ describe "Member", ->
         ]
       }, (err, workshop) =>
         testWorkshop = workshop._id
-        Member.model.create boilerplate.member(testGroup, "addworkshop@bar.baz"), (err, member) ->
+        Member.create boilerplate.member(testGroup, "addworkshop@bar.baz"), (err, member) ->
           should.not.exist err
           should.exist member
           testMember = member._id
           done()
 
     it "Should add members to workshops they join", (done) ->
-      Member.model.findById testMember, (err, member) ->
+      Member.findById testMember, (err, member) ->
         member.addWorkshop testWorkshop, 6, (err, member) ->
           should.not.exist err
           should.notEqual member._workshops.length, 0
-          Workshop.model.findById testWorkshop, (err, workshop) ->
+          Workshop.findById testWorkshop, (err, workshop) ->
             should.notEqual workshop.session(6)._registered.indexOf(member._id), -1
             done()
     it "Should not add members to workshops they can't join", (done) ->
-      Member.model.findById testMember, (err, member) ->
+      Member.findById testMember, (err, member) ->
         member.addWorkshop testWorkshop, 4, (err, member) ->
           should.exist err
           done()
     it "Should not allow members to join if the workshop is full", (done) ->
       # Session 2 only can hold one person! Oh no!
-      Member.model.findById testMember, (err, member) ->
+      Member.findById testMember, (err, member) ->
         should.not.exist err
         should.exist member
         member.addWorkshop testWorkshop, 1, (err, member) ->
           should.not.exist err
-          Member.model.create boilerplate.member(testGroup, "capTest@bar.baz"), (err, secondMember) ->
+          Member.create boilerplate.member(testGroup, "capTest@bar.baz"), (err, secondMember) ->
             secondMember.addWorkshop testWorkshop, 1, (err, thisFails) ->
               should.exist err
               should.equal secondMember._workshops.indexOf(testWorkshop), -1
               done()
       it "Should block members from workshops they're filtered from", (done) ->
-        Workshop.model.create {
+        Workshop.create {
           name: "filter test"
           host: "Bob"
           description: "Make some beaver hats, with Bob. It'll be fantastical."
@@ -320,11 +320,11 @@ describe "Member", ->
     testMember = null
     testWorkshop = null
     before (done) ->
-      Member.model.create boilerplate.member(testGroup, "removeWorkshop@bar.baz"), (err, member) ->
+      Member.create boilerplate.member(testGroup, "removeWorkshop@bar.baz"), (err, member) ->
         should.not.exist err
         should.exist member
         testMember = member._id
-        Workshop.model.create {
+        Workshop.create {
           name: "removeWorkshop test"
           host: "Bob"
           description: "Make some beaver hats, with Bob. It'll be fantastical."
@@ -346,7 +346,7 @@ describe "Member", ->
           should.exist workshop
           done()
     it "Should remove members from workshops.", (done) ->
-      Member.model.findById testMember, (err, member) ->
+      Member.findById testMember, (err, member) ->
         member.addWorkshop testWorkshop, 6, (err, member) ->
           should.not.exist err
           should.exist member
@@ -358,7 +358,7 @@ describe "Member", ->
               should.equal member._workshops.filter( (val) ->
                 return not (val.session == 6 and val._id.equals(testWorkshop))
               ).length, 1
-              Workshop.model.findById testWorkshop, (err, workshop) ->
+              Workshop.findById testWorkshop, (err, workshop) ->
                 should.equal workshop.session(6)._registered.indexOf(member._id), -1
                 done()
 
@@ -369,10 +369,10 @@ describe "Member", ->
     testSession = null
     # We want to test for multiple removals. So just remove once, test many!
     before (done) ->
-      Member.model.create boilerplate.member(testGroup, "remove@bar.baz") , (err, member) ->
+      Member.create boilerplate.member(testGroup, "remove@bar.baz") , (err, member) ->
         testMember = member._id
         # Make a workshop to model.
-        Workshop.model.create {
+        Workshop.create {
           name: "remove member test"
           host: "Bob"
           description: "Make some beaver hats, with Bob. It'll be fantastical."
@@ -405,7 +405,7 @@ describe "Member", ->
         should.equal group._members.indexOf(testMember), -1
         done()
     it "Should remove a member from their workshops when they are deleted", (done) ->
-      Workshop.model.findById testWorkshop, (err, workshop) ->
+      Workshop.findById testWorkshop, (err, workshop) ->
         should.not.exist err
         should.exist workshop
         should.equal workshop.session(1)._registered.indexOf(testMember), -1

@@ -22,11 +22,11 @@ Tests
 ###
 describe "Workshop", ->
   before (done) ->
-    Workshop.model.remove {}, done
+    Workshop.remove {}, done
   
   describe "Workshop.create", ->
     it "Should create a new workshop with valid info", (done) ->
-      Workshop.model.create {
+      Workshop.create {
         name: "Making Beaver Hats with Bob"
         host: "Bob"
         description: "Make some beaver hats, with Bob. It'll be fantastical."
@@ -58,7 +58,7 @@ describe "Workshop", ->
         should.exist workshop.sessions[1]
         done()
     it "Should not create a new workshop with not valid info", (done) ->
-      Workshop.model.create {
+      Workshop.create {
         #name: "Making Beaver Hats with Bob"
         #host: "Bob"
         description: "Make some beaver hats, with Bob. It'll be fantastical."
@@ -84,7 +84,7 @@ describe "Workshop", ->
   describe "Workshop.find -> workshop.session()", ->
     testWorkshop = null
     before (done) ->
-      Workshop.model.create {
+      Workshop.create {
         name: "Session test"
         host: "Bob"
         description: "Make some beaver hats, with Bob. It'll be fantastical."
@@ -111,7 +111,7 @@ describe "Workshop", ->
         testWorkshop = workshop._id
         done()
     it "Should return the session of the workshop", (done) ->
-      Workshop.model.findById testWorkshop, (err, workshop) ->
+      Workshop.findById testWorkshop, (err, workshop) ->
         should.equal workshop.session(1), workshop.sessions[0]
         should.equal workshop.session(2), workshop.sessions[1]
         should.equal workshop.session(11), workshop.sessions[2]
@@ -123,7 +123,7 @@ describe "Workshop", ->
     testMemberTwo = null
     testGroup = null
     before (done) ->
-      Workshop.model.create {
+      Workshop.create {
         name: "Remove test"
         host: "Bob"
         description: "Make some beaver hats, with Bob. It'll be fantastical."
@@ -153,7 +153,7 @@ describe "Workshop", ->
         }, (err, group) =>
           testGroup = group._id
           should.not.exist err
-          Member.model.create {
+          Member.create {
             name: "Foo"
             type: "Youth"
             gender: "Male"
@@ -177,7 +177,7 @@ describe "Workshop", ->
             should.not.exist err
             member.addWorkshop workshop._id, 2, (err, member) =>
               should.not.exist err
-              Member.model.create {
+              Member.create {
                 name: "Foobie"
                 type: "Youth"
                 gender: "Male"
@@ -205,14 +205,14 @@ describe "Workshop", ->
                   done()
 
     it "Should remove all the members of a workshop", (done) ->
-      Workshop.model.findById testWorkshop, (err, workshop) ->
+      Workshop.findById testWorkshop, (err, workshop) ->
         workshop.remove (err) ->
           should.not.exist err
-          Member.model.findById testMember, (err, member) ->
+          Member.findById testMember, (err, member) ->
             should.not.exist err
             should.exist member
             should.equal member._workshops.length, 0
-            Member.model.findById testMemberTwo, (err, memberTwo) ->
+            Member.findById testMemberTwo, (err, memberTwo) ->
               should.not.exist err
               should.exist memberTwo
               should.equal memberTwo._workshops.length, 0
