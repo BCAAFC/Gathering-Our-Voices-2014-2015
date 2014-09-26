@@ -43,7 +43,7 @@ block content
           img.img-rounded.lazy(src="data:image/jpeg;base64,#{item.image}", style="max-width: 100%")
         .col-sm-7
           h2.featurette-heading= item.title
-          p.lead= item.date.toDateString()
+          p.lead.text-muted Posted by #{item.author}, on #{item.date.toDateString()}
           div!= item.content
           if session.isAdmin
             br
