@@ -12,7 +12,8 @@ module.exports = function(data) {
     .get(function (req, res) {
       res.render('register', {
         title: 'Register or Log In',
-        session: req.session
+        session: req.session,
+        lastForm: req.session.lastForm || {}
       });
     }).post(function (req, res) {
       if (req.body.passwordConfirm && req.body.passwordConfirm === req.body.password) {
@@ -41,11 +42,13 @@ module.exports = function(data) {
             } else {
               message = "You either missed a field required (Marked with a *), or there was an error.";
             }
+            req.session.lastForm = req.body;
             res.redirect("/register?message=" + message); // TODO: URL Encode
           }
         });
       } else {
         var message = "The passwords did not match.";
+        req.session.lastForm = req.body;
         res.redirect('/register?message=' + message);
       }
     });
