@@ -90,11 +90,11 @@ block content
           .col-sm-4.col-sm-offset-2
             .form-group
               label Youth In Care
-              input.form-control(type="number", name="youthInCare" value="#{session.group.youthInCare || 0}" min="0" max="#{session.group._members.length}" step="1")
+              input.form-control(type="number", name="youthInCare" value="#{session.group.youthInCare || 0}" step="1")
           .col-sm-4
             .form-group
               label Youth In Care Support
-              input.form-control(type="number", name="youthInCareSupport" value="#{session.group.youthInCareSupport || 0}" min="0" max="#{session.group._members.length}" step="1")
+              input.form-control(type="number", name="youthInCareSupport" value="#{session.group.youthInCareSupport || 0}" step="1")
       .row
         .col-sm-4
         .form-group.col-sm-4
