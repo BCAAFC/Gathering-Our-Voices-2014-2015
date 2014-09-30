@@ -2,14 +2,19 @@ extends templates/layout
 
 block content
   .container.marketing
+    .row
+      .well
+        p As you complete each section of your registration, please click on the large button to the left, marking it complete (green) or incomplete (red). This will allow our conference team to track and assist you with your registration.
+        p You can stop, log out, or close this window at any time and your progress will be saved (up to the last page load). You can return any time by visiting the 'Register' page again and using the login to the right side.
+        p The workshop schedule will be released mid-february. Please stay tuned.
     #conduct.row.featurette
       .col-xs-2
         if session.group._state.steps.conduct
           button.btn.btn-success(style="margin-top: 50%;")
-            i.fa.fa-4x.fa-check
+            i.fa.fa-2x.fa-check
         else
           button.btn.btn-danger(style="margin-top: 50%;")
-            i.fa.fa-4x.fa-remove
+            i.fa.fa-2x.fa-remove
       .col-xs-10
         h2.featurette-heading Code of Conduct
         p Please agree to the code of conduct.
@@ -22,10 +27,10 @@ block content
       .col-xs-2
         if session.group._state.steps.details
           button.btn.btn-success(style="margin-top: 50%;")
-            i.fa.fa-4x.fa-check
+            i.fa.fa-2x.fa-check
         else
           button.btn.btn-danger(style="margin-top: 50%;")
-            i.fa.fa-4x.fa-remove
+            i.fa.fa-2x.fa-remove
       .col-xs-10
         h2.featurette-heading Group Details
         p Update your group details if needed. If some members of your group are Youth in Care, visit here to adjust the number of tickets you'll recieve for the Youth In Care Feast.
@@ -38,10 +43,10 @@ block content
       .col-xs-2
         if session.group._state.steps.members
             button.btn.btn-success(style="margin-top: 50%;")
-              i.fa.fa-4x.fa-check
+              i.fa.fa-2x.fa-check
           else
             button.btn.btn-danger(style="margin-top: 50%;" disabled=(!enoughChaperones || !membersComplete))
-              i.fa.fa-4x.fa-remove
+              i.fa.fa-2x.fa-remove
       .col-xs-10
         h2.featurette-heading Group Members
         p If your group contains Youth (14-18 yrs), you must have at least one registered chaperone per five.
@@ -107,13 +112,29 @@ block content
       .col-xs-2
         if session.group._state.steps.documents
             button.btn.btn-success(style="margin-top: 50%;")
-              i.fa.fa-4x.fa-check
+              i.fa.fa-2x.fa-check
           else
             button.btn.btn-danger(style="margin-top: 50%;")
-              i.fa.fa-4x.fa-remove
+              i.fa.fa-2x.fa-remove
       .col-xs-8
         h2.featurette-heading Useful Documents
         p Please take a look at these documents and forms. When you're done, check it off!
+        .row
+          .col-sm-4
+            ul
+              li Doc 1
+              li Doc 2
+              li Doc 3
+          .col-sm-4
+            ul
+              li Doc 4
+              li Doc 5
+              li Doc 6
+          .col-sm-4
+            ul
+              li Doc 7
+              li Doc 8
+              li Doc 9
 
 
     hr.featurette-divider
@@ -123,10 +144,10 @@ block content
       .col-xs-2
         if session.group._state.steps.payments
             button.btn.btn-success(style="margin-top: 50%;")
-              i.fa.fa-4x.fa-check
+              i.fa.fa-2x.fa-check
         else
           button.btn.btn-danger(style="margin-top: 50%;" disabled=!(paid >= cost))
-            i.fa.fa-4x.fa-remove
+            i.fa.fa-2x.fa-remove
       .col-xs-10
         h2.featurette-heading Payments
         p Payments can be made to... via...
@@ -156,10 +177,10 @@ block content
       .col-xs-2
         if session.group._state.steps.workshops
             button.btn.btn-success(style="margin-top: 50%;")
-              i.fa.fa-4x.fa-check
+              i.fa.fa-2x.fa-check
           else
             button.btn.btn-danger(style="margin-top: 50%;")
-              i.fa.fa-4x.fa-remove
+              i.fa.fa-2x.fa-remove
       .col-xs-10
         h2.featurette-heading Workshops
         p Hold tight... We're just as excited as you about workshops, but we haven't finished up our schedule, or our redesign of the process! Check back mid February.
@@ -173,10 +194,10 @@ block content
         .col-xs-2
           if session.group._state.steps.checkin
               button.btn.btn-success(style="margin-top: 50%;")
-                i.fa.fa-4x.fa-check
+                i.fa.fa-2x.fa-check
             else
               button.btn.btn-danger(style="margin-top: 50%;")
-                i.fa.fa-4x.fa-remove
+                i.fa.fa-2x.fa-remove
         .col-xs-10
           h2.featurette-heading Check In (Admins only)
           p Check a group into the conference.
