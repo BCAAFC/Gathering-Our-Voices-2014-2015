@@ -17,7 +17,7 @@ block content
         .row
           .form-group.col-sm-6
             label Email Address
-            input#email.form-control(type="email" name="email" placeholder="someone@somewhere.ca" required value=lastForm.email)
+            input#email.form-control(type="email" name="email" placeholder="someone@somewhere.ca" autofocus required value=lastForm.email)
           .form-group.col-sm-6
             label Password
             input.form-control(type="password" name="password" placeholder="")
@@ -41,7 +41,7 @@ block content
           legend Login Details
           .form-group
             label.control-label Email Address*
-            input#email.form-control(type="email" name="email" placeholder="someone@somewhere.ca" autofocus required value=lastForm.email)
+            input#email.form-control(type="email" name="email" placeholder="someone@somewhere.ca" required value=lastForm.email)
           .form-group
             label Password*
             input.form-control(type="password" name="password" placeholder="My Secret Password" required)
