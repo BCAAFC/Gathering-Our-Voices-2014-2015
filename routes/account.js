@@ -172,16 +172,17 @@ module.exports = function(data) {
     });
   });
 
-  router.route('/account')
-    .get(util.auth, function (req, res) {
+  router.get('/account', util.auth, function (req, res) {
       Group.model.findById(req.session.group._id)
         .populate("_members")
         .populate("_payments")
         .exec(function (err, group) {
           if (!err && group) {
+            req.session.group = group;
             async.auto({
               paid: group.getPaid.bind(group),
-              cost: group.getCost.bind(group)
+              cost: group.getCost.bind(group),
+              enoughChaperones: group.enoughChaperones.bind(group)
             }, function complete(err, data) {
               res.render('account', {
                 session: req.session,
@@ -191,7 +192,11 @@ module.exports = function(data) {
                 }),
                 payments: group._payments,
                 paid: data.paid,
-                cost: data.cost
+                cost: data.cost,
+                enoughChaperones: data.enoughChaperones,
+                membersComplete: _.every(group._members, function (val) {
+                  return val._state.complete;
+                })
               });
             });
           } else {
@@ -199,6 +204,22 @@ module.exports = function(data) {
             console.error(err);
           }
         });
+    });
+
+  router.route('/details')
+    .get(util.auth, function (req, res) {
+      Group.model.findById(req.session.group._id).exec(function (err, group) {
+        if (!err && group) {
+          req.session.group = group;
+          res.render('details', {
+            session: req.session,
+            title: 'Details',
+          });
+        } else {
+          res.send('Sorry, there was an error finding your group. Try again?');
+          console.error(err);
+        }
+      });
     })
     .put(util.auth, function (req, res) {
       Group.model.findById(req.session.group._id).exec(function (err, group) {

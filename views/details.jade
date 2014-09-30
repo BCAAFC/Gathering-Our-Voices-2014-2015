@@ -1,0 +1,103 @@
+extends templates/layout
+
+block content
+  #details.container
+    form(action="/details", method="POST" enctype="application/x-www-form-urlencoded")
+      input(type="hidden", name="_method", value="PUT")
+      fieldset
+        legend(style="text-align: center") Login Details
+        p(style="text-align: center") Please don't fill in the password unless you intend to change it!
+        .row
+          .col-sm-2
+          .col-sm-4
+            .form-group
+              label Email
+              input.form-control(type="email", name="email", placeholder="someone@somewhere.ca", value="#{session.group.email}", required)
+          .col-sm-4
+            .form-group
+              label Password
+              input.form-control(type="password", name="password", placeholder="°°°°°°°°")
+            .form-group
+              label Password Confirm
+              input.form-control(type="password", name="passwordConfirm", placeholder="°°°°°°°°")
+      fieldset
+        legend(style="text-align: center") Group Details
+        .row
+          .col-sm-2
+          .col-sm-4
+            .form-group
+              label Primary Contact Name
+              input.form-control(type="text", name="name", placeholder="Foo Bar", value="#{session.group.name}", required)
+            .form-group
+              label Affiliation
+              input.form-control(type="text", name="affiliation", placeholder="Some Organization", value="#{session.group.affiliation}", required)
+            .form-group
+              label Street Address
+              input.form-control(type="text", name="address", placeholder="123 Fake St.", value="#{session.group.address}", required)
+            .form-group
+              label City
+              input.form-control(type="text", name="city", placeholder="Vancouver", value="#{session.group.city}", required)
+            .form-group
+              label Region*
+              select.form-control(name="region", required)
+                option(value="", selected=session.group.region == "") Please choose...
+                option(value="North", selected=session.group.region == "North") North
+                option(value="Interior", selected=session.group.region == "Interior") Interior
+                option(value="Fraser", selected=session.group.region == "Fraser") Fraser
+                option(value="Vancouver Coastal", selected=session.group.region == "Vancouver Coastal") Vancouver Coastal
+                option(value="Vancouver Island", selected=session.group.region == "Vancouver Island") Vancouver Island
+                option(value="Out of Province", selected=session.group.region == "Out of Province") Out of Province
+          .col-sm-4
+            .form-group
+              label Province
+              select.form-control(name="province", required)
+                option(value="", selected=session.group.province == "") Please choose...
+                option(value="British Columbia", selected=session.group.province == "British Columbia") British Columbia
+                option(value="Alberta", selected=session.group.province == "Alberta") Alberta
+                option(value="Saskatchewan", selected=session.group.province == "Saskatchewan") Saskatchewan
+                option(value="Manitoba", selected=session.group.province == "Manitoba") Manitoba
+                option(value="Ontario", selected=session.group.province == "Ontario") Ontario
+                option(value="Quebec", selected=session.group.province == "Quebec") Quebec
+                option(value="New Brunswick", selected=session.group.province == "New Brunswick") New Brunswick
+                option(value="Nova Scotia", selected=session.group.province == "Nova Scotia") Nova Scotia
+                option(value="Prince Edward Island", selected=session.group.province == "Prince Edward Island") Prince Edward Island
+                option(value="Newfoundland and Labrador", selected=session.group.province == "Newfoundland and Labrador") Newfoundland and Labrador
+                option(value="Nunavut", selected=session.group.province == "Nunavut") Nunavut
+                option(value="Northwest Territories", selected=session.group.province == "Northwest Territories") Northwest Territories
+                option(value="Yukon", selected=session.group.province == "Yukon") Yukon
+                option(value="Other (Outside Canada)", selected=session.group.province == "Other (Outside Canada)") Other (Outside Canada)
+            .form-group
+              label Postal Code
+              input.form-control(type="text", name="postalCode", placeholder="A1B 2C3", value="#{session.group.postalCode}", required)
+            .form-group
+              label Daytime Phone #
+              input.form-control(type="text", name="phone", placeholder="(123) 456-7980", value="#{session.group.phone}", required)
+            .form-group
+              label Fax # (Optional)
+              input.form-control(type="text", name="fax", placeholder="(123) 456-7890", value="#{session.group.fax}")
+            .form-group
+              label Group Type*
+              select.form-control(name="affiliationType", required)
+                option(value="", selected=session.group.affiliationType == "") Please Choose...
+                option(value="Friendship Centre", selected=session.group.affiliationType == "Friendship Centre") Friendship Centre
+                option(value="Off-reserve", selected=session.group.affiliationType == "Off-reserve") Off-reserve
+                option(value="On-reserve", selected=session.group.affiliationType == "On-reserve") On-reserve
+                option(value="Other", selected=session.group.affiliationType == "Other") Other
+      fieldset
+        legend.text-center Youth In Care Feast
+        p One of the events taking place during the conference is a special feast to honour youth in care. Some of this groups delegates are or have been a youth in the care of the Ministry of Children and Family Development or an Aboriginal Delegated Agency and would like to attend the feast, please add the number below.
+        .row
+          .col-sm-4.col-sm-offset-2
+            .form-group
+              label Youth In Care
+              input.form-control(type="number", name="youthInCare" value="#{session.group.youthInCare || 0}" min="0" max="#{session.group._members.length}" step="1")
+          .col-sm-4
+            .form-group
+              label Youth In Care Support
+              input.form-control(type="number", name="youthInCareSupport" value="#{session.group.youthInCareSupport || 0}" min="0" max="#{session.group._members.length}" step="1")
+      .row
+        .col-sm-4
+        .form-group.col-sm-4
+          button.btn.btn-primary.btn-block(type="submit")
+            i.fa.fa-edit
+            |  Update Details

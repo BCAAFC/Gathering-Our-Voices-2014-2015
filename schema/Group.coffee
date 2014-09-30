@@ -174,9 +174,6 @@ GroupSchema = new Schema {
       checkin:
         type: Boolean
         default: false
-    enoughChaperones:
-      type: Boolean
-      default: true
   youthInCare:
     type: Number
     default: 0
@@ -276,49 +273,28 @@ GroupSchema.methods.getBalance = (next) ->
       else
         next err, -1
 
-GroupSchema.methods.checkFlags = (next, the_member, action) ->
-  Member = require("./Member")
-  # Member counts
-  Member.find _id: $in: @_members, (err, members) =>
-    youth = 0
-    chaps = 0
-    # If it's a new member
-    if the_member && action && action == "New"
-      if the_member.type == "Youth"
-        if action == "New"
-          youth += 1
-        else
-          youth -= 1
-      else if ["Young Chaperone", "Chaperone"].indexOf(the_member.type) != -1
-        if action == "New"
-          chaps += 1
-        else
-          chaps -= 1
-    members.map (val) ->
-      # If it's an edited member, we need to handle it specifically.
-      if the_member && String(val._id) == String(the_member._id)
-        if action == "Edit"
-          # Need to add their new count instead.
-          if the_member.type == "Youth"
-            youth += 1
-          else if ["Young Chaperone", "Chaperone"].indexOf(the_member.type) != -1
-            chaps += 1
-        else
-          return
-      else if ["Young Chaperone", "Chaperone"].indexOf(val.type) != -1
-        chaps += 1
-      else if val.type == "Youth"
-        youth +=1
-      return
-    if youth > 0
-      @_state.enoughChaperones = ((youth / 5) <= chaps)
-      next ((youth / 5) <= chaps)
-    else
-      @_state.enoughChaperones = true
-      next true
-
 GroupSchema.methods.isAdmin = () ->
   return (process.env.ADMINS.indexOf(@email) != -1)
+
+GroupSchema.methods.enoughChaperones = (next) ->
+  Member = require("./Member")
+  _ = require('lodash')
+  Member.find(_id: $in: @_members).select('type').exec (err, members) ->
+    if (!err and members)
+      reducer = (sum, member) ->
+        sum[member.type] += 1
+        return sum
+      vals = _.reduce(members, reducer, {
+        'Youth': 0,
+        'Young Adult': 0,
+        'Chaperone': 0,
+        'Young Chaperone': 0
+      })
+      youth = vals['Youth']
+      chaperones = (vals['Chaperone'] + vals['Young Chaperone']) * 5
+      next(null, chaperones > youth)
+    else
+      next(err, false)
 
 ###
 Validators

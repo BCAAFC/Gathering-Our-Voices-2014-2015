@@ -74,6 +74,7 @@ module.exports = function(data) {
       });
     })
     .put(util.inGroup, function (req, res) {
+
       Member.findById(req.body.id).exec(function (err, member) {
         if (!err && member) {
           member.name =                       req.body.name;
@@ -98,7 +99,14 @@ module.exports = function(data) {
           }
           member.save(function (err, member) {
             if (!err && member) {
-              res.redirect('/account');
+              Group.model.findByIdAndUpdate(member._group, {
+                $set: {
+                  '_state.steps.members': false
+                }
+              }).exec(function (err, group) {
+                req.session.group = group;
+                res.redirect('/account');
+              });
             } else {
               var message = "There was an error in the validation and saving of the member. Please try again?";
               res.redirect('/account?message=' + message);

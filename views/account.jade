@@ -29,7 +29,7 @@ block content
       .col-xs-10
         h2.featurette-heading Group Details
         p Update your group details if needed. If some members of your group are Youth in Care, visit here to adjust the number of tickets you'll recieve for the Youth In Care Feast.
-        a.btn.btn-block.btn-primary
+        a.btn.btn-block.btn-primary(href="/details")
           i.fa.fa-edit
           | Edit Details
     hr.featurette-divider
@@ -40,11 +40,29 @@ block content
             button.btn.btn-success(style="margin-top: 50%;")
               i.fa.fa-4x.fa-check
           else
-            button.btn.btn-danger(style="margin-top: 50%;")
+            button.btn.btn-danger(style="margin-top: 50%;" disabled=(!enoughChaperones || !membersComplete))
               i.fa.fa-4x.fa-remove
       .col-xs-10
         h2.featurette-heading Group Members
         p If your group contains Youth (14-18 yrs), you must have at least one registered chaperone per five.
+        .row
+          if enoughChaperones
+            .label.label-success
+              i.fa.fa-check
+            |  You have enough chaperones to support your youth.
+          else
+            label.label-danger
+              i.fa.fa-remove
+            |  You do not have enough chaperones to support your youth.
+          br
+          if membersComplete
+            .label.label-success
+              i.fa.fa-check
+            |  All your group members have their required information complete.
+          else
+            .label.label-danger
+              i.fa.fa-remove
+            |  Some of your members are missing information.
         table.table.table-responsive.table-condensed.table-hover
           thead
             tr
