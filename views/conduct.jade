@@ -8,7 +8,7 @@ block content
         p TODO
         if session && session.group
           if !session.group._state.steps.conduct
-            a.btn.btn-block.btn-primary(href="/checkoff/#{req.session.group._id}/conduct") I agree to the code of conduct on behalf of my group.
+            a.btn.btn-block.btn-primary(href="/checkoff/#{session.group._id}/conduct") I agree to the code of conduct on behalf of my group.
           else
             a.btn.btn-block.btn-success(href="/account") Already Agreed
         hr.featurette-divider
