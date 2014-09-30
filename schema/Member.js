@@ -223,6 +223,7 @@ MemberSchema.pre('save', function (next) {
   else if (self.emergencyContact.phone === '') { self._state.complete = false; }
   else if (self.emergencyInfo.medicalNum === '') { self._state.complete = false; }
   else { self._state.complete = true; }
+
   // Ticket Type
   if (self._state.registrationDate < new Date('Feb 1, 2015')) {
     self._state.ticketType = 'Early';

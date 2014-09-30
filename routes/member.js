@@ -30,8 +30,8 @@ module.exports = function(data) {
         },
         emergencyInfo: {
           medicalNum: req.body.emergMedicalNum,
-          allergies:  req.body.emergAllergies,
-          conditions: req.body.emergConditions
+          allergies:  req.body.emergAllergies.split(',').sort(),
+          conditions: req.body.emergConditions.split(',').sort()
         }
       }, function (err, member) {
         if (!err && member) {
@@ -54,7 +54,7 @@ module.exports = function(data) {
     })
     .get(util.auth, function (req, res) {
       // Empty form.
-      res.render('templates/member', {
+      res.render('member', {
         session: req.session
       });
     });
@@ -63,7 +63,7 @@ module.exports = function(data) {
       Member.findById(req.params.id).exec(function (err, member) {
         if (!err && member) {
           // Populated form.
-          res.render('templates/member', {
+          res.render('member', {
             member: member,
             session: req.session
           });
@@ -89,8 +89,8 @@ module.exports = function(data) {
           member.emergencyContact.relation =  req.body.emergRelation;
           member.emergencyContact.phone =     req.body.emergPhone;
           member.emergencyInfo.medicalNum =   req.body.emergMedicalNum;
-          member.emergencyInfo.allergies =    req.body.emergAllergies;
-          member.emergencyInfo.conditions =   req.body.emergConditions;
+          member.emergencyInfo.allergies =    req.body.emergAllergies.split(',').sort();
+          member.emergencyInfo.conditions =   req.body.emergConditions.split(',').sort();
           member._state.youthInCare =         (req.body.youthInCare == "Yes");
           member._state.youthInCareSupport =  (req.body.youthInCareSupport == "Yes");
           if (req.session.isAdmin && req.body.ticketType) {

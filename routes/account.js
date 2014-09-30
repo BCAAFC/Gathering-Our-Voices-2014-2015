@@ -72,24 +72,34 @@ module.exports = function(data) {
     });
   });
 
-  router.get('/conduct/agree', util.auth, function (req, res) {
-    Group.model.findById(req.session.group._id).exec(function (err, group) {
-      if (err) {
-        res.send('Sorry, there was an error finding your group. Try again?');
-        console.error(err);
-      } else {
-        group._state.agreedToConduct = true;
-        group.save(function (err) {
-          if (err) {
-            res.send('Sorry, there was an error saving your group. Try again?');
-            console.error(err);
-          } else {
-            req.session.group = group;
-            res.redirect('/account');
-          }
-        });
+  router.get('/checkoff/:id/:step', util.auth, function (req, res) {
+    if (req.params.id === req.session.group._id || req.session.isAdmin) {
+      if (req.param.step === 'checkin' && !req.session.isAdmin) {
+        res.send('You don not have permission to check in');
+        console.error('Attempt to checkin while not admin');
+        return; // Early
       }
-    });
+      Group.model.findByIdAndUpdate(req.params.id).exec(function (err, group) {
+        if (err) {
+          res.send('Sorry, there was an error finding your group. Try again?');
+          console.error(err);
+        } else {
+          group._state.steps[req.params.step] = !group._state.steps[req.params.step];
+          group.save(function (err) {
+            if (err) {
+              res.send('Error');
+              console.error(err);
+            } else {
+              req.session.group = group;
+              res.send(group._state.steps[req.params.step]);
+            }
+          });
+        }
+      });
+    } else {
+      res.send('You do not have permission to modify this group. Try again?');
+      console.error('Group IDs did not match, or was not admin');
+    }
   });
 
   router.post('/printout', util.auth, function (req, res) {
@@ -166,17 +176,24 @@ module.exports = function(data) {
     .get(util.auth, function (req, res) {
       Group.model.findById(req.session.group._id)
         .populate("_members")
+        .populate("_payments")
         .exec(function (err, group) {
           if (!err && group) {
-            if (group._state.agreedToConduct === false) {
-              res.redirect('/conduct');
-            } else {
+            async.auto({
+              paid: group.getPaid.bind(group),
+              cost: group.getCost.bind(group)
+            }, function complete(err, data) {
               res.render('account', {
                 session: req.session,
                 title: 'Account',
-                members: group._members
+                members: group._members.sort(function (a,b) {
+                  return a.name.localeCompare(b.name);
+                }),
+                payments: group._payments,
+                paid: data.paid,
+                cost: data.cost
               });
-            }
+            });
           } else {
             res.send('Sorry, there was an error finding your group. Try again?');
             console.error(err);

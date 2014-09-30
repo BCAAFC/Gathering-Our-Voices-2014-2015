@@ -152,17 +152,31 @@ GroupSchema = new Schema {
         trim: true
       ]
       default: ''
-    checkedIn:
-      # Did the group check in on registration day?
-      type: Boolean
-      default: false
+    steps:
+      conduct:
+        type: Boolean
+        default: false
+      details:
+        type: Boolean
+        default: false
+      members:
+        type: Boolean
+        default: false
+      documents:
+        type: Boolean
+        default: false
+      payments:
+        type: Boolean
+        default: false
+      workshops:
+        type: Boolean
+        default: false
+      checkin:
+        type: Boolean
+        default: false
     enoughChaperones:
       type: Boolean
       default: true
-    agreedToConduct:
-      # Agreed to the Code of Conduct?
-      type: Boolean
-      default: false
   youthInCare:
     type: Number
     default: 0

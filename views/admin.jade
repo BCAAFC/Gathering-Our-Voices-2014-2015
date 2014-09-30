@@ -20,8 +20,8 @@ block content
         table.table.table-striped
           thead
             tr
-              //- Checked in?
-              th Checkin
+              //- Registration Steps
+              th Steps
               //- Enough Chaperones?
               th Chap
               th Mems
@@ -36,12 +36,14 @@ block content
             for group in groups
               tr
                 td
-                  if group._state.checkedIn
-                    a.label.label-success(href="/checkin/#{group._id}")
-                      .fa.fa-check
-                  else
-                    a.label.label-default(href="/checkin/#{group._id}")
-                      .fa.fa-times
+                  - var steps = ['conduct', 'details', 'members', 'documents', 'payments', 'workshops', 'checkin']
+                  for step in steps
+                    if group._state.steps[step]
+                      button.steps.btn.btn-xs.btn-success.tooltipped(data-toggle="tooltip" title="#{step}" data-url="/checkoff/#{group._id}/#{step}")
+                        .fa.fa-check
+                    else
+                      button.steps.btn.btn-xs.btn-danger.tooltipped(data-toggle="tooltip" title="#{step}" data-url="/checkoff/#{group._id}/#{step}")
+                        .fa.fa-remove
                   if group._state.payment != "Recieved"
                     .label.label-danger.tooltipped(data-toggle="tooltip", title="Payment not recieved!!")
                       .fa.fa-exclamation
@@ -81,4 +83,23 @@ block content
     script.
       $(function() {
         $('.tooltipped').tooltip();
+
+        $('.steps').click(function () {
+          var button = $(this);
+          $.get(button.data('url')).done(function (data) {
+            if (data === true) {
+              button.removeClass('btn-danger');
+              button.addClass('btn-success');
+              var icon = button.find('.fa');
+              icon.removeClass('fa-remove');
+              icon.addClass('fa-check');
+            } else {
+              button.removeClass('btn-success');
+              button.addClass('btn-danger');
+              var icon = button.find('.fa');
+              icon.removeClass('fa-check');
+              icon.addClass('fa-remove');
+            }
+          });
+        });
       });

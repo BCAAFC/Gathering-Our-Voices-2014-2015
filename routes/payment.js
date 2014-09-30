@@ -19,7 +19,7 @@ module.exports = function(data) {
             cost: group.getCost.bind(group)
           }, function complete(err, data) {
             if (!err && data.paid !== null && data.cost !== null) {
-              res.render('templates/payments', {
+              res.render('payments', {
                 title: 'Payments',
                 session: req.session,
                 group: group,

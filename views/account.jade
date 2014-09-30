@@ -1,295 +1,196 @@
 extends templates/layout
 
 block content
-  if !session.group._state.enoughChaperones
-    .container
-      .col-xs-12
-        #alert.alert.alert-danger You don't have enough Chaperones to support all of your youth. Please find some more!
-  if session.isAdmin
-    .container
-      .row(style="text-align: center")
-        .btn.btn-group
-          a#back.btn.btn-primary(href="/admin")
-            .fa.fa-backward
-            |  Go Back
-          a#notes.btn.btn-info(href="/notes/#{session.group._id}")
-            .fa.fa-edit
-            |  Notes
-  #listing.container
-    p.text-muted If this is your first time at Gathering Our Voices, or you'd like a refresher on attendee specifics, please check our FAQ
-      a(href="/faq#attendees")  here.
-    .row
-      .table-responsive
-        table.table.table-striped
+  .container.marketing
+    #conduct.row.featurette
+      .col-xs-2
+        if session.group._state.steps.conduct
+          button.btn.btn-success(style="margin-top: 50%;")
+            i.fa.fa-4x.fa-check
+        else
+          button.btn.btn-danger(style="margin-top: 50%;")
+            i.fa.fa-4x.fa-remove
+      .col-xs-10
+        h2.featurette-heading Code of Conduct
+        p Please agree to the code of conduct.
+        a.btn.btn-block.btn-primary(href="/conduct")
+          i.fa.fa-newspaper-o
+          |  View Code of Conduct
+    hr.featurette-divider
+
+    #details.row.featurette
+      .col-xs-2
+        if session.group._state.steps.details
+          button.btn.btn-success(style="margin-top: 50%;")
+            i.fa.fa-4x.fa-check
+        else
+          button.btn.btn-danger(style="margin-top: 50%;")
+            i.fa.fa-4x.fa-remove
+      .col-xs-10
+        h2.featurette-heading Group Details
+        p Update your group details if needed. If some members of your group are Youth in Care, visit here to adjust the number of tickets you'll recieve for the Youth In Care Feast.
+        a.btn.btn-block.btn-primary
+          i.fa.fa-edit
+          | Edit Details
+    hr.featurette-divider
+
+    #members.row.featurette
+      .col-xs-2
+        if session.group._state.steps.members
+            button.btn.btn-success(style="margin-top: 50%;")
+              i.fa.fa-4x.fa-check
+          else
+            button.btn.btn-danger(style="margin-top: 50%;")
+              i.fa.fa-4x.fa-remove
+      .col-xs-10
+        h2.featurette-heading Group Members
+        p If your group contains Youth (14-18 yrs), you must have at least one registered chaperone per five.
+        table.table.table-responsive.table-condensed.table-hover
           thead
             tr
+              th Done
               th Name
               th Type
-              th Ticket
+              th Workshops
+              th Ticket Type
               th
-                | Information
+                | Actions
                 br
-                small.text-muted Click to edit!
-              th
-                | Workshops
-                br
-                small.text-muted Click to view!
-              th
-                | Remove
-                br
-                small.text-muted Allow?
+                small.text-muted Allow Removes?
                 button#allowRemove.btn.btn-xs.btn-link
                   .fa.fa-times-circle
           tbody
-            if members.length > 0
-              - var counts = [ 0, 0, 0, 0 ]
-              for member in members
-                tr
-                  td= member.name
-                  td
-                    case member.type
-                      when "Youth"
-                        .label.label-info Y
-                        - counts[0] += 1
-                      when "Young Adult"
-                        .label.label-success YA
-                        - counts[1] += 1
-                      when "Young Chaperone"
-                        .label.label-warning YC
-                        - counts[2] += 1
-                      when "Chaperone"
-                        .label.label-danger Ch
-                        - counts[3] += 1
-                      default
-                        .label.label-default NA
-                  td
-                    .label.label-default= member._state.ticketType
-                  td
-                    if member._state.complete
-                      a.edit.btn.btn-sm.btn-success.tooltipped(data-id="#{member._id}", data-toggle="collapse") Complete
-                    else
-                      a.edit.btn.btn-sm.btn-danger.tooltipped(data-id="#{member._id}", data-toggle="collapse") Incomplete
-                  td
-                    if member._workshops.length >= 4
-                      a.memberWorkshops.btn.btn-sm.btn-success.tooltipped(data-toggle="collapse", data-id="#{member._id}") 4+ Workshops
-                    else if member._workshops.length >= 1
-                      a.memberWorkshops.btn.btn-sm.btn-warning.tooltipped(data-toggle="collapse", data-id="#{member._id}") 1+ Workshops
-                    else
-                      a.memberWorkshops.btn.btn-sm.btn-default.tooltipped(data-toggle="collapse", data-id="#{member._id}") No Workshops!
-                    a.btn.btn-sm.btn-success(target="_blank", href="/member/workshops?id=#{member._id}")
-                      i.fa.fa-print
-                      |  Print
-                  td
-                    form(method="POST", action="/member/#{member._id}")
-                      input(type="hidden", name="_method", value="delete")
-                      button.removeButton.btn.btn-xs.btn-danger.tooltipped(disabled,data-toggle="tooltip", title="There is no undo!")
-                        i.fa.fa-trash-o
-                        |  Delete
+            for member in members
+              tr(class=(member._state.complete ? 'success' : 'danger'))
+                td
+                  if member._state.complete
+                    i.fa.fa-check
+                  else
+                    i.fa.fa-remove
+                td= member.name
+                td= member.type
+                td= member._workshops.length
+                td= member._state.ticketType
+                td
+                  a.btn.btn-block.btn-xs.btn-default(href="/member/#{member._id}")
+                    i.fa.fa-edit
+                    |  Edit
+                  form(action="/member/#{member._id}" method="POST")
+                    input(name="_method" value="DELETE", style="display: none")
+                    button.btn.btn-xs.btn-block.btn-danger.removeButton(disabled)
+                      i.fa.fa-remove
+                      |  Remove
+        a.btn.btn-block.btn-primary(href="/member")
+          i.fa.fa-plus
+          |  Add Member
+    hr.featurette-divider
+
+    #documents.row.featurette
+      .col-xs-2
+        if session.group._state.steps.documents
+            button.btn.btn-success(style="margin-top: 50%;")
+              i.fa.fa-4x.fa-check
+          else
+            button.btn.btn-danger(style="margin-top: 50%;")
+              i.fa.fa-4x.fa-remove
+      .col-xs-8
+        h2.featurette-heading Useful Documents
+        p Please take a look at these documents and forms. When you're done, check it off!
+
+
+    hr.featurette-divider
+
+
+    #payments.row.featurette
+      .col-xs-2
+        if session.group._state.steps.payments
+            button.btn.btn-success(style="margin-top: 50%;")
+              i.fa.fa-4x.fa-check
+          else
+            button.btn.btn-danger(style="margin-top: 50%;")
+              i.fa.fa-4x.fa-remove
+      .col-xs-10
+        h2.featurette-heading Payments
+        p Payments can be made to... via...
+        p Cost: $#{cost}
+        p Paid: $#{paid}
+        p.lead Balance: $#{cost - paid}
+        table.table.table-responsive.table-condensed.table-hover
+          thead
+            tr
+              th Amount
+              th Method
+              th Date
+              th Comment
+          tbody
+            for payment in payments
               tr
-                td(colspan="2")
-                  b.lead Totals
-                td
-                  .label.label-info Y
-                  |  Youth: #{counts[0]}
-                td
-                  .label.label-success YA
-                  |  Young Adults: #{counts[1]}
-                td
-                  .label.label-warning YC
-                  |  Young Chaperones: #{counts[2]}
-                td
-                  .label.label-danger Ch
-                  |  Chaperones: #{counts[3]}
+                td= payment.amount
+                td= payment.type
+                td #{payment.date.day} #{payment.date.month} #{payment.date.year}
+                td= payment.description
+        a.btn.btn-block.btn-primary(href="/payments")
+          i.fa.fa-credit-card
+          |  Make a Payment
+    hr.featurette-divider
+
+    #workshops.row.featurette
+      .col-xs-2
+        if session.group._state.steps.workshops
+            button.btn.btn-success(style="margin-top: 50%;")
+              i.fa.fa-4x.fa-check
+          else
+            button.btn.btn-danger(style="margin-top: 50%;")
+              i.fa.fa-4x.fa-remove
+      .col-xs-10
+        h2.featurette-heading Workshops
+        p Hold tight... We're just as excited as you about workshops, but we haven't finished up our schedule, or our redesign of the process! Check back mid February.
+        a.btn.btn-block.btn-primary
+          i.fa.fa-arrow-right
+          |  View Workshops
+    hr.featurette-divider
+
+    if session.isAdmin
+      #checkin.row.featurette
+        .col-xs-2
+          if session.group._state.steps.checkin
+              button.btn.btn-success(style="margin-top: 50%;")
+                i.fa.fa-4x.fa-check
             else
-              tr
-                td.warning(colspan="6") You currently don't have any members. To add members, please hit the big green "Add a member" button.
-    #controls
-      .row(style="text-align: center")
-        .col-sm-3(style="padding-top: 15px")
-          a#add.btn.btn-success(data-toggle="collapse")
-            .fa.fa-plus
-            |  Add a member
+              button.btn.btn-danger(style="margin-top: 50%;")
+                i.fa.fa-4x.fa-remove
+        .col-xs-10
+          h2.featurette-heading Check In (Admins only)
+          p Check a group into the conference.
+      hr.featurette-divider
 
-        .col-sm-3(style="padding-top: 15px")
-          a#group.btn.btn-info(data-toggle="collapse")
-            .fa.fa-edit
-            |  Edit Group Details
-        .col-sm-3(style="padding-top: 15px")
-          a#payment.btn.btn-primary(data-toggle="collapse")
-            .fa.fa-money
-            |  Manage Payments
-        .col-sm-3(style="padding-top: 15px")
-          a#printout.btn.btn-danger(target="_blank", href="/printout")
-            .fa.fa-print
-            |  Group Printout
-  br
-  #panels.panel-group
-    .panel
-      #member.collapse.container
-        include templates/member.jade
-
-    .panel
-      #details.collapse.container
-        form(action="/account", method="POST" enctype="application/x-www-form-urlencoded")
-          input(type="hidden", name="_method", value="PUT")
-          fieldset
-            legend(style="text-align: center") Login Details
-            p(style="text-align: center") Please don't fill in the password unless you intend to change it!
-            .row
-              .col-sm-2
-              .col-sm-4
-                .form-group
-                  label Email
-                  input.form-control(type="email", name="email", placeholder="someone@somewhere.ca", value="#{session.group.email}", required)
-              .col-sm-4
-                .form-group
-                  label Password
-                  input.form-control(type="password", name="password", placeholder="°°°°°°°°")
-                .form-group
-                  label Password Confirm
-                  input.form-control(type="password", name="passwordConfirm", placeholder="°°°°°°°°")
-          fieldset
-            legend(style="text-align: center") Group Details
-            .row
-              .col-sm-2
-              .col-sm-4
-                .form-group
-                  label Primary Contact Name
-                  input.form-control(type="text", name="name", placeholder="Foo Bar", value="#{session.group.name}", required)
-                .form-group
-                  label Affiliation
-                  input.form-control(type="text", name="affiliation", placeholder="Some Organization", value="#{session.group.affiliation}", required)
-                .form-group
-                  label Street Address
-                  input.form-control(type="text", name="address", placeholder="123 Fake St.", value="#{session.group.address}", required)
-                .form-group
-                  label City
-                  input.form-control(type="text", name="city", placeholder="Vancouver", value="#{session.group.city}", required)
-                .form-group
-                  label Region*
-                  select.form-control(name="region", required)
-                    option(value="", selected=session.group.region == "") Please choose...
-                    option(value="North", selected=session.group.region == "North") North
-                    option(value="Interior", selected=session.group.region == "Interior") Interior
-                    option(value="Fraser", selected=session.group.region == "Fraser") Fraser
-                    option(value="Vancouver Coastal", selected=session.group.region == "Vancouver Coastal") Vancouver Coastal
-                    option(value="Vancouver Island", selected=session.group.region == "Vancouver Island") Vancouver Island
-                    option(value="Out of Province", selected=session.group.region == "Out of Province") Out of Province
-              .col-sm-4
-                .form-group
-                  label Province
-                  select.form-control(name="province", required)
-                    option(value="", selected=session.group.province == "") Please choose...
-                    option(value="British Columbia", selected=session.group.province == "British Columbia") British Columbia
-                    option(value="Alberta", selected=session.group.province == "Alberta") Alberta
-                    option(value="Saskatchewan", selected=session.group.province == "Saskatchewan") Saskatchewan
-                    option(value="Manitoba", selected=session.group.province == "Manitoba") Manitoba
-                    option(value="Ontario", selected=session.group.province == "Ontario") Ontario
-                    option(value="Quebec", selected=session.group.province == "Quebec") Quebec
-                    option(value="New Brunswick", selected=session.group.province == "New Brunswick") New Brunswick
-                    option(value="Nova Scotia", selected=session.group.province == "Nova Scotia") Nova Scotia
-                    option(value="Prince Edward Island", selected=session.group.province == "Prince Edward Island") Prince Edward Island
-                    option(value="Newfoundland and Labrador", selected=session.group.province == "Newfoundland and Labrador") Newfoundland and Labrador
-                    option(value="Nunavut", selected=session.group.province == "Nunavut") Nunavut
-                    option(value="Northwest Territories", selected=session.group.province == "Northwest Territories") Northwest Territories
-                    option(value="Yukon", selected=session.group.province == "Yukon") Yukon
-                    option(value="Other (Outside Canada)", selected=session.group.province == "Other (Outside Canada)") Other (Outside Canada)
-                .form-group
-                  label Postal Code
-                  input.form-control(type="text", name="postalCode", placeholder="A1B 2C3", value="#{session.group.postalCode}", required)
-                .form-group
-                  label Daytime Phone #
-                  input.form-control(type="text", name="phone", placeholder="(123) 456-7980", value="#{session.group.phone}", required)
-                .form-group
-                  label Fax # (Optional)
-                  input.form-control(type="text", name="fax", placeholder="(123) 456-7890", value="#{session.group.fax}")
-                .form-group
-                  label Group Type*
-                  select.form-control(name="affiliationType", required)
-                    option(value="", selected=session.group.affiliationType == "") Please Choose...
-                    option(value="Friendship Centre", selected=session.group.affiliationType == "Friendship Centre") Friendship Centre
-                    option(value="Off-reserve", selected=session.group.affiliationType == "Off-reserve") Off-reserve
-                    option(value="On-reserve", selected=session.group.affiliationType == "On-reserve") On-reserve
-                    option(value="Other", selected=session.group.affiliationType == "Other") Other
-          fieldset
-            legend.text-center Youth In Care Feast
-            p One of the events taking place during the conference is a special feast to honour youth in care. Some of this groups delegates are or have been a youth in the care of the Ministry of Children and Family Development or an Aboriginal Delegated Agency and would like to attend the feast, please add the number below.
-            .row
-              .col-sm-4.col-sm-offset-2
-                .form-group
-                  label Youth In Care
-                  input.form-control(type="number", name="youthInCare" value="#{session.group.youthInCare || 0}" min="0" max="#{session.group._members.length}" step="1")
-              .col-sm-4
-                .form-group
-                  label Youth In Care Support
-                  input.form-control(type="number", name="youthInCareSupport" value="#{session.group.youthInCareSupport || 0}" min="0" max="#{session.group._members.length}" step="1")
-          .row
-            .col-sm-4
-            .form-group.col-sm-4
-              button.btn.btn-primary.btn-block(type="submit")
-                i.fa.fa-edit
-                |  Update Details
-    .panel
-      #payments.collapse.container
-    .panel
-      #memberWorkshops.collapse.container
-
-  script.
-    $(function() {
-      'use strict';
-      // Enable or disable removing members for safety.
-      $('#allowRemove').click(function() {
-        var state = $('.removeButton').attr('disabled');
-        $('.removeButton').attr('disabled', !state);
-      });
-
-      // Enable tooltips.
-      $('.tooltipped').tooltip();
-
-      // Setup member editing.
-      $('a.edit').click(function() {
-        $('#panels .in').collapse('hide');
-        $.get('/member/' + $(this).data('id'), function(data) {
-          $('#member').html(data).collapse('show').one('shown.bs.collapse', function() {
-            $(document).scrollTop( $('#member').offset().top );
+    script.
+      $(function () {
+        // Enable or disable removing members for safety.
+        $('#allowRemove').click(function() {
+          var state = $('.removeButton').attr('disabled');
+          $('.removeButton').attr('disabled', !state);
+        });
+        // Checkboxes
+        $('.row.featurette > .col-xs-2 > button').click(function() {
+          var button = $(this),
+              clicked = $(this).closest('.row.featurette').attr('id'),
+              id = '!{session.group._id}';
+          $.get('/checkoff/' + id + '/' + clicked).done(function (data) {
+            console.log(data === true)
+            if (data === true) {
+              button.removeClass('btn-danger');
+              button.addClass('btn-success');
+              var icon = button.find('.fa');
+              icon.removeClass('fa-remove');
+              icon.addClass('fa-check');
+            } else {
+              button.removeClass('btn-success');
+              button.addClass('btn-danger');
+              var icon = button.find('.fa');
+              icon.removeClass('fa-check');
+              icon.addClass('fa-remove');
+            }
           });
-        });
-      });
-
-      // Setup member adding.
-      $('a#add').click(function() {
-        $('#panels .in').collapse('hide');
-        $.get('/member', function(data) {
-          $('#member').html(data).collapse('show').one('shown.bs.collapse', function() {
-            $(document).scrollTop( $('#member').offset().top );
-          });
-        });
-      });
-
-      // Setup payment adding.
-      $('a#payment').click(function() {
-        $('#panels .in').collapse('hide');
-        $.get('/payments', function(data) {
-          $('#member').html(data).collapse('show').one('shown.bs.collapse', function() {
-            $(document).scrollTop( $('#member').offset().top );
-          });
-        });
-      });
-
-      // Setup group details panel.
-      $('a#group').click(function() {
-        $('panels .in').collapse('hide');
-        $('#details').collapse('show').one('shown.bs.collapse', function() {
-          $(document).scrollTop( $('#details').offset().top );
-        });
-      });
-
-      $('a.memberWorkshops').click(function() {
-        $('#panels .in').collapse('hide');
-        $.get('/member/' + $(this).data('id') + '/workshops', function(data) {
-          $('#memberWorkshops').html(data).collapse('show').one('shown.bs.collapse', function() {
-            $(document).scrollTop( $('#memberWorkshops').offset().top );
-          });
-        });
-      });
-    });
+        })
+      })
