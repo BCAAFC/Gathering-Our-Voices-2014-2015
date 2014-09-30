@@ -30,8 +30,8 @@ function environment(callback) {
   }
   if (process.env.SECRET === undefined) {
     // Cookie secret.
-    process.env.SECRET = require('crypto').randomBytes(256);
-    console.warn('$SECRET not set, generated one.');
+    process.env.SECRET = "I'm insecure!";
+    console.warn('$SECRET not set, used INSECURE default.');
   }
   if (process.env.ADMINS === undefined) {
     // Administrator emails, for elevated permissions.
@@ -96,7 +96,7 @@ function httpd(callback, data) {
       return method;
     }
   }));
-  server.use(require('cookie-parser')(process.env.SECRET));
+  // server.use(require('cookie-parser')(process.env.SECRET));
   // Session handling.
   var session = require('express-session'),
       RedisStore = require('connect-redis')(session);
@@ -104,7 +104,8 @@ function httpd(callback, data) {
     secret: process.env.SECRET,
     store: new RedisStore({client: data.redis}),
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    secure: true
   }));
   // View engine
   server.set('views', './views');
