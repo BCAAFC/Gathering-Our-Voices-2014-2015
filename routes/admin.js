@@ -56,7 +56,7 @@ module.exports = function(data) {
         Group.model.findById(req.params.id).exec(function (err, group) {
           if (!err && group) {
             group._notes = req.body.notes;
-            group._state.tags = req.body.tags.split(',');
+            group._state.tags = req.body.tags.split(',').sort();
             group.save(function (err) {
               if (!err) {
                 res.redirect('/notes/' + group._id);
