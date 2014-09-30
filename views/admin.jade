@@ -26,9 +26,9 @@ block content
               th Chap
               th Mems
               th Affiliation
-              th Phone #
+              th Phone
               //- Reserved for Coordinators to declare what they want.
-              th Registration
+              th Tags
               th Workshops
               //- Actions
               th
@@ -64,35 +64,9 @@ block content
                   .text-muted #{group.name} :: #{group._id}
                 td= group.phone
                 td
-                  case group._state.registration
-                    when "Unchecked"
-                      .label.label-danger Unchecked
-                    when "New Members"
-                      .label.label-warning New Members
-                    when "Reviewed"
-                      .label.label-success Reviewed
-                    default
-                      .label.label-default N/A (old entry)
-                td
-                  case group._state.workshops
-                    when "Not Contacted"
-                      .label.label-danger Not Contacted
-                    when "Needs Help"
-                      .label.label-warning Needs Help
-                    when "Group Ok"
-                      .label.label-success Group Ok
-                    when "Group Called"
-                      .label.label-warning Group Called
-                    when "Workshops Incomplete"
-                      .label.label-danger Workshops Incomplete
-                    when "Workshops Complete"
-                      .label.label-success Workshops Complete
-                    when "Talent Show"
-                      .label.label-info Talent Show
-                    when "Cancelled"
-                      .label.label-default Cancelled
-                    default
-                      .label.label-default N/A (old entry)
+                  for tag in group._state.tags
+                    span.label.label-default= tag
+                    = ' '
                 td
                   .btn-group
                     a.btn.btn-sm.btn-info(href="/notes/#{group._id}")
