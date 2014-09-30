@@ -296,6 +296,17 @@ GroupSchema.methods.enoughChaperones = (next) ->
     else
       next(err, false)
 
+GroupSchema.methods.allComplete = (next) ->
+  Member = require("./Member")
+  _ = require('lodash')
+  Member.find(_id: $in: @_members).select('_state.complete').exec (err, members) ->
+    if (!err && members)
+      complete = _.every(members, (member) ->
+        return member._state.complete)
+      next(null, complete)
+    else
+      next(err, false)
+
 ###
 Validators
   Validators can be mapped to paths. It lets you validate on change.

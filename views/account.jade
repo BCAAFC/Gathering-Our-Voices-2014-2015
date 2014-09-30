@@ -124,9 +124,9 @@ block content
         if session.group._state.steps.payments
             button.btn.btn-success(style="margin-top: 50%;")
               i.fa.fa-4x.fa-check
-          else
-            button.btn.btn-danger(style="margin-top: 50%;")
-              i.fa.fa-4x.fa-remove
+        else
+          button.btn.btn-danger(style="margin-top: 50%;" disabled=!(paid >= cost))
+            i.fa.fa-4x.fa-remove
       .col-xs-10
         h2.featurette-heading Payments
         p Payments can be made to... via...

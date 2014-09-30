@@ -75,26 +75,49 @@ module.exports = function(data) {
   router.get('/checkoff/:id/:step', util.auth, function (req, res) {
     if (req.params.id === req.session.group._id || req.session.isAdmin) {
       if (req.param.step === 'checkin' && !req.session.isAdmin) {
-        res.send('You don not have permission to check in');
+        res.send('You do not have permission to check in');
         console.error('Attempt to checkin while not admin');
         return; // Early
       }
-      Group.model.findByIdAndUpdate(req.params.id).exec(function (err, group) {
-        if (err) {
-          res.send('Sorry, there was an error finding your group. Try again?');
-          console.error(err);
-        } else {
-          group._state.steps[req.params.step] = !group._state.steps[req.params.step];
-          group.save(function (err) {
-            if (err) {
-              res.send('Error');
-              console.error(err);
+      var toggleAndSave = function toggleAndSave(group) {
+        group._state.steps[req.params.step] = !group._state.steps[req.params.step];
+        group.save(function (err) {
+          if (err) {
+            res.send('Error');
+            console.error(err);
+          } else {
+            req.session.group = group;
+            res.send(group._state.steps[req.params.step]);
+          }
+        });
+      };
+      Group.model.findById(req.params.id).exec(function (err, group) {
+        if (req.params.step === 'payments') {
+          async.auto({
+            cost: group.getCost.bind(group),
+            paid: group.getPaid.bind(group)
+          }, function complete(err, data) {
+            if (data.paid >= data.cost) {
+              toggleAndSave(group);
             } else {
-              req.session.group = group;
-              res.send(group._state.steps[req.params.step]);
+              return;
+              // Don't respond.
+            }
+          });
+        } else if (req.params.step === 'members') {
+          async.auto({
+            chaperones: group.enoughChaperones.bind(group),
+            complete: group.allComplete.bind(group)
+          }, function complete(err, data) {
+            if (data.chaperones && data.complete) {
+              toggleAndSave(group);
+            } else {
+              return;
+              // Don't respond.
             }
           });
         }
+
       });
     } else {
       res.send('You do not have permission to modify this group. Try again?');
@@ -182,7 +205,8 @@ module.exports = function(data) {
             async.auto({
               paid: group.getPaid.bind(group),
               cost: group.getCost.bind(group),
-              enoughChaperones: group.enoughChaperones.bind(group)
+              enoughChaperones: group.enoughChaperones.bind(group),
+              allComplete : group.allComplete.bind(group)
             }, function complete(err, data) {
               res.render('account', {
                 session: req.session,
@@ -194,9 +218,7 @@ module.exports = function(data) {
                 paid: data.paid,
                 cost: data.cost,
                 enoughChaperones: data.enoughChaperones,
-                membersComplete: _.every(group._members, function (val) {
-                  return val._state.complete;
-                })
+                membersComplete: data.allComplete
               });
             });
           } else {

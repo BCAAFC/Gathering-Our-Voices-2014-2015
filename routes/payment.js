@@ -62,14 +62,21 @@ module.exports = function(data) {
     });
   });
 
-  router.delete('/payment/delete/:id', util.admin, function (req, res) {
+  router.get('/payment/delete/:id', util.admin, function (req, res) {
     Payment.model.findById(req.params.id).exec(function (err, payment) {
       if (!err && payment) {
         payment.remove(function (err) {
           if (err) {
             res.redirect('/account?message=' + err);
           } else {
-            res.redirect('/account');
+            Group.model.findByIdAndUpdate(payment._group, {
+              $set: {
+                '_state.steps.payments': false
+              }
+            }).exec(function (err, group) {
+              req.session.group = group;
+              res.redirect('/account');
+            });
           }
         });
       } else {

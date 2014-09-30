@@ -123,14 +123,13 @@ module.exports = function(data) {
         if (!err && member) {
           member.remove(function (err) {
             if (!err) {
-              Group.model.findById(member._group).exec(function (err, group) {
-                if (!err && group) {
-                  req.session.group = group;
-                  res.redirect('/account');
-                } else {
-                  var message = 'Sorry, there was an error refreshing your group. You might need to relog.';
-                  res.redirect('/account?message=' + message);
+              Group.model.findByIdAndUpdate(member._group, {
+                $set: {
+                  '_state.steps.members': false
                 }
+              }).exec(function (err, group) {
+                req.session.group = group;
+                res.redirect('/account');
               });
             } else {
               res.send('Sorry, there was an error removing that member. Try again?');
