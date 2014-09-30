@@ -100,8 +100,7 @@ module.exports = function(data) {
             if (data.paid >= data.cost) {
               toggleAndSave(group);
             } else {
-              return;
-              // Don't respond.
+              res.send('error');
             }
           });
         } else if (req.params.step === 'members') {
@@ -112,10 +111,12 @@ module.exports = function(data) {
             if (data.chaperones && data.complete) {
               toggleAndSave(group);
             } else {
-              return;
-              // Don't respond.
+              res.send('error');
             }
           });
+        } else {
+          // No requirements
+          toggleAndSave(group);
         }
 
       });
