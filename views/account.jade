@@ -194,8 +194,8 @@ block content
           var button = $(this),
               clicked = $(this).closest('.row.featurette').attr('id'),
               id = '!{session.group._id}';
+          button.attr('disabled', true);
           $.get('/checkoff/' + id + '/' + clicked).done(function (data) {
-            console.log(data === true)
             if (data === true) {
               button.removeClass('btn-danger');
               button.addClass('btn-success');
@@ -209,6 +209,7 @@ block content
               icon.removeClass('fa-check');
               icon.addClass('fa-remove');
             }
+            button.removeAttr('disabled');
           });
         })
       })

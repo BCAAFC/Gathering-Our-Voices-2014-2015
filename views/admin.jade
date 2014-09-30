@@ -86,6 +86,7 @@ block content
 
         $('.steps').click(function () {
           var button = $(this);
+          button.attr('disabled', true);
           $.get(button.data('url')).done(function (data) {
             if (data === true) {
               button.removeClass('btn-danger');
@@ -100,6 +101,7 @@ block content
               icon.removeClass('fa-check');
               icon.addClass('fa-remove');
             }
+            button.removeAttr('disabled');
           });
         });
       });
