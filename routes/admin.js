@@ -56,11 +56,9 @@ module.exports = function(data) {
         Group.model.findById(req.params.id).exec(function (err, group) {
           if (!err && group) {
             group._notes = req.body.notes;
-            group._state.registration = req.body.registration;
-            group._state.workshops = req.body.workshops;
-            group._state.payment = req.body.payment;
+            group._state.tags = req.body.tags.split(',');
             group.save(function (err) {
-              if (err) {
+              if (!err) {
                 res.redirect('/notes/' + group._id);
               } else {
                 res.send('There was an error saving the group.');

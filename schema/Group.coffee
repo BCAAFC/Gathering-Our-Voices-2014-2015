@@ -146,38 +146,12 @@ GroupSchema = new Schema {
     trim: true
   # State variables
   _state:
-    registration:
-      type: String
-      default: "Unchecked"
-      # TODO: Change these to be meaningful.
-      enum: [
-        "Unchecked",
-        "New Members",
-        "Reviewed"
+    tags:
+      type: [
+        type: String
+        trim: true
       ]
-    workshops:
-      type: String
-      default: "Not Contacted"
-      # TODO: Change these to be meaningful
-      enum: [
-        "Not Contacted",
-        "Needs Help",
-        "Group Ok",
-        "Group Called"
-        "Workshops Complete",
-        "Workshops Incomplete",
-        "Cancelled",
-        "Talent Show"
-      ]
-    payment:
-      type: String
-      default: "Need to contact"
-      # TODO: Change these to be meaningful
-      enum: [
-        "Need to contact",
-        "Waiting",
-        "Recieved"
-      ]
+      default: ''
     checkedIn:
       # Did the group check in on registration day?
       type: Boolean
