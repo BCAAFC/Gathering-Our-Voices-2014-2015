@@ -5,6 +5,9 @@ block content
     .row
       .col-sm-12.text-center
         p.lead.timer
+        p Youth delegate spots filled: <span id='count'></span>
+        .progress
+          .progress-bar(role="progressbar" style="width: 0%")
     .row
       .col-sm-3(style="text-align: center")
         img.img-rounded.lazy(src="/img/index/register.jpg", style="height: 150px")
@@ -130,9 +133,18 @@ block content
                 " Until GOV 2015!"
               );
               setTimeout(countdown, 3000);
-            };
-            countdown();
+          };
+          countdown();
         } else {
           $('.timer').html("GOV 2015 has begun!");
         }
+        var count = function count() {
+          $.getJSON('/members/count').done(function (data) {
+            console.log(data);
+            $('.progress-bar').css('width', Math.ceil(data.count / data.limit) + '%');
+            $('#count').text(data.count + '/' + data.limit);
+          });
+          setTimeout(count, 1000*60*2); // 2 mins.
+        }
+        count();
       })();

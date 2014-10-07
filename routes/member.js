@@ -7,55 +7,68 @@ module.exports = function(data) {
   var router = require('express').Router(),
       Member = require('../schema/Member'),
       Group = require('../schema/Group'),
-      util = require('./util');
+      util = require('./util'),
+      max_youth_delegates = 1000;
 
   router.route('/member')
     .post(util.auth, function (req, res) {
-      Member.create({
-        name:         req.body.name,
-        _group:       req.session.group._id,
-        type:         req.body.type,
-        gender:       req.body.gender,
-        birthDate: {
-          day:        req.body.birthDay,
-          month:      req.body.birthMonth,
-          year:       req.body.birthYear
-        },
-        phone:        req.body.phone,
-        email:        req.body.email,
-        emergencyContact: {
-          name:       req.body.emergName,
-          relation:   req.body.emergRelation,
-          phone:      req.body.emergPhone
-        },
-        emergencyInfo: {
-          medicalNum: req.body.emergMedicalNum,
-          allergies:  req.body.emergAllergies.split(',').sort(),
-          conditions: req.body.emergConditions.split(',').sort()
-        }
-      }, function (err, member) {
-        if (!err && member) {
-          // Refresh the group.
-          Group.model.findById(member._group).exec(function (err, group) {
-            if (!err && group) {
-              req.session.group = group;
-              res.redirect('/account');
+      Member.count({type: {$ne: 'Chaperone'}}, function (err, count) {
+        if (err || (count >= max_youth_delegates && (!req.session.isAdmin || req.body.type !== 'Chaperone'))) {
+          var message = "The conference has reached capacity, sorry!";
+          res.redirect('/account?message=' + message);
+        } else {
+          Member.create({
+            name:         req.body.name,
+            _group:       req.session.group._id,
+            type:         req.body.type,
+            gender:       req.body.gender,
+            birthDate: {
+              day:        req.body.birthDay,
+              month:      req.body.birthMonth,
+              year:       req.body.birthYear
+            },
+            phone:        req.body.phone,
+            email:        req.body.email,
+            emergencyContact: {
+              name:       req.body.emergName,
+              relation:   req.body.emergRelation,
+              phone:      req.body.emergPhone
+            },
+            emergencyInfo: {
+              medicalNum: req.body.emergMedicalNum,
+              allergies:  req.body.emergAllergies.split(',').sort(),
+              conditions: req.body.emergConditions.split(',').sort()
+            }
+          }, function (err, member) {
+            if (!err && member) {
+              // Refresh the group.
+              Group.model.findById(member._group).exec(function (err, group) {
+                if (!err && group) {
+                  req.session.group = group;
+                  res.redirect('/account');
+                } else {
+                  var message = "Couldn't refresh your group details. You might need to relog!";
+                  res.redirect('/account?message=' + message);
+                }
+              });
             } else {
-              var message = "Couldn't refresh your group details. You might need to relog!";
+              // TODO Better error messages.
+              var message = "There was an error in the validation and saving of the member. Please try again?";
               res.redirect('/account?message=' + message);
             }
           });
-        } else {
-          // TODO Better error messages.
-          var message = "There was an error in the validation and saving of the member. Please try again?";
-          res.redirect('/account?message=' + message);
         }
       });
     })
     .get(util.auth, function (req, res) {
-      // Empty form.
-      res.render('member', {
-        session: req.session
+      Member.count({type: {$ne: 'Chaperone'}}, function (err, count) {
+        if (err || (count >= max_youth_delegates)) {
+          req.session.message = "The conference has reached capacity! You will only be able to add chaperones and edit members.";
+        }
+        // Empty form.
+        res.render('member', {
+          session: req.session
+        });
       });
     });
   router.route('/member/:id')
@@ -74,7 +87,6 @@ module.exports = function(data) {
       });
     })
     .put(util.inGroup, function (req, res) {
-
       Member.findById(req.body.id).exec(function (err, member) {
         if (!err && member) {
           member.name =                       req.body.name;
@@ -194,6 +206,24 @@ module.exports = function(data) {
         console.error(err);
       }
     });
+  });
+
+  var runningStats = {
+    count: 0,
+    lastCheck: new Date('Jan 1, 1970'),
+    interval: 1000*60*2 // Max once per 2 minutes.
+  };
+  router.get('/members/count', function (req, res) {
+    if (new Date() - runningStats.lastCheck > runningStats.interval) {
+      Member.count({type: {$ne: 'Chaperone'}}, function (err, count) {
+        if (!err && count) {
+          runningStats.count = count;
+        }
+        res.json({count: runningStats.count, limit: max_youth_delegates});
+      });
+    } else {
+      res.json({count: runningStats.count, limit: max_youth_delegates});
+    }
   });
 
   return router;

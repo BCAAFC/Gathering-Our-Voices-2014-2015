@@ -18,8 +18,8 @@ var MemberSchema = new Schema({
   type: {
     type: String,
     // Must account for the 'null' case.
-    enum: ['', 'Youth', 'Young Adult', 'Chaperone', 'Young Chaperone'],
-    default: ''
+    enum: ['Youth', 'Young Adult', 'Chaperone', 'Young Chaperone'],
+    required: true
   },
   gender: {
     type: String,

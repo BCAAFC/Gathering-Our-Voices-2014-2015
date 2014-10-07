@@ -17,10 +17,10 @@ block content
           p(style="text-align: center").text-muted Fields with a star (*) are required.
           .form-group
             label Name*
-            input.form-control(type="text", name="name", placeholder="Foo Bar", value=(member && member.name)? member.name : '')
+            input.form-control(type="text", required, name="name", placeholder="Foo Bar", value=(member && member.name)? member.name : '')
           .form-group
             label Delegate Type*
-            select.form-control(name="type")
+            select.form-control(name="type", required)
               option(value="", selected=!member) Please choose...
               option(value="Youth", selected=member && member.type == "Youth") Youth (14-17 years)
               option(value="Young Adult", selected=member && member.type == "Young Adult") Young Adult (18-24 years)
