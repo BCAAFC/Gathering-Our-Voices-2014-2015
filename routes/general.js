@@ -14,12 +14,23 @@ module.exports = function(data) {
     });
   });
 
+  var marked = require('marked');
+  marked.setOptions({
+    gfm: true,
+    tables: true,
+    breaks: true,
+    smartLists: true,
+    smartypants: true
+  });
   router.get('/news', function (req, res) {
     News.find({}).sort('-date').exec(function (err, news) {
       res.render('news', {
         title: 'News',
         session: req.session,
-        news: news
+        news: _.map(news, function (val) {
+          val.content = marked(val.content);
+          return val;
+        })
       });
     });
   });

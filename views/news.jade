@@ -44,7 +44,8 @@ block content
         .col-sm-7
           h2.featurette-heading= item.title
           p.lead.text-muted Posted by #{item.author}, on #{item.date.toDateString()}
-          div!= item.content
+          div
+            | !{item.content}
           if session.isAdmin
             br
             a.btn.btn-xs.btn-danger.pull-right(href="/news/del/#{item._id}") Delete
