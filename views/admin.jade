@@ -84,22 +84,21 @@ block content
         $('.steps').click(function () {
           var button = $(this);
           button.attr('disabled', true);
-          $.get(button.data('url')).done(function (data) {
-            if (data === true) {
+          $.getJSON(button.data('url')).done(function (data) {
+            if (data.error) {
+              alert('Unable to mark! Group does not meet prerequisites.');
+            } else if (data.done === true) {
               button.removeClass('btn-danger');
               button.addClass('btn-success');
               var icon = button.find('.fa');
               icon.removeClass('fa-remove');
               icon.addClass('fa-check');
-            } else if (data === false) {
+            } else if (data.done === false) {
               button.removeClass('btn-success');
               button.addClass('btn-danger');
               var icon = button.find('.fa');
               icon.removeClass('fa-check');
               icon.addClass('fa-remove');
-            } else {
-              // Must have been an error.
-              alert('Unable to mark! Group does not meet prerequisites.')
             }
             button.removeAttr('disabled');
           });

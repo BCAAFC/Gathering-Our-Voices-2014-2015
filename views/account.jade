@@ -222,22 +222,21 @@ block content
               clicked = $(this).closest('.row.featurette').attr('id'),
               id = '!{session.group._id}';
           button.attr('disabled', true);
-          $.get('/checkoff/' + id + '/' + clicked).done(function (data) {
-            if (String(data) === 'true') {
+          $.getJSON('/checkoff/' + id + '/' + clicked).done(function (data) {
+            if (data.error) {
+              alert('Unable to mark! Group does not meet prerequisites.')
+            } else if (data.done === true) {
               button.removeClass('btn-danger');
               button.addClass('btn-success');
               var icon = button.find('.fa');
               icon.removeClass('fa-remove');
               icon.addClass('fa-check');
-            } else if (String(data) === 'false'){
+            } else if (data.done === 'false'){
               button.removeClass('btn-success');
               button.addClass('btn-danger');
               var icon = button.find('.fa');
               icon.removeClass('fa-check');
               icon.addClass('fa-remove');
-            } else {
-              // Must have been an error.
-              alert('Unable to mark! Group does not meet prerequisites.')
             }
             button.removeAttr('disabled');
           });

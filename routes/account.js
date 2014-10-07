@@ -83,11 +83,11 @@ module.exports = function(data) {
         group._state.steps[req.params.step] = !group._state.steps[req.params.step];
         group.save(function (err) {
           if (err) {
-            res.send('Error');
+            res.json({done: false, error: true});
             console.error(err);
           } else {
             req.session.group = group;
-            res.send(group._state.steps[req.params.step]);
+            res.json({done: group._state.steps[req.params.step]});
           }
         });
       };
@@ -100,7 +100,7 @@ module.exports = function(data) {
             if (data.paid >= data.cost) {
               toggleAndSave(group);
             } else {
-              res.send('error');
+              res.json({done: false, error: true});
             }
           });
         } else if (req.params.step === 'members') {
@@ -111,7 +111,7 @@ module.exports = function(data) {
             if (data.chaperones && data.complete) {
               toggleAndSave(group);
             } else {
-              res.send('error');
+              res.json({done: false, error: true});
             }
           });
         } else {
