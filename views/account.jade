@@ -3,7 +3,7 @@ extends templates/layout
 block content
   .container.marketing
     .row
-      .well
+      .col-xs-8.col-xs-offset-2.well.text-center
         p As you complete each section of your registration, please click on the large button to the left, marking it complete (green) or incomplete (red). This will allow our conference team to track and assist you with your registration.
         p You can stop, log out, or close this window at any time and your progress will be saved (up to the last page load). You can return any time by visiting the 'Register' page again and using the login to the right side.
         p The workshop schedule will be released mid-february. Please stay tuned.
@@ -17,7 +17,7 @@ block content
             i.fa.fa-2x.fa-remove
       .col-xs-10
         h2.featurette-heading Code of Conduct
-        p Please agree to the code of conduct.
+        p Please ensure that your entire group has read and reviewed the code of conduct.
         a.btn.btn-block.btn-primary(href="/conduct")
           i.fa.fa-newspaper-o
           |  View Code of Conduct
@@ -33,7 +33,8 @@ block content
             i.fa.fa-2x.fa-remove
       .col-xs-10
         h2.featurette-heading Group Details
-        p Update your group details if needed. If some members of your group are Youth in Care, visit here to adjust the number of tickets you'll recieve for the Youth In Care Feast.
+        p Update your group details if needed, this information was entered when you first registered.
+        p Inside, indicate if any your group requires any tickets to the Youth In Care dinner, either attending, or as support.
         a.btn.btn-block.btn-primary(href="/details")
           i.fa.fa-edit
           | Edit Details
@@ -44,12 +45,17 @@ block content
         if session.group._state.steps.members
             button.btn.btn-success(style="margin-top: 50%;")
               i.fa.fa-2x.fa-check
-          else
-            button.btn.btn-danger(style="margin-top: 50%;" disabled=(!enoughChaperones || !membersComplete))
-              i.fa.fa-2x.fa-remove
+        else
+          button.btn.btn-danger(style="margin-top: 50%;" disabled=(!enoughChaperones || !membersComplete))
+            i.fa.fa-2x.fa-remove
       .col-xs-10
         h2.featurette-heading Group Members
-        p If your group contains Youth (14-18 yrs), you must have at least one registered chaperone per five.
+        p Youth and Chaperones attending the conference. There are 4 types of attendees:
+        ul
+          li Youth (Ages 14-17): For every 5 Youth, you must have at least 1 Chaperone (Or Young Chaperone)
+          li Young Adults (Ages 18-24)
+          li Young Chaperones (Ages 21-24)
+          li Chaperones (Ages 24+)
         .row
           if enoughChaperones
             .label.label-success
@@ -150,7 +156,7 @@ block content
             i.fa.fa-2x.fa-remove
       .col-xs-10
         h2.featurette-heading Payments
-        p Payments can be made to... via...
+        p Payments can be made to Gathering Our Voices via Credit Card (Phone or Paypal), or cheque.
         p Cost: $#{cost}
         p Paid: $#{paid}
         p.lead Balance: $#{cost - paid}
