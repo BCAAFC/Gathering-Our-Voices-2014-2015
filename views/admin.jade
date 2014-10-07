@@ -85,7 +85,7 @@ block content
           var button = $(this);
           button.attr('disabled', true);
           $.getJSON(button.data('url')).done(function (data) {
-            if (data.error) {
+            if (data.error !== null) {
               alert('Unable to mark! Group does not meet prerequisites.');
             } else if (data.done === true) {
               button.removeClass('btn-danger');
