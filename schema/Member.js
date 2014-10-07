@@ -225,7 +225,7 @@ MemberSchema.pre('save', function (next) {
   else { self._state.complete = true; }
 
   // Ticket Type
-  if (self._state.registrationDate < new Date('Feb 1, 2015')) {
+  if (self._state.registrationDate < new Date('Feb 7, 2015')) {
     self._state.ticketType = 'Early';
   }
   // Is the member in the group?
