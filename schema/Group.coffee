@@ -16,6 +16,10 @@ bcrypt   = require("bcrypt")
 Schema   = mongoose.Schema
 ObjectId = mongoose.Schema.ObjectId
 
+### Vars ###
+earlyTicket = 125
+regularTicket = 175
+
 ###
 Schema
 ###
@@ -250,9 +254,9 @@ GroupSchema.methods.getCost = (next) ->
       # Accumulate ticket prices.
       due = members.map( (val) ->
         if val._state.ticketType is "Early"
-          price = 150
+          price = earlyTicket
         else
-          price = 200
+          price = regularTicket
         return price
       ).reduce( (sum, val, index) ->
         unless (index+1) % 6 is 0
