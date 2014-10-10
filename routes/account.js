@@ -32,9 +32,10 @@ module.exports = function(data) {
           affiliationType: req.body.affiliationType
         }, function (err, group) {
           if (!err) {
-            // TODO: Mail message.
-            req.session.group = group;
-            res.redirect('/account');
+            util.mail(group, 'GOV2015 New Registration', './mails/registration.md', function (err, result) {
+              req.session.group = group;
+              res.redirect('/account');
+            });
           } else if (err) {
             var message;
             if (err.code === 11000) {

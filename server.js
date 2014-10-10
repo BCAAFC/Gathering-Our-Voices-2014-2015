@@ -47,7 +47,7 @@ function environment(callback) {
     process.env.REDIS = process.env.REDISCLOUD_URL || 'localhost';
     console.warn('$REDIS set to default: ' + process.env.REDIS);
   }
-  if (process.env.MANDRILL_APIKEY) {
+  if (process.env.MANDRILL_APIKEY === undefined) {
     // Used for Mandrill, for mailing.
     console.warn('$MANDRILL_APIKEY not set. Expect errors on mailing.');
   }
