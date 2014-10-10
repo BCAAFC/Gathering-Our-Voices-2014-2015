@@ -32,7 +32,7 @@ module.exports = function(data) {
           affiliationType: req.body.affiliationType
         }, function (err, group) {
           if (!err) {
-            util.mail(group, 'GOV2015 New Registration', './mails/registration.md', function (err, result) {
+            util.mail(group, 'GOV2015 New Registration', './mails/registration.md', [], function (err, result) {
               req.session.group = group;
               res.redirect('/account');
             });
@@ -171,8 +171,13 @@ module.exports = function(data) {
       if (!err && group) {
         var hash = Math.random().toString(36).slice(2);
         data.redis.set(hash, group._id, function (err, redisResponse) {
-          // TODO
-          console.error('Not implemented yet!');
+          util.mail(group, 'Password Recovery', './mails/recovery.md', [{
+            name: 'recovery',
+            content: 'https://gatheringourvoices.bcaafc.com/recovery/' + hash
+          }], function (err, result) {
+            var message = 'An email has been sent to you containing the needed information.';
+            res.send(message);
+          });
         });
       } else {
         res.send('Sorry, there was an error finding your group. Try again?');
@@ -184,7 +189,7 @@ module.exports = function(data) {
   router.get('/recovery/:hash', function (req, res) {
     data.redis.get(req.params.hash, function (err, response) {
       data.redis.del(req.params.hash);
-      if (err || !response) {
+      if (!err && response) {
         Group.findById(response).exec(function (err, group) {
           if (!err && group) {
             req.session.group = group;
@@ -194,6 +199,10 @@ module.exports = function(data) {
             console.error(err);
           }
         });
+      } else {
+        console.error(err);
+        var message = 'Something went wrong... Sorry!';
+        res.redirect('/register?message=' + message);
       }
     });
   });

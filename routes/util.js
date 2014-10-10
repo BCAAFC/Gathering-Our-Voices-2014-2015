@@ -3,6 +3,7 @@
 var mandrill = require('mandrill-api/mandrill'),
     mandrill_client = new mandrill.Mandrill(process.env.MANDRILL_APIKEY),
     fs = require('fs'),
+    _ = require('lodash'),
     marked = require('marked');
 
 // For mailing.
@@ -43,11 +44,12 @@ module.exports = {
   /**
    * This is not a middleware. It sends email.
    * @param  {Object} group     The user session.
-   * @param  {String} subject     The subject of the email.
-   * @param  {String} file        The file path.
+   * @param  {String} subject   The subject of the email.
+   * @param  {String} file      The file path.
+   * @param  {Array}  vars      Vars to include
    * @param  {Function} next
    */
-  mail: function (group, subject, file, next) {
+  mail: function (group, subject, file, vars, next) {
     // https://mandrillapp.com/api/docs/messages.nodejs.html
     var content = fs.readFileSync(file, {encoding: 'UTF-8'});
     var message = {
@@ -73,6 +75,9 @@ module.exports = {
         content: group.email
       }]
     };
+    _.forEach(vars, function (variable) {
+      message.global_merge_vars.push(variable);
+    });
     mandrill_client.messages.send({message: message, async: false},
       function success(result) {
         next(null, result);
