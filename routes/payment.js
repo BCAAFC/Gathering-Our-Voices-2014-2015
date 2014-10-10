@@ -39,16 +39,12 @@ module.exports = function(data) {
   });
 
   router.post('/payment', util.admin, function (req, res) {
-    Payment.model.create({
+    Payment.create({
       amount:      req.body.amount,
       type:        req.body.type,
       number:      req.body.number,
       description: req.body.description,
-      date: {
-        day:       req.body.day,
-        month:     req.body.month,
-        year:      req.body.year
-      },
+      date:        new Date(req.body.month + ' ' + req.body.day + ', ' + req.body.year),
       _group:      req.session.group._id
     }, function (err, payment) {
       // The Schema ensures that the payment is in the group already.
@@ -63,7 +59,7 @@ module.exports = function(data) {
   });
 
   router.get('/payment/delete/:id', util.admin, function (req, res) {
-    Payment.model.findById(req.params.id).exec(function (err, payment) {
+    Payment.findById(req.params.id).exec(function (err, payment) {
       if (!err && payment) {
         payment.remove(function (err) {
           if (err) {

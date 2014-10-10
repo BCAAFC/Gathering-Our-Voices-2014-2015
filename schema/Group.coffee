@@ -238,7 +238,7 @@ GroupSchema.methods.addMember = (memberId, next) ->
 
 GroupSchema.methods.getPaid = (next) ->
   Payment = require("./Payment")
-  Payment.model.find _id: $in: @_payments, (err, payments) ->
+  Payment.find _id: $in: @_payments, (err, payments) ->
     unless err
       sum = 0
       for payment in payments
@@ -359,7 +359,7 @@ GroupSchema.pre "remove", (next) ->
       else processPayments()
   processPayments = () ->
     Payment = require("./Payment")
-    Payment.model.find _id: $in: paymentIds, (err, payments) =>
+    Payment.find _id: $in: paymentIds, (err, payments) =>
       payLooper = (members) =>
         payment = payments.shift()
         if payment

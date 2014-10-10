@@ -23,7 +23,7 @@ describe "Payment", ->
   testGroup = null
   testPayment = null
   before (done) ->
-    Payment.model.remove {}, (err) ->
+    Payment.remove {}, (err) ->
       should.not.exist err
       Group.model.create {
         email:          "paymentTest@bar.baz"
@@ -44,7 +44,7 @@ describe "Payment", ->
   
   describe "Payment.create", ->
     it "Should create a new payment with valid info, and assign it to the group", (done) ->
-      Payment.model.create {
+      Payment.create {
         date:
           day: 1
           month: "January"
@@ -67,7 +67,7 @@ describe "Payment", ->
           done()
 
     it "Should not create a new payment with not valid info", (done) ->
-      Payment.model.create {
+      Payment.create {
         date:
           #day: 1
           month: "January"
@@ -82,7 +82,7 @@ describe "Payment", ->
         done()
   describe "Payment.find -> payment.remove()", ->
     it "Should remove the payment from the group when deleted", (done) ->
-      Payment.model.findById testPayment, (err, payment) ->
+      Payment.findById testPayment, (err, payment) ->
         should.not.exist err
         should.exist payment
         payment.remove (err) ->

@@ -36,7 +36,7 @@ block content
                   td $#{payment.amount}
                   td= payment.type
                   td= payment.number
-                  td #{payment.date.day}, #{payment.date.month}, #{payment.date.year}
+                  td #{payment.date.toDateString()}
                   td= payment.description
                   if session.isAdmin
                     td
@@ -79,7 +79,7 @@ block content
           .row
             .form-group.col-sm-6
               label Amount
-              input.form-control(type="number", name="amount", placeholder="9000")
+              input.form-control(type="number", name="amount", placeholder="9000", required)
             .form-group.col-sm-6
               label Type
               select.form-control(name="type")
@@ -97,7 +97,7 @@ block content
           .row
             .form-group.col-sm-4
               label Day
-              input.form-control(type="number", name="day", placeholder="13", min=1, max=31)
+              input.form-control(type="number", name="day", placeholder="13", min=1, max=31, required)
 
             .form-group.col-sm-4
               label Month
@@ -117,9 +117,7 @@ block content
 
             .form-group.col-sm-4
               label Year
-              select.form-control(name="year")
-                option(value="2013") 2014
-                option(value="2014") 2015
+              input.form-control(type="number", name="year", placeholder="2014", min=2013, max=2015, required)
           .row
             .form-group.col-sm-12
               label Description

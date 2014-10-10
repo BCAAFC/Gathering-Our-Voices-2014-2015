@@ -297,7 +297,7 @@ describe "Group", ->
 
   describe "Group.find -> group.getPaid()", ->
     before (done) ->
-      Payment.model.create {
+      Payment.create {
         date:
           day: 1
           month: "January"
@@ -316,7 +316,7 @@ describe "Group", ->
           should.equal paid, 50
           done()
     it "Should return the amount paid by a group (two payments)", (done) ->
-      Payment.model.create {
+      Payment.create {
         date:
           day: 1
           month: "January"
@@ -404,7 +404,7 @@ describe "Group", ->
           Member.find _group: testGroup, (err, members) ->
             should.equal members.length, 0
             should.not.exist err
-            Payment.model.find _group: testGroup, (err, payments) ->
+            Payment.find _group: testGroup, (err, payments) ->
               should.equal payments.length, 0
               should.not.exist err
               done()
