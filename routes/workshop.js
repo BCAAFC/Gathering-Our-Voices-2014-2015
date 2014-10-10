@@ -53,7 +53,7 @@ module.exports = function(data) {
         // Admins can see all members in the workshop.
         async.auto({
           workshop: Workshop.findById(req.params.id).populate("sessions._registered").exec,
-          group: Group.model.findById(req.session.group._id).populate("_members").exec
+          group: Group.findById(req.session.group._id).populate("_members").exec
         }, function complete(err, data) {
           if (!err && data.group && data.workshop) {
             res.render('templates/workshopMembers', {
@@ -71,7 +71,7 @@ module.exports = function(data) {
         // Normal users can only see their group
         async.auto({
           workshop: Workshop.findById(req.params.id).exec,
-          group: Group.model.findById(req.session.group._id).populate("_members").exec
+          group: Group.findById(req.session.group._id).populate("_members").exec
         }, function complete(err, data) {
           if (!err && data.workshop && data.group) {
             res.render('templates/workshopMembers', {

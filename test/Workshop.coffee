@@ -139,7 +139,7 @@ describe "Workshop", ->
       }, (err, workshop) =>
         should.not.exist err
         testWorkshop = workshop._id
-        Group.model.create {
+        Group.create {
           email:          "removal_of_workshop_test@bar.baz"
           password:       "foo"
           name:           "foo bar"

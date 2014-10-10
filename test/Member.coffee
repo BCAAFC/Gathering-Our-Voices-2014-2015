@@ -48,7 +48,7 @@ describe "Member", ->
   before (done) ->
     Workshop.remove {}, (err) ->
       Member.remove {}, (err) ->
-        Group.model.create {
+        Group.create {
           email:          "memberTest@bar.baz"
           password:       "foo"
           name:           "foo bar"
@@ -106,7 +106,7 @@ describe "Member", ->
       Member.findOne email: "foo@bar.baz", (err, members) ->
         should.not.exist err
         should.exist members._group
-        Group.model.findById members._group, (err, group) ->
+        Group.findById members._group, (err, group) ->
           should.notEqual group._members.indexOf(members._id), -1
           done()
     it "Should register EarlyBirds appropriately", (done) ->
@@ -399,7 +399,7 @@ describe "Member", ->
                 should.not.exist err
                 done()
     it "Should remove a member from their group when they are deleted", (done) ->
-      Group.model.findById testGroup, (err, group) ->
+      Group.findById testGroup, (err, group) ->
         should.not.exist err
         should.exist group
         should.equal group._members.indexOf(testMember), -1

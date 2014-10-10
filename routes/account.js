@@ -17,7 +17,7 @@ module.exports = function(data) {
       });
     }).post(function (req, res) {
       if (req.body.passwordConfirm && req.body.passwordConfirm === req.body.password) {
-        Group.model.create({
+        Group.create({
           email:           req.body.email,
           password:        req.body.password,
           name:            req.body.name,
@@ -54,12 +54,13 @@ module.exports = function(data) {
     });
 
   router.post('/login', function (req, res) {
-    Group.model.login(req.body.email, req.body.password, function (err, group) {
+    Group.login(req.body.email, req.body.password, function (err, group) {
       if (!err && group) {
         req.session.isAdmin = group.isAdmin();
         req.session.group = group;
         res.redirect('/account');
       } else {
+        console.error(err);
         var message = "The login details are incorrect, please double check them.";
         res.redirect('/register?message=' + message);
       }
@@ -91,7 +92,7 @@ module.exports = function(data) {
           }
         });
       };
-      Group.model.findById(req.params.id).exec(function (err, group) {
+      Group.findById(req.params.id).exec(function (err, group) {
         if (req.params.step === 'payments') {
           async.auto({
             cost: group.getCost.bind(group),
@@ -127,7 +128,7 @@ module.exports = function(data) {
   });
 
   router.post('/printout', util.auth, function (req, res) {
-    Group.model.findById(req.session.group._id)
+    Group.findById(req.session.group._id)
       .populate('_members').populate('_payments')
       .exec(function (err, group) {
         if (!err && group) {
@@ -165,7 +166,7 @@ module.exports = function(data) {
   });
 
   router.get('/recover/:email', function (req, res) {
-    Group.model.findOne({email: req.params.email}, function (err, group) {
+    Group.findOne({email: req.params.email}, function (err, group) {
       if (!err && group) {
         var hash = Math.random().toString(36).slice(2);
         data.redis.set(hash, group._id, function (err, redisResponse) {
@@ -183,7 +184,7 @@ module.exports = function(data) {
     data.redis.get(req.params.hash, function (err, response) {
       data.redis.del(req.params.hash);
       if (err || !response) {
-        Group.model.findById(response).exec(function (err, group) {
+        Group.findById(response).exec(function (err, group) {
           if (!err && group) {
             req.session.group = group;
             res.redirect('/account');
@@ -197,7 +198,7 @@ module.exports = function(data) {
   });
 
   router.get('/account', util.auth, function (req, res) {
-      Group.model.findById(req.session.group._id)
+      Group.findById(req.session.group._id)
         .populate("_members")
         .populate("_payments")
         .exec(function (err, group) {
@@ -227,11 +228,25 @@ module.exports = function(data) {
             console.error(err);
           }
         });
+  });
+
+  router.delete('/account/:id', util.admin, function (req, res) {
+    Group.findById(req.params.id).exec(function remove(err, group) {
+      if (!err) {
+        group.remove(function (err) {
+          res.send("You've destroyed that group's dream of going to GOV, sadface.");
+        });
+      } else {
+        console.log(err);
+        res.send('There was an error doing that.');
+      }
     });
+  });
+
 
   router.route('/details')
     .get(util.auth, function (req, res) {
-      Group.model.findById(req.session.group._id).exec(function (err, group) {
+      Group.findById(req.session.group._id).exec(function (err, group) {
         if (!err && group) {
           req.session.group = group;
           res.render('details', {
@@ -245,7 +260,7 @@ module.exports = function(data) {
       });
     })
     .put(util.auth, function (req, res) {
-      Group.model.findById(req.session.group._id).exec(function (err, group) {
+      Group.findById(req.session.group._id).exec(function (err, group) {
         if (!err && group) {
           group.email =           req.body.email;
           group.password =        req.body.password;
@@ -276,14 +291,6 @@ module.exports = function(data) {
         }
       });
     });
-
-  // TODO: ADMIN
-  router.get('/checkin/:id', util.admin, function (req, res) {
-    throw new Error('Deprecated');
-  });
-  router.get('/account/:id', util.admin, function (req, res) {
-    throw new Error('Deprecated');
-  });
 
   return router;
 };

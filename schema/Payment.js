@@ -6,8 +6,7 @@ var async = require('async'),
     mongoose = require('mongoose'),
     bcrypt   = require('bcrypt'),
     Schema   = mongoose.Schema,
-    ObjectId = mongoose.Schema.ObjectId,
-    Group    = require('./Group');
+    ObjectId = mongoose.Schema.ObjectId;
 
 var PaymentSchema = new Schema({
   date: {
@@ -54,8 +53,9 @@ var PaymentSchema = new Schema({
 
 /* Middleware */
 PaymentSchema.pre('save', function (next) {
-  var self = this;
-  Group.model.findById(self._group).exec(function (err, group) {
+  var self = this,
+      Group = require('./Group');
+  Group.findById(self._group).exec(function (err, group) {
     if (!err && group) {
       if (group._payments.indexOf(self._id) === -1) {
         // Not in the group.
@@ -72,8 +72,9 @@ PaymentSchema.pre('save', function (next) {
 });
 
 PaymentSchema.pre('remove', function (next) {
-  var self = this;
-  Group.model.findById(self._group).exec(function (err, group) {
+  var self = this,
+      Group = require('./Group');
+  Group.findById(self._group).exec(function (err, group) {
     if (!err && group) {
       var index = group._payments.indexOf(self._id);
       if (index !== -1) {
@@ -84,7 +85,7 @@ PaymentSchema.pre('remove', function (next) {
         next();
       }
     } else {
-      next(err);
+      next(err || new Error('No group found.'));
     }
   });
 });

@@ -25,7 +25,7 @@ describe "Payment", ->
   before (done) ->
     Payment.remove {}, (err) ->
       should.not.exist err
-      Group.model.create {
+      Group.create {
         email:          "paymentTest@bar.baz"
         password:       "foo"
         name:           "foo bar"
@@ -62,7 +62,7 @@ describe "Payment", ->
         should.equal payment.type, "Paypal"
         should.equal payment.description, "A test payment."
         testPayment = payment._id
-        Group.model.findById testGroup, (err, group) ->
+        Group.findById testGroup, (err, group) ->
           should.equal group._payments.length, 1
           done()
 
@@ -87,6 +87,6 @@ describe "Payment", ->
         should.exist payment
         payment.remove (err) ->
           should.not.exist err
-          Group.model.findById testGroup, (err, group) ->
+          Group.findById testGroup, (err, group) ->
             should.equal group._payments.length, 0
             done()

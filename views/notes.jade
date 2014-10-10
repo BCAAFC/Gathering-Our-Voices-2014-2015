@@ -16,7 +16,7 @@ block content
         h3.text-muted= group.name
         h4.text-muted= group.phone
         h4.text-muted= group.email
-        p Registration Date: #{group.registrationDate.day}, #{group.registrationDate.month}, #{group.registrationDate.year}
+        p Registration Date: #{group.registrationDate.toDateString()}
         form.form(method="POST", action="/notes/#{group._id}")
           input(type="hidden", name="_method", value="put")
           fieldset

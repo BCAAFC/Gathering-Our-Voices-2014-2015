@@ -6,7 +6,8 @@ var async = require('async'),
     mongoose = require('mongoose'),
     bcrypt   = require('bcrypt'),
     Schema   = mongoose.Schema,
-    ObjectId = mongoose.Schema.ObjectId;
+    ObjectId = mongoose.Schema.ObjectId,
+    Session = require('./Session');
 
 var MemberSchema = new Schema({
   // Members aren't required to immediately have all their information.
@@ -139,8 +140,7 @@ var MemberSchema = new Schema({
 
 /* Methods */
 MemberSchema.methods.hasConflicts = function hasConflicts(start, end, next) {
-  var self = this,
-      Session = require('./Session');
+  var self = this;
   Session.find({_id: {$in: self._workshops}}).exec(function (err, sessions) {
     if (!err) {
       var conflict = _.some(sessions, function (session) {
@@ -158,8 +158,7 @@ MemberSchema.methods.hasConflicts = function hasConflicts(start, end, next) {
 };
 
 MemberSchema.methods.addWorkshop = function addWorkshop(sessionId, next) {
-  var self = this,
-      Session = require('./Session');
+  var self = this;
   async.auto({
     session: Session.findById(sessionId).populate('_workshop').exec,
     conflicts: ['session', function conflicts(cb, data) {
@@ -186,8 +185,7 @@ MemberSchema.methods.addWorkshop = function addWorkshop(sessionId, next) {
 };
 
 MemberSchema.methods.removeWorkshop = function removeWorkshop(sessionId, next) {
-  var self = this,
-      Session = require('./Session');
+  var self = this;
   async.series([
     function unregisterSession(cb) {
       Session.findByIdAndUpdate(sessionId, {
@@ -230,7 +228,8 @@ MemberSchema.pre('save', function (next) {
   }
   // Is the member in the group?
   if (self._group) {
-    require('./Group').model.findById(self._group).exec(function (err, group) {
+    var Group = require('./Group');
+    Group.findById(self._group).exec(function (err, group) {
       if (group._members.indexOf(self._id) == -1) {
         group._members.push(self._id);
         group.save(next);
@@ -245,12 +244,11 @@ MemberSchema.pre('save', function (next) {
 });
 
 MemberSchema.pre('remove', function (next) {
-  var self = this,
-      Group = require('./Group'),
-      Session = require('./Session');
+  var Group = require('./Group');
+  var self = this;
   async.series([
     function group(cb) {
-      Group.model.findByIdAndUpdate(self._group, {
+      Group.findByIdAndUpdate(self._group, {
         $pull: {
           _members: self._id
         }

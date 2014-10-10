@@ -10,7 +10,7 @@ module.exports = function(data) {
       util = require('./util');
 
   router.get('/payments', util.auth, function (req, res) {
-    Group.model.findById(req.session.group._id)
+    Group.findById(req.session.group._id)
       .populate('_payments')
       .exec(function (err, group) {
         if (!err && group) {
@@ -65,7 +65,7 @@ module.exports = function(data) {
           if (err) {
             res.redirect('/account?message=' + err);
           } else {
-            Group.model.findByIdAndUpdate(payment._group, {
+            Group.findByIdAndUpdate(payment._group, {
               $set: {
                 '_state.steps.payments': false
               }

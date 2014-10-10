@@ -48,11 +48,11 @@ Tests
 describe "Group", ->
   testGroup = null
   before (done) ->
-    Group.model.remove {}, done
+    Group.remove {}, done
 
   describe "Group.create", ->
     it "Should register new groups with valid info", (done) ->
-      Group.model.create {
+      Group.create {
         email:           "foo@bar.baz"
         password:        "foo"
         name:            "foo bar"
@@ -80,7 +80,7 @@ describe "Group", ->
         done()
     it "Should not register existing groups with valid info", (done) ->
       # This should exist from our first test.
-      Group.model.create {
+      Group.create {
         email:          "foo@bar.baz"
         password:       "foo"
         name:           "foo bar"
@@ -97,7 +97,7 @@ describe "Group", ->
         done()
     it "Should not register new groups with not valid info", (done) ->
       # This should exist from our first test.
-      Group.model.create {
+      Group.create {
         email:          "foo@bar.baz"
         password:       "foo"
         name:           "foo bar"
@@ -115,30 +115,30 @@ describe "Group", ->
 
   describe "Group.login", ->
     it "Should log in existing users with valid info", (done) ->
-      Group.model.login "foo@bar.baz", "foo", (err, group) ->
+      Group.login "foo@bar.baz", "foo", (err, group) ->
         should.exist group
         should.not.exist err
         should.equal group.email, "foo@bar.baz"
         done()
     it "Should not log in existing users with invalid info", (done) ->
-      Group.model.login "foo@bar.baz", "wrong_password", (err, group) ->
+      Group.login "foo@bar.baz", "wrong_password", (err, group) ->
         should.not.exist group
         done()
     it "Should not log in new users", (done) ->
-      Group.model.login "new@user.ca", "", (err, group) ->
+      Group.login "new@user.ca", "", (err, group) ->
         should.not.exist group
         should.exist err
         done()
 
   describe "Group.find -> Edit -> Group.save()", ->
     it "Should allow the group to edit it's details, including password", (done) ->
-      Group.model.findById testGroup, (err, group) ->
+      Group.findById testGroup, (err, group) ->
         should.not.exist err
         should.exist group
         group.password = "potato"
         group.save (err) ->
           should.not.exist err
-          Group.model.login "foo@bar.baz", "potato", (err, group) ->
+          Group.login "foo@bar.baz", "potato", (err, group) ->
             should.not.exist err
             should.exist group
             group.password = "foo"
@@ -148,7 +148,7 @@ describe "Group", ->
 
   describe "Group.find -> group.getCost()", ->
     before (done) ->
-      Group.model.create {
+      Group.create {
         email:          "costTest@bar.baz"
         password:       "foo"
         name:           "foo bar"
@@ -169,7 +169,7 @@ describe "Group", ->
       Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
-        Group.model.findById testGroup, (err, group) ->
+        Group.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150
             done()
@@ -191,7 +191,7 @@ describe "Group", ->
             should.not.exist err
             should.exist member
             # Test
-            Group.model.findById testGroup, (err, group) ->
+            Group.findById testGroup, (err, group) ->
               group.getCost (err, cost) ->
                 should.equal cost, 150 * 4
                 done()
@@ -202,7 +202,7 @@ describe "Group", ->
       Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
-        Group.model.findById testGroup, (err, group) ->
+        Group.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 5
             done()
@@ -213,7 +213,7 @@ describe "Group", ->
       Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
-        Group.model.findById testGroup, (err, group) ->
+        Group.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 5 # They should get one free!
             done()
@@ -224,7 +224,7 @@ describe "Group", ->
       Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
-        Group.model.findById testGroup, (err, group) ->
+        Group.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 6 # They should get one free!
             done()
@@ -235,7 +235,7 @@ describe "Group", ->
       Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
-        Group.model.findById testGroup, (err, group) ->
+        Group.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 7 # They should get one free!
             done()
@@ -246,7 +246,7 @@ describe "Group", ->
       Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
-        Group.model.findById testGroup, (err, group) ->
+        Group.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 8 # They should get one free!
             done()
@@ -257,7 +257,7 @@ describe "Group", ->
       Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
-        Group.model.findById testGroup, (err, group) ->
+        Group.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 9 # They should get one free!
             done()
@@ -268,7 +268,7 @@ describe "Group", ->
       Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
-        Group.model.findById testGroup, (err, group) ->
+        Group.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 10 # They should get one free!
             done()
@@ -279,7 +279,7 @@ describe "Group", ->
       Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
-        Group.model.findById testGroup, (err, group) ->
+        Group.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 10 # They should get one free!
             done()
@@ -290,7 +290,7 @@ describe "Group", ->
       Member.create theMember, (err, member) ->
         should.not.exist err
         should.exist member
-        Group.model.findById testGroup, (err, group) ->
+        Group.findById testGroup, (err, group) ->
           group.getCost (err, cost) ->
             should.equal cost, 150 * 11 # They should get one free!
             done()
@@ -310,7 +310,7 @@ describe "Group", ->
         should.not.exist err
         done()
     it "Should return the amount paid by a group (one payment)", (done) ->
-      Group.model.findById testGroup, (err, group) ->
+      Group.findById testGroup, (err, group) ->
         should.not.exist err
         group.getPaid (err, paid) ->
           should.equal paid, 50
@@ -326,7 +326,7 @@ describe "Group", ->
         description: "A test payment."
         _group: testGroup
       }, (err, payment) ->
-        Group.model.findById testGroup, (err, group) ->
+        Group.findById testGroup, (err, group) ->
           should.not.exist err
           should.exist group
           group.getPaid (err, paid) ->
@@ -335,7 +335,7 @@ describe "Group", ->
 
   describe "Group.find -> group.getBalance()", ->
     it "Should return the correct balance", (done) ->
-      Group.model.findById testGroup, (err, group) ->
+      Group.findById testGroup, (err, group) ->
         should.not.exist err
         should.exist group
         group.getBalance (err, balance) ->
@@ -344,7 +344,7 @@ describe "Group", ->
 
   describe "Group.find -> group.checkFlags", ->
     it "Should return false if not enough!", (done) ->
-      Group.model.findById testGroup, (err, group) ->
+      Group.findById testGroup, (err, group) ->
         # Has 13 young adults right now, should be balanced.
         # First youth
         Member.create {
@@ -352,12 +352,12 @@ describe "Group", ->
           type: "Youth"
           _group: group._id
         }, (err) ->
-          Group.model.findById testGroup, (err, group) ->
+          Group.findById testGroup, (err, group) ->
             group.checkFlags (val) ->
               should.equal val, false
               done()
     it "Should return true if enough!", (done) ->
-      Group.model.findById testGroup, (err, group) ->
+      Group.findById testGroup, (err, group) ->
         # Has 13 young adults right now, should be balanced.
         # Second youth
         Member.create {
@@ -389,14 +389,14 @@ describe "Group", ->
                   type: "Chaperone"
                   _group: group._id
                 }, (err) ->
-                  Group.model.findById testGroup, (err, group) ->
+                  Group.findById testGroup, (err, group) ->
                     group.checkFlags (val) ->
                       should.equal val, true
                       done()
 
   describe "Group.find -> group.remove()", ->
     it "Should remove the group, it's members, and payments", (done) ->
-      Group.model.findById testGroup, (err, group) ->
+      Group.findById testGroup, (err, group) ->
         should.not.exist err
         should.exist group
         group.remove (err) ->

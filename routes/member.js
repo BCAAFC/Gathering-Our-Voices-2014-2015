@@ -42,17 +42,19 @@ module.exports = function(data) {
           }, function (err, member) {
             if (!err && member) {
               // Refresh the group.
-              Group.model.findById(member._group).exec(function (err, group) {
+              Group.findById(member._group).exec(function (err, group) {
                 if (!err && group) {
                   req.session.group = group;
                   res.redirect('/account');
                 } else {
+                  console.error(err);
                   var message = "Couldn't refresh your group details. You might need to relog!";
                   res.redirect('/account?message=' + message);
                 }
               });
             } else {
               // TODO Better error messages.
+              console.error(err);
               var message = "There was an error in the validation and saving of the member. Please try again?";
               res.redirect('/account?message=' + message);
             }
@@ -111,7 +113,7 @@ module.exports = function(data) {
           }
           member.save(function (err, member) {
             if (!err && member) {
-              Group.model.findByIdAndUpdate(member._group, {
+              Group.findByIdAndUpdate(member._group, {
                 $set: {
                   '_state.steps.members': false
                 }
@@ -135,7 +137,7 @@ module.exports = function(data) {
         if (!err && member) {
           member.remove(function (err) {
             if (!err) {
-              Group.model.findByIdAndUpdate(member._group, {
+              Group.findByIdAndUpdate(member._group, {
                 $set: {
                   '_state.steps.members': false
                 }

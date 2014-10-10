@@ -11,7 +11,7 @@ module.exports = function(data) {
 
     router.get('/admin', util.admin, function (req, res) {
       // TODO: Searching for a member.
-      Group.model.find().sort('affiliation').exec(function (err, groups) {
+      Group.find().sort('affiliation').exec(function (err, groups) {
         if (!err) {
           res.render('admin', {
             title: 'Administration',
@@ -26,7 +26,7 @@ module.exports = function(data) {
     });
 
     router.get('/manage/:id', util.admin, function (req, res) {
-      Group.model.findById(req.params.id).exec(function (err, group) {
+      Group.findById(req.params.id).exec(function (err, group) {
         if (!err && group) {
           // Maintain administrator status.
           req.session.group = group;
@@ -40,7 +40,7 @@ module.exports = function(data) {
 
     router.route('/notes/:id')
       .get(util.admin, function (req, res) {
-        Group.model.findById(req.params.id).exec(function (err, group) {
+        Group.findById(req.params.id).exec(function (err, group) {
           if (!err && group) {
             res.render('notes', {
               title: 'Group Notes',
@@ -53,7 +53,7 @@ module.exports = function(data) {
           }
         });
       }).put(util.admin, function (req, res) {
-        Group.model.findById(req.params.id).exec(function (err, group) {
+        Group.findById(req.params.id).exec(function (err, group) {
           if (!err && group) {
             group._notes = req.body.notes;
             group._state.tags = req.body.tags.split(',').sort();
@@ -91,7 +91,7 @@ module.exports = function(data) {
         });
       });
       function groups(callback) {
-        Group.model.find({}).select('youthInCare youthInCareSupport region')
+        Group.find({}).select('youthInCare youthInCareSupport region')
           .exec(function (err, groups) {
             console.log(groups);
             var result = _.reduce(groups, function (sum, group) {
@@ -163,7 +163,7 @@ module.exports = function(data) {
 
     router.get('/emails', util.admin, function (req, res) {
       async.auto({
-        groups: Group.model.find({}).select('name email').exec,
+        groups: Group.find({}).select('name email').exec,
         members: Member.find({email: {$exists: true}}).select('name email').exec
       }, function complete(err, data) {
         if (!err) {
