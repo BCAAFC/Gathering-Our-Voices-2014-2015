@@ -25,7 +25,7 @@ block content
           .form-group.col-sm-4.col-sm-offset-4
             button.btn.btn-primary(type="submit" style="width: 100%")
               i.fa.fa.fa-check
-              |  Log In
+                |  Log In
         .row(style="text-align: center")
           p If you forgot your password, don't worry it's ok. Enter your email above, then click
             a#recover  here
@@ -110,11 +110,12 @@ block content
             .form-group
               button.btn.btn-primary.btn-block(type="submit" require)
                 i.fa.fa.fa-check
-                |  Register
+                  |  Register
 
-  script
-    :coffeescript
-      $('#recover').click ->
-        email = $('#email').val()
-        $.get "/recover/#{email}", (data) ->
-          alert data
+  script.
+    $('#recover').click(function () {
+        var email = $('#email').val()
+        $.get("/recover/#{email}", function (data) {
+            alert(data);
+        });
+     });
