@@ -50,6 +50,7 @@ module.exports = function(data) {
       } else {
         var message = "The passwords did not match.";
         req.session.lastForm = req.body;
+        res.status(401);
         res.redirect('/register?message=' + message);
       }
     });

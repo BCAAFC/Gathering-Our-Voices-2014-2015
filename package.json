@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "node bin/gov",
-    "test": "node node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register --reporter spec",
+    "test": "PATH=\"$PATH:$(pwd)/node_modules/casperjs/node_modules/phantomjs/lib/phantom/bin/\" casperjs test test/main.js",
     "bootstrap": "node_modules/less/bin/lessc -x lib/bootstrap/less/bootstrap.less > static/css/bootstrap.min.css && node_modules/uglify-js/bin/uglifyjs -x lib/bootstrap/js/{transition,alert,affix,button,carousel,collapse,dropdown,modal,tooltip,popover,scrollspy,tab}.js > static/js/bootstrap.min.js",
     "font-awesome": "node_modules/less/bin/lessc -x lib/font-awesome/less/font-awesome.less > static/css/font-awesome.min.css && cp -r lib/font-awesome/fonts static/fonts"
   },
@@ -33,6 +33,7 @@
     "async": "0.9.0",
     "bcrypt": "0.8.0",
     "body-parser": "1.7.0",
+    "casperjs": "1.1.0-beta3",
     "compression": "1.0.11",
     "connect-redis": "2.1.0",
     "cookie-parser": "1.0.1",
