@@ -2,111 +2,85 @@ extends templates/layout
 
 block content
   .container
+    if session.isAdmin
+      .row
+        .col-sm-8.col-sm-offset-2
+          .btn-group
+            a.btn.btn-success#add-section
+              i.fa.fa-plus
+              |  Add Section
+            a.btn.btn-info#add-question
+              i.fa.fa-plus
+              |  Add Question
+            a.btn.btn-danger#allow-removes
+              i.fa.fa-trash
+              |  Allow Removes
+          script.
+            $('#add-section').click(function () {
+              if ($('#new-section').is(':visible')) {
+                $('#new-section').hide('fast');
+              } else {
+                $('#new-section').show('fast');
+              }
+            });
+            $('#add-question').click(function () {
+              if ($('#new-question').is(':visible')) {
+                $('#new-question').hide('fast');
+              } else {
+                $('#new-question').show('fast');
+              }
+            });
+            $('a#allow-removes').click(function() {
+              var state = $('.remove').attr('disabled');
+              $('.remove').attr('disabled', !state);
+            });
+          #new-section.well(style="display: none;")
+            form(action="/faq/section", method="POST")
+              .form-group
+                label Title*
+                input.form-control(type="text", name="title", placeholder="How to ask Questions", required)
+              .form-group
+                label Prelude*
+                textarea.form-control(name="prelude", placeholder="Blah blah blah", required)
+              .form-group
+                input.btn.btn-primary(type="submit" value="Add Section")
+          #new-question.well(style="display: none;")
+            form(action="/faq/question", method="POST")
+              .form-group
+                label Question*
+                input.form-control(type="text", name="question", placeholder="Question?", required)
+              .form-group
+                label Answer*
+                textarea.form-control(name="answer", placeholder="Answer.", required)
+              .form-group
+                label Section*
+                select.form-control(name="section", required)
+                  for section in sections
+                    option(value="#{section._id}") #{section.title}
+              .form-group
+                input.btn.btn-primary(type="submit" value="Add Question")
+
+
     .row
-      .col-sm-2
-      .col-sm-8
-        h1 FAQ
+      .col-sm-offset-2.col-sm-8
+        for section in sections
+          if session.isAdmin
+            .pull-right
+              a.btn.btn-danger.btn-xs.remove(disabled, href="/faq/del/#{section._id}")
+                i.fa.fa-trash
+                |  Delete Section
+          h2= section.title
+          div
+            | !{section.prelude}
 
-        section#attendees
-          h1 Groups & Attendees
-          h3 How much are registration fees, when are they due?
-          p Early registration fees (Registered before <emph>February 1, 2015</emph>) are $150/person for Youth, Young Adaults, and Chaperones.
-          p Regular registration fees are $200/person for Youth, Young Adults, and Chaperones.
-          p As with previous years, for every 5 delegates in your group, a 6th ticket is free.
+          for question in section.items
+            .pull-right
+              a.btn.btn-xs.btn-danger.remove(disabled, href="/faq/del/#{section._id}/#{question._id}")
+                i.fa.fa-trash
+            h4= question.question
+            div
+              | !{question.answer}
 
-          h3 What's up with all the different types of members?
-          p Attendees are broken down into 4 different types at Gathering Our Voices. This is a slight change from previous years where there were only 3 types.
-          p Types of Attendees:
-            .label.label-info Y
-            |  This denotes a Youth, 14-17 years old. These attendees legally require supervision by their chaperones. Up to 5 youth can be in a group per chaperone (or young chaperone!) Youth are generally eligible for most workshops.
-            br
-            .label.label-success YA
-            |  This denotes a Young Adult, 18-24 years old. These attendees require no supporting chaperones. Young Adults are generally eligible for most workshops.
-            br
-            .label.label-warning YC
-            |  This denotes a Young Chaperone, 21-24 years old. These attendees are able to support up to 5 youth. Young Chaperones are generally eligible for most workshops.
-            br
-            .label.label-danger Ch
-            |  This denotes a Chaperone, 24+ years old. These attendees are able to support up to 5 youth. Chaperones are generally only eligible for special workshops.
-            br
-            .label.label-default NA
-            |  This denotes a member who has not had their type assigned. This generally means the registration system has encountered an error, you're encouraged to edit the attendee and assign them a type.
-            br
+          hr.featurette-divider
 
-          h3 How do I edit an attendee's information?
-          p In the 'Account' page, simply click on their red or green button labelled "Complete" or "Incomplete" in the third column. You should then be able to scroll down and edit their information. On a slow internet connection this may take a few seconds.
-
-          h3 Who has to register for the conference?
-          p All youth and chaperones must register and pay the registration fees for the conference - No Exceptions.
-
-          h3 What is the Chaperone to Youth Ratio?
-          p For every five (5) youth (14-17years) there MUST be at least one (1) chaperone. You MUST be at least Twenty One (21) by March 17, 2014 to be a Chaperone at the conference.
-
-          h3 How old do you have to be to attend the conference?
-          p All youth aged 14-24 are eligible to attend the conference. Youth MUST be fourteen (14) by March 17, 2015 in order to attend.  All youth fourteen to seventeen (14-17) years old MUST be accompanied by a chaperone at all times.
-
-        section#workshops
-          h1 Workshops
-          h3 Which workshops conflict? When are they?
-          p Gathering Our Voices operates using 4 different workshop 'blocks'. Attendees may select either one 3 hour session or two 1.5 hour sessions in each block. In the listing below, workshops in the same block with a different color icon conflict. For example, you couldn't sign up in sessions 1 and 3, since they would conflict.
-          p Block 1:
-            .label.label-info 1
-            |  Wed, March 19, 9:00 am till noon
-            br
-            .label.label-primary 2
-            |  Wed, March 19, 9:00 am till 10:30 am
-            br
-            .label.label-primary 3
-            |  Wed, March 19, 11:00 am till 12:30 pm
-          p Block 2:
-            .label.label-info 4
-            |  Wed, March 19, 1:30 pm till 4:30 pm
-            br
-            .label.label-primary 5
-            |  Wed, March 19, 1:30 pm till 3:00 pm
-            br
-            .label.label-primary 6
-            |  Wed, March 19, 3:30 pm till 5:00 pm
-          p Block 3:
-            .label.label-info 7
-            |  Thurs, March 20, 9:00 am till noon
-            br
-            .label.label-primary 8
-            |  Thurs, March 20, 9:00 am till 10:30 am
-            br
-            .label.label-primary 9
-            |  Thurs, March 20, 11:00 am till 12:30 pm
-          p Block 4:
-            .label.label-info 10
-            |  Thurs, March 20, 1:30 pm till 4:30 pm
-            br
-            .label.label-primary 11
-            |  Thurs, March 20, 1:30 pm till 3:00 pm
-            br
-            .label.label-primary 12
-            |  Thurs, March 20, 3:30 pm till 5:00 pm
-            br
-            br
-            p If you're a more pictoral person, here it is visually:
-            .col-xs-12
-              img(src="/img/gov-workshop-layout.jpg")
-            br
-            br
-          h3 What do the colors mean on the session listing?
-          p The colors on the session listing are meant to give you a quick idea how full a given session is.
-          p Possible colors:
-            .label.label-default 0
-            |  This (lack of) color means the workshop is full and cannot accept new members.
-            br
-            .label.label-danger 0
-            |  This color means the workshop is more than 3/4 full.
-            br
-            .label.label-warning 0
-            |  This color means the workshop is more than 1/2 full.
-            br
-            .label.label-success 0
-            |  This color means the workshop is less than 1/2 full.
-            br
-          h3 How do I see which workshops an attendee is going to?
-          p In the 'Account' page, simply click on their "Workshops" button in the fourth column. You may need to scroll down to see their listing. This may take a couple seconds on a slow internet connection.
         p.text-muted Please email gatheringourvoices@bcaafc.com if you have any questions that you don't see listed here.

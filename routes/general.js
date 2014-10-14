@@ -5,14 +5,8 @@ var async = require('async'),
 
 module.exports = function(data) {
   var router = require('express').Router(),
-      News = require('../schema/News');
-
-  router.get('/', function (req, res) {
-    res.render('index', {
-      title: 'Home',
-      session: req.session
-    });
-  });
+        News = require('../schema/News'),
+        Faq = require('../schema/Faq');
 
   var marked = require('marked');
   marked.setOptions({
@@ -22,6 +16,15 @@ module.exports = function(data) {
     smartLists: true,
     smartypants: true
   });
+
+  router.get('/', function (req, res) {
+    res.render('index', {
+      title: 'Home',
+      session: req.session
+    });
+  });
+
+
   router.get('/news', function (req, res) {
     News.find({}).sort('-date').exec(function (err, news) {
       res.render('news', {
@@ -32,6 +35,25 @@ module.exports = function(data) {
           return val;
         })
       });
+    });
+  });
+
+  router.get('/faq', function (req, res) {
+    Faq.find({}).sort('title').exec(function (err, sections) {
+      if (!err) {
+        res.render('faq', {
+          title: 'Frequently Asked Questions',
+          session: req.session,
+          sections: _.map(sections, function (val) {
+            val.prelude = marked(val.prelude);
+            val.items = _.map(val.items, function (item) {
+              item.answer = marked(item.answer);
+              return item;
+            });
+            return val;
+          })
+        });
+      }
     });
   });
 
@@ -59,13 +81,6 @@ module.exports = function(data) {
   router.get('/privacy', function (req, res) {
     res.render('privacy', {
       title: 'Privacy',
-      session: req.session
-    });
-  });
-
-  router.get('/faq', function (req, res) {
-    res.render('faq', {
-      title: 'Frequently Asked Questions',
       session: req.session
     });
   });
