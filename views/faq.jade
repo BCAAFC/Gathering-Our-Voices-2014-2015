@@ -74,9 +74,10 @@ block content
             | !{section.prelude}
 
           for question in section.items
-            .pull-right
-              a.btn.btn-xs.btn-danger.remove(disabled, href="/faq/del/#{section._id}/#{question._id}")
-                i.fa.fa-trash
+            if session.isAdmin
+              .pull-right
+                a.btn.btn-xs.btn-danger.remove(disabled, href="/faq/del/#{section._id}/#{question._id}")
+                  i.fa.fa-trash
             h4= question.question
             div
               | !{question.answer}
