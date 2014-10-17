@@ -9,6 +9,6 @@ deploy:
   provider: heroku
   app:
     master: gov-2015-test
-  strategy: git
+  strategy: api
   api_key:
     secure: gtw4036ejCmnt9qqmPigIuiMRpsY0k3kxHKXR3QcG5Z5QHUOr3f2xuhCnzFaEjmzcbfhGFLCxK8/IeDDgvLSVuoWT4DdzjIypwqZH6vzBdd1QW9TiX+8zzk6tBm61jFR1g5r0YVRZ9hHlfQYnG3P2CYXUk5eSe54B730H9bAv14=
