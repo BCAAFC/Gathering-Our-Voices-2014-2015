@@ -1,13 +1,14 @@
-node_js: 
-- "0.10"
+node_js:
+- '0.10'
 before_install: npm install -g grunt-cli
-services: 
+services:
 - redis
 - mongodb
 language: node_js
 deploy:
   provider: heroku
-  app: 
-    master: gov-2014-test
+  app:
+    master: gov-2015-test
+  strategy: git
   api_key:
-    secure: "PYpvMtpT0oE0rPe7RHkAp0Glr+ZlJ097RFCoR9Ql8BStGFnyVsDlghsgZtJdRyTMsz+LZUi5YI/8jNtntSksujOWH5jWrNI2/xEV3MBisKw3sGKyVP0ZXuAPbFlBQOu5b/khW0iQ0Ao5Y4UgXPf5RlLfKfpNBJq47b04a7Bs4eY="
+    secure: gtw4036ejCmnt9qqmPigIuiMRpsY0k3kxHKXR3QcG5Z5QHUOr3f2xuhCnzFaEjmzcbfhGFLCxK8/IeDDgvLSVuoWT4DdzjIypwqZH6vzBdd1QW9TiX+8zzk6tBm61jFR1g5r0YVRZ9hHlfQYnG3P2CYXUk5eSe54B730H9bAv14=
