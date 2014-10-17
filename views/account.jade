@@ -40,6 +40,33 @@ block content
           | Edit Details
     hr.featurette-divider
 
+    #youthInCare.row.featurette
+      .col-xs-2
+        if session.group._state.steps.youthInCare
+          button.btn.btn-success(style="margin-top: 50%;")
+            i.fa.fa-2x.fa-check
+        else
+          button.btn.btn-danger(style="margin-top: 50%;")
+            i.fa.fa-2x.fa-remove
+      .col-xs-10
+        h2.feaurette-heading Youth In Care
+        p Each year the conference hosts a feast to honour Youth In Care. If some of this groups delegates are or have been a youth in the care of the Ministry of Children and Family Development or an Aboriginal Delegated Agency and would like to attend the feast, please indicate below how many of your group will attend.
+        form(action="/youthInCare", method="POST")
+          .col-sm-3
+            .form-group
+              label Youth In Care
+              input.form-control(type="number", name="youthInCare" value="#{session.group.youthInCare || 0}" step="1")
+          .col-sm-3
+            .form-group
+              label Chaperone or Support
+              input.form-control(type="number", name="youthInCareSupport" value="#{session.group.youthInCareSupport || 0}" step="1")
+          .col-sm-3
+              label
+              button.btn.btn-primary.btn-block(type="submit")
+                i.fa.fa-edit
+                |  Update Details
+    hr.featurette-divider
+
     #members.row.featurette
       .col-xs-2
         if session.group._state.steps.members

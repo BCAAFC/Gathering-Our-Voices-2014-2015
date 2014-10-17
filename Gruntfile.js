@@ -7,8 +7,19 @@ module.exports = function(grunt) {
                 files: {
                     'static/js/min.js': [
                         'lib/jquery-1.11.1.js',
-                        'lib/bootstrap/js/{transition,alert,affix,button,carousel,collapse,dropdown,modal,tooltip,popover,scrollspy,tab}.js',
-                        'lib/bootstrap-tagsinput.js'
+                        'lib/bootstrap/js/transition.js',
+                        'lib/bootstrap/js/alert.js',
+                        'lib/bootstrap/js/affix.js',
+                        'lib/bootstrap/js/button.js',
+                        'lib/bootstrap/js/carousel.js',
+                        'lib/bootstrap/js/collapse.js',
+                        'lib/bootstrap/js/dropdown.js',
+                        'lib/bootstrap/js/modal.js',
+                        'lib/bootstrap/js/tooltip.js',
+                        'lib/bootstrap/js/popover.js',
+                        'lib/bootstrap/js/scrollspy.js',
+                        'lib/bootstrap/js/tab.js',
+                        'lib/tagsinput/bootstrap-tagsinput.js'
                     ]
                 }
             }

@@ -17,7 +17,7 @@ block content
           p(style="text-align: center").text-muted Fields with a star (*) are required.
           .form-group
             label Name*
-            input.form-control(type="text", required, name="name", placeholder="Foo Bar", value=(member && member.name)? member.name : '')
+            input.form-control(type="text", required, name="name", placeholder="Greg Black", value=(member && member.name)? member.name : '')
           .form-group
             label Delegate Type*
             select.form-control(name="type", required)
@@ -70,10 +70,10 @@ block content
       .col-sm-4
         fieldset
           legend(style="text-align: center") Things We should Know
-          span.help-block Please comma separate multiple conditions or allergies. Eg: Air, Water, Fire. If you are from out of province and do not have a CareCard, please include an equivalent number.
+          span.help-block Please comma separate multiple conditions or allergies. Eg: Nuts, Dairy, Gluten. If you are from out of province and do not have a CareCard, please include an equivalent number.
           .form-group
             label Medical Number*
-            input.form-control(type="text", name="emergMedicalNum", placeholder="123 1234 123", value=(member && member.emergencyInfo.medicalNum)? member.emergencyInfo.medicalNum : '')
+            input.form-control(type="text", name="emergMedicalNum", placeholder="1234 123 123", value=(member && member.emergencyInfo.medicalNum)? member.emergencyInfo.medicalNum : '')
           .form-group
             label Allergies
             input.form-control(type="text", name="emergAllergies", data-role="tagsinput", placeholder="Gluten, Cheese, Bacon", value=(member && member.emergencyInfo.allergies)? member.emergencyInfo.allergies : '')
@@ -86,7 +86,7 @@ block content
           span.help-block A quick note, your emergency contact should be someone who knows your medical history, your doctor's contact information, and is able to contact your family.
           .form-group
             label Their Name*
-            input.form-control(type="text", name="emergName", placeholder="Foo Bar", value=(member && member.emergencyContact.name)? member.emergencyContact.name : '')
+            input.form-control(type="text", name="emergName", placeholder="Greg Black", value=(member && member.emergencyContact.name)? member.emergencyContact.name : '')
           .form-group
             label Their relationship with you*
             input.form-control(type="text", name="emergRelation", placeholder="Parent", value=(member && member.emergencyContact.relation)? member.emergencyContact.relation : '')

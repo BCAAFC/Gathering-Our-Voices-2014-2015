@@ -152,6 +152,10 @@ var GroupSchema = new Schema({
         type: Boolean,
         default: false
       },
+      youthInCare: {
+        type: Boolean,
+        default: false
+      },
       members: {
         type: Boolean,
         default: false

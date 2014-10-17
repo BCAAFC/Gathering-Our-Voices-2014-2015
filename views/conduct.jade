@@ -56,13 +56,13 @@ block content
 
         hr.featurette-divider
 
-
-  script.
-    $(function () {
-      $('#agree').click(function () {
-        var id = '!{session.group._id}';
-        $.get('/checkoff/' + id + '/conduct').done(function (data) {
-          window.location = '/account'
+  if session && session.group
+    script.
+      $(function () {
+        $('#agree').click(function () {
+          var id = '!{session.group._id}';
+          $.get('/checkoff/' + id + '/conduct').done(function (data) {
+            window.location = '/account'
+          });
         });
       });
-    });

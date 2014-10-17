@@ -83,18 +83,7 @@ block content
                 option(value="Off-reserve", selected=session.group.affiliationType == "Off-reserve") Off-reserve
                 option(value="On-reserve", selected=session.group.affiliationType == "On-reserve") On-reserve
                 option(value="Other", selected=session.group.affiliationType == "Other") Other
-      fieldset
-        legend.text-center Youth In Care Feast
-        p Each year the conference hosts a feast to honour Youth In Care. If some of this groups delegates are or have been a youth in the care of the Ministry of Children and Family Development or an Aboriginal Delegated Agency and would like to attend the feast, please indicate below how many of your group will attend.
-        .row
-          .col-sm-4.col-sm-offset-2
-            .form-group
-              label Youth In Care
-              input.form-control(type="number", name="youthInCare" value="#{session.group.youthInCare || 0}" step="1")
-          .col-sm-4
-            .form-group
-              label Youth In Care Support or Chaperone
-              input.form-control(type="number", name="youthInCareSupport" value="#{session.group.youthInCareSupport || 0}" step="1")
+
       .row
         .col-sm-4
         .form-group.col-sm-4

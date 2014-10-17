@@ -248,12 +248,35 @@ module.exports = function(data) {
           res.send("You've destroyed that group's dream of going to GOV, sadface.");
         });
       } else {
-        console.log(err);
+        console.error(err);
         res.send('There was an error doing that.');
       }
     });
   });
 
+  router.post('/youthInCare', function (req, res) {
+    Group.findById(req.session.group._id).exec(function (err, group) {
+      if (!err && group) {
+        group.youthInCare =              Number(req.body.youthInCare);
+        group.youthInCareSupport = Number(req.body.youthInCareSupport);
+        group._state.steps.youthInCare = true;
+        group.save(function (err) {
+          if (!err) {
+            // req.session.group = group;
+            res.redirect('/account');
+          } else {
+            console.error(err);
+            var message = 'There was an error doing that... Try again?';
+            res.redirect('/account?message=' + message);
+          }
+        });
+      } else {
+        console.error(err);
+        var message = 'There was an error doing that... Try again?';
+        res.redirect('/account?message=' + message);
+      }
+    });
+  });
 
   router.route('/details')
     .get(util.auth, function (req, res) {
@@ -285,8 +308,6 @@ module.exports = function(data) {
           group.fax =             req.body.fax;
           group.phone =           req.body.phone;
           group.affiliationType = req.body.affiliationType;
-          group.youthInCare =     Number(req.body.youthInCare);
-          group.youthInCareSupport = Number(req.body.youthInCareSupport);
           group.save(function (err, group) {
             if (err) {
               res.send('Sorry, there was an error saving your group. Try again?');
