@@ -46,6 +46,8 @@ block content
           p.lead.text-muted Posted by #{item.author}, on #{item.date.toDateString()}
           div
             | !{item.content}
+          p.muted
+            a(href="/news/#{item._id}") Permalink
           if session.isAdmin
             br
             a.btn.btn-xs.btn-danger.pull-right(href="/news/del/#{item._id}") Delete

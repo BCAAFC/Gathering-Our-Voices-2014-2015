@@ -206,16 +206,7 @@ module.exports = function(data) {
     });
   });
 
-  router.route('/news/:id').get(function (req, res) {
-    News.findById(req.params.id).exec(function (err, item) {
-      if (!err && item) {
-        res.send(item);
-      } else {
-        var message = "Could not find that news item.";
-        res.redirect('/news?message=' + message);
-      }
-    });
-  }).delete(util.admin, function (req, res) {
+  router.route('/news/:id').delete(util.admin, function (req, res) {
     News.remove({_id: req.params.id}).exec(function (err) {
       if (!err) {
         res.redirect('/news');
