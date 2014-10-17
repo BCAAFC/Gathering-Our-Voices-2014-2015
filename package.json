@@ -15,9 +15,8 @@
   },
   "scripts": {
     "start": "node bin/gov",
-    "test": "PATH=\"$PATH:$(pwd)/node_modules/casperjs/node_modules/phantomjs/lib/phantom/bin/\" casperjs test test/main.js",
-    "bootstrap": "node_modules/less/bin/lessc -x lib/bootstrap/less/bootstrap.less > static/css/bootstrap.min.css && node_modules/uglify-js/bin/uglifyjs -x lib/bootstrap/js/{transition,alert,affix,button,carousel,collapse,dropdown,modal,tooltip,popover,scrollspy,tab}.js > static/js/bootstrap.min.js",
-    "font-awesome": "node_modules/less/bin/lessc -x lib/font-awesome/less/font-awesome.less > static/css/font-awesome.min.css && cp -r lib/font-awesome/fonts static/fonts"
+    "test": "grunt test",
+    "build": "grunt build"
   },
   "repository": {
     "type": "git",
@@ -29,11 +28,9 @@
     "url": "https://github.com/BCAAFC/Gathering-Our-Voices/issues"
   },
   "dependencies": {
-    "assert": "1.1.2",
     "async": "0.9.0",
     "bcrypt": "0.8.0",
     "body-parser": "1.7.0",
-    "casperjs": "1.1.0-beta3",
     "compression": "1.0.11",
     "connect-redis": "2.1.0",
     "cookie-parser": "1.0.1",
@@ -49,15 +46,17 @@
     "mocha": "1.21.4",
     "mongoose": "3.8.8",
     "multer": "0.1.4",
-    "redis": "0.12.1",
-    "should": "4.0.4"
+    "redis": "0.12.1"
   },
   "devDependencies": {
-    "less": "1.7.5",
-    "uglify-js": "2.4.15"
-  },
-  "jshintConfig": {
-    "latedef": "nofunc",
-    "node": true
+    "grunt": "0.4.5",
+    "grunt-casper": "0.4.1",
+    "grunt-concurrent": "1.0.0",
+    "grunt-contrib-copy": "0.7.0",
+    "grunt-contrib-jshint": "0.10.0",
+    "grunt-contrib-less": "0.11.4",
+    "grunt-contrib-uglify": "0.6.0",
+    "grunt-express-server": "0.4.9",
+    "grunt-nodemon": "0.3.0"
   }
 }

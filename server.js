@@ -39,7 +39,11 @@ function environment(callback) {
   }
   if (process.env.MONGO === undefined) {
     // MongoDB URI
-    process.env.MONGO = process.env.MONGOLAB_URI || 'localhost/dev';
+    if (process.env.NODE_ENV === 'testing') {
+        process.env.MONGO = process.env.MONGOLAB_URI || 'localhost/testing';
+    } else {
+        process.env.MONGO = process.env.MONGOLAB_URI || 'localhost/dev';
+    }
     console.warn('$MONGO set to default: ' + process.env.MONGO);
   }
   if (process.env.REDIS === undefined) {
@@ -57,7 +61,6 @@ function environment(callback) {
 function mongo(callback, data) {
   var mongoose = require('mongoose');
   mongoose.connect(process.env.MONGO, callback);
-  callback(null, mongoose);
 }
 
 function redis(callback, data) {
@@ -130,7 +133,7 @@ function routes(callback, data) {
   });
   data.httpd.use(function notFoundHandler(req, res) {
     res.status(404);
-    console.warn('Page does not exist.');
+    console.warn('Path `' + req.originalUrl + '`does not exist.');
     res.send('Path `' + req.originalUrl + '`does not exist.');
   });
   callback(null);

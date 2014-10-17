@@ -6,7 +6,6 @@ var host = 'http://localhost:8080';
 
 casper.test.begin('Index seems healthy', function suite(test) {
     casper.start(host, function () {
-        this.capture('foo.png');
         test.assertExists("nav", "There is a nav");
         test.assertExists(".timer", "There is a timer");
         test.assertExists(".progress > .progress-bar", "There is a progress bar");
