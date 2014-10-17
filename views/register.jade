@@ -35,8 +35,7 @@ block content
       .row
         .col-md-12
           h1 Register a New Group
-          p Welcome, please fill out your Email and Password above before continuing and completing the information below.
-          p Please be aware this <b>does not</b> register you (the primary contact) as a group member. You must do that later!
+          p Welcome, please be aware this <b>does not</b> register you (the primary contact) as a group member. You must do that later!
           p.text-muted Fields with a star (*) are required.
           legend Login Details
           .form-group
@@ -52,7 +51,7 @@ block content
             legend Group Details
             .form-group
               label Primary Contact Name*
-              input.form-control(type="text" name="name" placeholder="Foo Bar" required value=lastForm.name)
+              input.form-control(type="text" name="name" placeholder="Greg Black" required value=lastForm.name)
             .form-group
               label Affiliation*
               input.form-control(type="text" name="affiliation" placeholder="Some Organization" required value=lastForm.affiliation)
@@ -61,7 +60,7 @@ block content
               input.form-control(type="text" name="address" placeholder="123 Fake St." required value=lastForm.address)
             .form-group
               label City*
-              input.form-control(type="text", name="city", placeholder="Vancouver" required value=lastForm.city)
+              input.form-control(type="text", name="city", placeholder="Prince George" required value=lastForm.city)
             .form-group
               label Region*
               select.form-control(name="region" required value=lastForm.region)
