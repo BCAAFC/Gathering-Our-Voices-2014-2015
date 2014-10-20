@@ -42,7 +42,7 @@ body {
 }
 
 .jumbotron {
-    background: url('/img/bg/about.jpg') no-repeat center center;
+    background: url('/img/banner.jpg') no-repeat center center;
     background-size: cover !important;
     margin-bottom: 0px;
     height: 400px;
@@ -72,7 +72,7 @@ body {
     *display: inline; /* IE7 */
      zoom: 1
 }
-  
+
 
 /* MARKETING CONTENT
 -------------------------------------------------- */
@@ -203,6 +203,3 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-
-
-
