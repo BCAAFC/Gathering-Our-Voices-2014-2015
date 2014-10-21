@@ -1,0 +1,209 @@
+extends templates/layout
+
+block content
+    style.
+        .bootstrap-tagsinput {
+            display: block;
+        }
+    form(action="/facilitator", method="POST")
+        .row.text-center
+            h1 Facilitator Application
+            strong Closing Date: November 21, 2014 at 5:00 PM, PST.
+        .row
+            .col-sm-8.col-sm-offset-2
+                fieldset
+                    legend Information
+                    p The Aboriginal youth conference planning committee invites interested individuals/groups to facilitate highly interactive workshops for the 2015 Aboriginal Youth Conference, to be held in Prince George, BC at the Prince George Civic Centre and other venues around the city.  Workshops will be 1.5 or 3 hours in length and may be repeated 4-6 times throughout the conference for youth, young adults and chaperones. Workshop will be grouped into four categories: cultural and spiritual, physical, emotional & mental.
+                    strong Preference will be given to:
+                    ul
+                        li Workshops that demonstrate a high-level of interaction and share best practices/successful approaches.
+                        li Workshops that require little to no audio/visual aids. (I.E. projectors, microphones, TV/DVD Players etc.)
+        .row
+            .col-sm-8.col-sm-offset-2
+
+
+                fieldset
+                    legend Facilitator Details
+                    .form-group
+                        label Facilitator Name(s)
+                        input.form-control(type="text" required name="name" value=lastForm.name placeholder="Please list lead contact and support presenters/facilitators.")
+                    .form-group
+                        label Affiliiation
+                        input.form-control(type="text" required name="affiliation" placeholder="Organization, Band, Tribe, Institution, independant, etc." value=lastForm.affiliation)
+                    .form-group
+                        label Phone Number
+                        input.form-control(type="text" required name="phone" value=lastForm.phone placeholder="Main and alternate contact number(s).")
+                    .form-group
+                        label Fax Number
+                        input.form-control(type="text" name="fax" value=lastForm.fax placeholder="Main and alternate numbers(s).")
+                    .form-group
+                        label Email Address
+                        input.form-control(type="email" required name="email" value=lastForm.email placeholder="Main and alternate e-mail(s).")
+                    .form-group
+                        label Mailing Address
+                        textarea.form-control(required name="mailing" placeholder="Address of lead presenter/contact.")
+                            = lastForm.mailing
+
+
+                fieldset
+                    legend Workshop Details
+                    .form-group
+                        label Name of Workshop
+                        input.form-control(type="text" required name="workshop" value=lastForm.workshop)
+                    .form-group
+                        label Length of Presentation
+                        select.form-control(required name="length" value=lastForm.length)
+                            option(value="" selected=(lastForm.length === '')) Please choose...
+                            option(value="1.5" selected=(lastForm.length === '1.5')) 1.5 Hours
+                            option(value="3" selected=(lastForm.length === '3')) 3 hours
+                            option(value="Full" selected=(lastForm.length === 'Full')) Full Day (9:00-5:00)
+                    .form-group
+                        label Category
+                        select.form-control(required name="category")
+                            option(value="" selected=(lastForm.category === '')) Please choose...
+                            option(value="cultural" selected=(lastForm.category === 'cultural')) Cultural and Spiritual
+                            option(value="physical" selected=(lastForm.category === 'physical')) Physical
+                            option(value="emotional" selected=(lastForm.category === 'emotional')) Emotional
+                            option(value="mental" selected=(lastForm.category === 'mental')) Mental
+                    .form-group
+                        label Please explain how the workshop fits your chosen category
+                        textarea.form-control(required name="categoryReason")
+                            = lastForm.categoryReason
+                    .form-group
+                        label Target Audience
+                        .checkbox
+                            label
+                                input(type="checkbox" name="audience-youth" checked=(lastForm['audience-youth'] === 'on'))
+                                | Youth (14-18)
+                        .checkbox
+                            label
+                                input(type="checkbox" name="audience-youngAdult" checked=(lastForm['audience-youngAdult'] === 'on'))
+                                | Young Adults (19-24)
+                        .checkbox
+                            label
+                                input(type="checkbox" name="audience-chaperone" checked=(lastForm['audience-chaperone'] === 'on'))
+                                | Chaperones (21+)
+                    .form-group
+                        label Presentation Type
+                        .checkbox
+                            label
+                                input(type="checkbox" name="type-presentation" checked=(lastForm['type-presentation'] === 'on'))
+                                | Presentation (I.E. Set materials, PowerPoint, scripted)
+                        .checkbox
+                            label
+                                input(type="checkbox" name="type-exercise" checked=(lastForm['type-exercise'] === 'on'))
+                                | Exercise/Game
+                        .checkbox
+                            label
+                                input(type="checkbox" name="type-roleplay" checked=(lastForm['type-roleplay'] === 'on'))
+                                | Role Play
+                        .checkbox
+                            label
+                                input(type="checkbox" name="type-qa" checked=(lastForm['type-qa'] === 'on'))
+                                | Question and Answer, Discussions
+                        .checkbox
+                            label
+                                input(type="checkbox" name="type-other" checked=(lastForm['type-other'] === 'on'))
+                                | Other
+                    .form-group
+                        label Workshop Description
+                        p Describe highlights, lessons, and learning objectives to be achieved within the timeframe. Indicate any supplementary materials to be handed out.
+                        textarea.form-control(name="description")
+                            = lastForm.description
+                    .form-group
+                        label Workshop Summary
+                        p Please include a <strong>short, 70 word max</strong> summar for the Conference Agenda. This may be partially copied from your workshop description above.
+                        textarea.form-control(name="summary")
+                            = lastForm.summary
+                    .form-group
+                        label Interaction Level
+                        p Specify how your workshop is interactive and inclusive.
+                        textarea.form-control(name="interactionLevel")
+                            = lastForm.interactionLevel
+                    .form-group
+                        label Equipment Required
+                        p You must supply your own computer for multimedia presentations. Audio/Visual needs <strong>must</strong> be pre-arranged.
+                        .checkbox
+                            label
+                                input(type="checkbox" name="equipment-flipchart" checked=(lastForm['equipment-flipchart'] === 'on'))
+                                | Flip charts and Markers
+                            input.form-control(type="number" name="equipment-flipchartNumber" value=lastForm['equipment-flipchartNumber'] placeholder="Number of flipcharts required.")
+                        .checkbox
+                            label
+                                input(type="checkbox" name="equipment-projector" checked=(lastForm['equipment-projector'] === 'on'))
+                                | Projector
+                        .checkbox
+                            label
+                                input(type="checkbox" name="equipment-screen" checked=(lastForm['equipment-screen'] === 'on'))
+                                | Screen
+                        .checkbox
+                            label
+                                input(type="checkbox" name="equipment-player" checked=(lastForm['equipment-player'] === 'on'))
+                                | TV and DVD player
+                    .form-group
+                        label Room Requirement
+                        select.form-control(name="roomRequirement")
+                            option(value="" selected=(lastForm.roomRequirement === '')) Please choose...
+                            option(value="circle" selected=(lastForm.roomRequirement === 'circle')) Chairs in a Circle
+                            option(value="semicircle" selected=(lastForm.roomRequirement === 'semicricle')) Chairs in a semi-circle
+                            option(value="gym" selected=(lastForm.roomRequirement === 'gym')) Gym
+                            option(value="banquet" selected=(lastForm.roomRequirement === 'banquet')) Banquet (rounds)
+                            option(value="classroom" selected=(lastForm.roomRequirement === 'classroom')) Classroom
+                            option(value="dance" selected=(lastForm.roomRequirement === 'dance')) Dance Studio
+                            option(value="board" selected=(lastForm.roomRequirement === 'board')) Board Room
+                            option(value="clear" selected=(lastForm.roomRequirement === 'clear')) Clear Room
+                    .form-group
+                        label Workshop Capacity
+                        input.form-control(type="number" name="capacity" value=lastForm.capacity placeholder="Indicate workshop participation limits. Note: Workshop rooms can usually accommodate 20-200 persons.")
+                    .form-group
+                        label Facilitator Biography
+                        p Max 100 word biography on each presenter and co-presenters. Seperate by 2 line breaks between presenters.
+                        strong Please also outline any past experience working with youth and youth related projects.
+                        textarea.form-control(name="biography")
+                            = lastForm.biography
+                    .form-group
+                        label Compensation
+                        .checkbox
+                            label
+                                input(type="checkbox" name="compensation-meal" checked=(lastForm['compensation-meal'] === 'on'))
+                                | Meal per Diem
+                        .checkbox
+                            label
+                                input(type="checkbox" name="compensation-accommodation" checked=(lastForm['compensation-accommodation'] === 'on'))
+                                | Accommodation
+                        .checkbox
+                            label
+                                input(type="checkbox" name="compensation-travel" checked=(lastForm['compensation-travel'] === 'on'))
+                                | Travel Allowance
+                            input.form-control(type="text" name="compensation-travelAmount" value=lastForm['compensation-travelAmount'] placeholder="From where?")
+                        .checkbox
+                            label
+                                input(type="checkbox" name="compensation-honorarium" checked=(lastForm['compensation-honorarium'] === 'on'))
+                                | Facilitator Honorarium
+                        textarea.form-control(name="compensation-honorariumAmount" placeholder="If you have set facilitator fees, please indicate your requested amount or include a breakdown of your facilitator fees with your application.")
+                            = value=lastForm['compensation-honorariumAmount']
+                .form-group.text-center
+                    input.btn.btn-block.btn-primary(type="submit" value="Submit application")
+    script.
+        $(function () {
+            checkShow("input[name='compensation-honorarium']", "textarea[name='compensation-honorariumAmount']");
+            checkShow("input[name='compensation-travel']", "input[name='compensation-travelAmount']");
+            checkShow("input[name='equipment-flipchart']", "input[name='equipment-flipchartNumber']");
+        });
+        function checkShow(src, dest) {
+            if ($(src).prop('checked') === false) {
+                $(dest).hide();
+            }
+            $(src).change(function () {
+                var val = $(this).prop('checked'),
+                      target = $(dest);
+                if (val === true) {
+                    $(target).show('fast');
+                    $(target).prop('disabled', false);
+                } else {
+                    $(target).hide('fast');
+                    $(target).val('');
+                    $(target).prop('disabled', true);
+                }
+            });
+        }

@@ -128,7 +128,7 @@ function httpd(callback, data) {
 }
 
 function routes(callback, data) {
-  _(['account', 'admin', 'general', 'member', 'payment', 'workshop']).each(function (val) {
+  _(['account', 'admin', 'general', 'member', 'payment', 'workshop', 'facilitator']).each(function (val) {
     data.httpd.use(require('./routes/' + val)(data));
   });
   data.httpd.use(function notFoundHandler(req, res) {
