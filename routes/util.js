@@ -25,9 +25,6 @@ module.exports = {
     }
   },
   inGroup: function (req, res, next) {
-    console.log(req.session.group._members);
-    console.log(req.params.id);
-    console.log(req.session.group._members.indexOf(req.params.id));
     if (req.session && req.session.group &&
       (req.session.group._members.indexOf(req.params.id) !== -1 || req.session.isAdmin)) {
       next();

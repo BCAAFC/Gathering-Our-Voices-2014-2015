@@ -226,6 +226,12 @@ MemberSchema.pre('save', function (next) {
   if (self._state.registrationDate < new Date('Feb 7, 2015')) {
     self._state.ticketType = 'Early';
   }
+
+  // Old enough to actually be a chaperone if they are?
+  if (self.type === "Chaperone" && (self.birthDate.year && self.birthDate.year > (2014-21))) {
+    next(new Error("Chaperone not old enough"));
+  }
+
   // Is the member in the group?
   if (self._group) {
     var Group = require('./Group');

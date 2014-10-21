@@ -55,7 +55,7 @@ module.exports = function(data) {
             } else {
               // TODO Better error messages.
               console.error(err);
-              var message = "There was an error in the validation and saving of the member. Please try again?";
+              var message = "There was an error in the validation and saving of the member. Are they old enough? Did you fill out at least their name and delegate type?";
               res.redirect('/account?message=' + message);
             }
           });
@@ -122,7 +122,7 @@ module.exports = function(data) {
                 res.redirect('/account');
               });
             } else {
-              var message = "There was an error in the validation and saving of the member. Please try again?";
+              var message = "There was an error in the validation and saving of the member. Are they old enough? Did you fill out at least their name and delegate type?";
               res.redirect('/account?message=' + message);
             }
           });
