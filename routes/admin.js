@@ -27,6 +27,17 @@ module.exports = function(data) {
     });
   });
 
+  router.get('/facilitators', util.admin, function (req, res) {
+      var Facilitator = require('../schema/Facilitator');
+      Facilitator.find({}).exec(function (err, facilitators) {
+          res.render('facilitator-list', {
+              title: 'Facilitator List',
+              session: req.session,
+              facilitators: facilitators
+          });
+      });
+  });
+
   router.get('/manage/:id', util.admin, function (req, res) {
     Group.findById(req.params.id).exec(function (err, group) {
       if (!err && group) {

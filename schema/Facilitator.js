@@ -9,7 +9,7 @@ var async = require('async'),
     ObjectId = mongoose.Schema.ObjectId;
 
 var FacilitatorSchema = new Schema({
-    name: {
+    name: { // This is the facilitator! The workshop is .workshop
         type: String,
         trim: true,
         required: true
@@ -121,6 +121,11 @@ var FacilitatorSchema = new Schema({
         accommodation: Boolean,
         travel: String,
         honorarium: String
+    },
+    submissionDate: {
+        type: Date,
+        required: true,
+        default: Date.now
     }
 });
 
