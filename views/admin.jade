@@ -47,14 +47,6 @@ block content
                       .fa.fa-flag
                       |  #{group.youthInCare} + #{group.youthInCareSupport}
                 td
-                  case group._state.enoughChaperones
-                    when true
-                      .label.label-success
-                        .fa.fa-check
-                    when false
-                      .label.label-danger
-                        .fa.fa-times
-                td
                   .label.label-default
                     | #{group._members.length}
                 td #{group.affiliation}
