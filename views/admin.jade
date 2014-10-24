@@ -26,7 +26,7 @@ block content
               th Steps
               th Mems
               th Affiliation
-              th Phone
+              th(style="max-width: 100px; word-wrap: break-word;") Phone
               th Tags
               th Actions
               th
@@ -50,7 +50,7 @@ block content
                   .label.label-default
                     | #{group._members.length}
                 td #{group.affiliation}
-                  .text-muted #{group.name} :: #{group._id}
+                  .text-muted #{group.name}
                 td= group.phone
                 td
                   for tag in group._state.tags
