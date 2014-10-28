@@ -20,7 +20,8 @@ casper.test.begin('Registration works with complete information', function suite
         this.fill("form[action='/register']", util.group, true);
         // Success brings us to account page.
     }).waitForUrl(/account$/, function () {
-            test.assertUrlMatch(/account$/, "Sent to account page");
+        this.capture('foo.jpg');
+        test.assertUrlMatch(/account$/, "Sent to account page");
     }).run(function () {
         test.done();
     });
@@ -212,17 +213,18 @@ casper.test.begin('Member Step', function suite(test) {
         // Add a complete member.
         this.click("a[href='/member']");
     }).waitForUrl(/member$/, function () {
-        this.fill("form[action='/member']", util.member('Young Adult', 1996), true);
+        this.fill("form[action='/member']", util.member('Youth', 1999), true);
     }).waitForUrl(/account$/, function () {
         // Test that Member is added.
         test.assertElementCount("#members table tbody tr", 1, "One member in table");
         test.assertElementCount("#members table tbody tr td a", 1, "Edit button for member");
         test.assertElementCount("#members table tbody tr td button[disabled]", 1, "Remove button disabled for member");
         test.assertExists("#members table tbody tr[class='success']", "Added member is complete");
+        test.assertDoesntExist("#enoughChaperones", "enoughChaperones is not marked");
         this.click("a[href='/member']");
     }).waitForUrl(/member$/, function () {
         // Add an Incomplete Member
-        var incomplete = util.member('Young Adult', 1996);
+        var incomplete = util.member('Chaperone', 1990);
         delete incomplete.phone;
         delete incomplete.emergRelation;
         this.fill("form[action='/member']", incomplete, true);
@@ -230,6 +232,7 @@ casper.test.begin('Member Step', function suite(test) {
         // Test that Member is added.
         test.assertElementCount("#members table tbody tr", 2, "Two member in table");
         test.assertExists("#members table tbody tr[class='danger']", "Added member is incomplete");
+        test.assertDoesntExist("#membersComplete", "membersComplete is not marked");
         // Finish off the member.
         this.click("#members table tbody tr[class='danger'] td a");
     }).waitForUrl(/member\/.*$/, function () {
@@ -238,6 +241,8 @@ casper.test.begin('Member Step', function suite(test) {
         // Test that Member is added.
         test.assertElementCount("#members table tbody tr", 2, "Two members in table");
         test.assertExists("#members table tbody tr[class='success']", "Both members complete");
+        test.assertExists("#enoughChaperones", "enoughChaperones is marked");
+        test.assertExists("#membersComplete", "membersComplete is marked");
     }).run(function () {
         test.done();
     });

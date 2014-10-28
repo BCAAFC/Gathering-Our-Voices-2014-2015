@@ -85,7 +85,7 @@ block content
           li Chaperones (Ages 24+)
         .row
           if enoughChaperones
-            .label.label-success
+            #enoughChaperones.label.label-success
               i.fa.fa-check
             |  You have enough chaperones to support your youth.
           else
@@ -94,7 +94,7 @@ block content
             |  You do not have enough chaperones to support your youth.
           br
           if membersComplete
-            .label.label-success
+            #membersComplete.label.label-success
               i.fa.fa-check
             |  All your group members have their required information complete.
           else
