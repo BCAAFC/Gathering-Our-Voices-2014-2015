@@ -189,15 +189,51 @@ casper.test.begin('Youth In Care Step', function suite(test) {
         this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
     }).waitForUrl(/account$/, function () {
         test.assertExists("#youthInCare button.btn-danger > .fa-remove", "Youth in Care check is off");
-        test.assertExists("#youthInCare form[action='/youthInCare']", "Form for YIC exists.");
+        test.assertExists("#youthInCare form[action='/youthInCare']", "Form for YIC exists");
         this.fill("form[action='/youthInCare']", { youthInCare: 4, youthInCareSupport: 5 }, true);
     }).waitForUrl(/account$/, function () {
         test.assertField("youthInCare", '4', "Youth in Care has the value set.");
-        test.assertField("youthInCareSupport", '5', "Youth in Care Support has the value set.");
+        test.assertField("youthInCareSupport", '5', "Youth in Care Support has the value set");
     }).run(function () {
         test.done();
     });
 });
 
+/** Members */
+casper.test.begin('Member Step', function suite(test) {
+    casper.start(host + '/register', function () {
+        this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
+    }).waitForUrl(/account$/, function () {
+        test.assertExists("#members button.btn.btn-danger[disabled] > i.fa.fa-2x.fa-remove", "Members check is off, is disabled");
+        test.assertExists("#members a[href='/member']", "Link to members section is present");
+        test.assertExists("#members table", "Member table present");
+        test.assertElementCount("#members table tbody tr", 0, "No members in table yet");
+        test.assertExists("#members #allowRemove", "Allow remove button is present");
+        // Add a complete member.
+        this.click("a[href='/member']");
+    }).waitForUrl(/member$/, function () {
+        this.fill("form[action='/member']", util.member('Young Adult', 1996), true);
+    }).waitForUrl(/account$/, function () {
+        // Test that Member is added.
+        test.assertElementCount("#members table tbody tr", 1, "One member in table");
+        test.assertElementCount("#members table tbody tr td a", 1, "Edit button for member");
+        test.assertElementCount("#members table tbody tr td button[disabled]", 1, "Remove button disabled for member");
+        test.assertExists("#members table tbody tr[class='success']", "Added member is complete");
+        this.click("a[href='/member']");
+    }).waitForUrl(/member$/, function () {
+        // Add an Incomplete Member
+        var incomplete = util.member('Young Adult', 1996);
+        delete incomplete.phone;
+        delete incomplete.emergRelation;
+        this.fill("form[action='/member']", incomplete, true);
+    }).waitForUrl(/account$/, function () {
+        // Test that Member is added.
+        test.assertElementCount("#members table tbody tr", 2, "Two member in table");
+        test.assertExists("#members table tbody tr[class='danger']", "Added member is incomplete");
+        // Complete
+    }).run(function () {
+        test.done();
+    });
+});
 
 //
