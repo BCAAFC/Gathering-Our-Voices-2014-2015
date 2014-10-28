@@ -84,9 +84,6 @@ casper.test.begin('Account page functions correct', function suite(test) {
     casper.start(host + '/register', function () {
         this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
     }).waitForUrl(/account$/, function () {
-        // Youth In Care
-        test.assertExists("#youthInCare button.btn.btn-danger > i.fa.fa-2x.fa-remove", "Youth in Care check is off");
-        test.assertExists("#youthInCare form[action='/youthInCare']", "Form for YIC exists.");
         // Members
         test.assertExists("#members button.btn.btn-danger[disabled] > i.fa.fa-2x.fa-remove", "Members check is off, is disabled");
         test.assertExists("#members a[href='/member']", "Link to members section is present");
@@ -131,20 +128,76 @@ casper.test.begin('Conduct Step', function suite(test) {
 });
 
 /** Details Step */
-casper.test.begin('Conduct Step', function suite(test) {
+casper.test.begin('Details Step', function suite(test) {
+    var updatedGroup = {
+        email: 'test-update@test.ca',
+        password: 'test-update',
+        passwordConfirm: 'test-update',
+        name: 'test name (updated)',
+        affiliation: 'test affilication (updated)',
+        address: 'test address (updated)',
+        city: 'test city (updated)',
+        region: 'Interior',
+        province: 'British Columbia',
+        postalCode: 'A1B 2C3 (updated)',
+        phone: '(123) 456-7890 (updated)',
+        affiliationType: 'Friendship Centre'
+    };
     casper.start(host + '/register', function () {
         this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
     }).waitForUrl(/account$/, function () {
-        test.assertExists("#details button.btn.btn-danger > i.fa.fa-2x.fa-remove", "Details check is off");
+        test.assertExists("#details button.btn-danger > .fa-remove", "Details check is off");
         test.assertExists("#details a[href='/details']", "Link to details section is present");
         this.click("#details a[href='/details']");
     }).waitForUrl(/details$/, function () {
         test.assertUrlMatch(/details$/, "Directed to details page");
+        // Can change some basic details.
+        this.fill("form[action='/details']", updatedGroup, true);
+    }).waitForUrl(/account$/, function () {
+        this.click("a[href='/logout']");
+    }).waitForUrl(/\//, function () {
+        this.click("a[href='/register']");
+    }).waitForUrl(/register$/, function () {
+        this.fill("form[action='/login']", { email: 'test-update@test.ca', password: 'test-update' }, true);
+    }).waitForUrl(/account$/, function () {
+        this.click("#details a[href='/details']");
+    }).waitForUrl(/details$/, function () {
+        // Verify changed fields.
+        test.assertField('email', updatedGroup.email, "email was correctly updated");
+        test.assertField('name', updatedGroup.name, "name was correctly updated");
+        test.assertField('affiliation', updatedGroup.affiliation, "affiliation was correctly updated");
+        test.assertField('address', updatedGroup.address, "address was correctly updated");
+        test.assertField('affiliation', updatedGroup.affiliation, "affiliation was correctly updated");
+        test.assertField('address', updatedGroup.address, "address was correctly updated");
+        test.assertField('city', updatedGroup.city, "city was correctly updated");
+        test.assertField('region', updatedGroup.region, "region was correctly updated");
+        test.assertField('province', updatedGroup.province, "province was correctly updated");
+        test.assertField('postalCode', updatedGroup.postalCode, "postalCode was correctly updated");
+        test.assertField('affiliationType', updatedGroup.affiliationType, "affiliationType was correctly updated");
+        this.fill("form[action='/details']", util.group, true);
+    }).waitForUrl(/account$/, function () {
+        // Button
+        test.assertExists("#details button.btn-success > .fa-check", "Details check is on");
     }).run(function () {
         test.done();
     });
 });
 
+/** Youth In Care */
+casper.test.begin('Youth In Care Step', function suite(test) {
+    casper.start(host + '/register', function () {
+        this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
+    }).waitForUrl(/account$/, function () {
+        test.assertExists("#youthInCare button.btn-danger > .fa-remove", "Youth in Care check is off");
+        test.assertExists("#youthInCare form[action='/youthInCare']", "Form for YIC exists.");
+        this.fill("form[action='/youthInCare']", { youthInCare: 4, youthInCareSupport: 5 }, true);
+    }).waitForUrl(/account$/, function () {
+        test.assertField("youthInCare", '4', "Youth in Care has the value set.");
+        test.assertField("youthInCareSupport", '5', "Youth in Care Support has the value set.");
+    }).run(function () {
+        test.done();
+    });
+});
 
 
 //

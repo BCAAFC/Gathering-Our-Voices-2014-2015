@@ -308,6 +308,7 @@ module.exports = function(data) {
           group.fax =             req.body.fax;
           group.phone =           req.body.phone;
           group.affiliationType = req.body.affiliationType;
+          group._state.steps.details = true;
           group.save(function (err, group) {
             if (err) {
               res.send('Sorry, there was an error saving your group. Try again?');
