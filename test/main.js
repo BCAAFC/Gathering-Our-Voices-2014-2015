@@ -230,7 +230,14 @@ casper.test.begin('Member Step', function suite(test) {
         // Test that Member is added.
         test.assertElementCount("#members table tbody tr", 2, "Two member in table");
         test.assertExists("#members table tbody tr[class='danger']", "Added member is incomplete");
-        // Complete
+        // Finish off the member.
+        this.click("#members table tbody tr[class='danger'] td a");
+    }).waitForUrl(/member\/.*$/, function () {
+        this.fill("form", {phone: '123', emergRelation: 'testing'}, true);
+    }).waitForUrl(/account$/, function () {
+        // Test that Member is added.
+        test.assertElementCount("#members table tbody tr", 2, "Two members in table");
+        test.assertExists("#members table tbody tr[class='success']", "Both members complete");
     }).run(function () {
         test.done();
     });

@@ -214,7 +214,6 @@ module.exports = function(data) {
         .populate("_payments")
         .exec(function (err, group) {
           if (!err && group) {
-            req.session.group = group;
             async.auto({
               paid: group.getPaid.bind(group),
               cost: group.getCost.bind(group),
@@ -260,7 +259,8 @@ module.exports = function(data) {
         group.youthInCare =              Number(req.body.youthInCare);
         group.youthInCareSupport = Number(req.body.youthInCareSupport);
         group._state.steps.youthInCare = true;
-        group.save(function (err) {
+        group.save(function (err, group) {
+          req.session.group = group;
           if (!err) {
             // req.session.group = group;
             res.redirect('/account');
