@@ -18,9 +18,9 @@ casper.test.begin('Index seems healthy', function suite(test) {
 casper.test.begin('Registration works with complete information', function suite(test) {
     casper.start(host + '/register', function () {
         this.fill("form[action='/register']", util.group, true);
-    }).then(function () {
         // Success brings us to account page.
-        test.assertUrlMatch(/account$/, "Sent to account page");
+    }).waitForUrl(/account$/, function () {
+            test.assertUrlMatch(/account$/, "Sent to account page");
     }).run(function () {
         test.done();
     });
@@ -29,12 +29,12 @@ casper.test.begin('Registration works with complete information', function suite
 casper.test.begin('Registration fails with incomplete information', function suite(test) {
     casper.start(host + '/register', function () {
         var incomplete = util.group;
-        delete util.group.city;
+        delete incomplete.city;
         this.fill("form[action='/register']", incomplete, true);
-    }).then(function () {
         // Get redirected back, values should still be there.
-        test.assertUrlMatch(/register\?message=/, "Redirected back to register page");
-        test.assertField('address', util.group.address, "Filled-in values remain");
+    }).waitForUrl(/register\?message=/, function () {
+            test.assertUrlMatch(/register\?message=/, "Redirected back to register page");
+            test.assertField('address', util.group.address, "Filled-in values remain");
     }).run(function () {
         test.done();
     });
@@ -44,7 +44,7 @@ casper.test.begin('Registration fails with incomplete information', function sui
 casper.test.begin('Login works with correct information', function suite(test) {
     casper.start(host + '/register', function () {
         this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
-    }).then(function () {
+    }).waitForUrl(/account$/, function () {
         // On success we get sent to the account page.
         test.assertUrlMatch(/account$/, "Sent to account page");
     }).run(function () {
@@ -55,7 +55,7 @@ casper.test.begin('Login works with correct information', function suite(test) {
 casper.test.begin('Login fails with incorrect information', function suite(test) {
     casper.start(host + '/register', function () {
         this.fill("form[action='/login']", { email: util.garbage(), password: util.garbage() }, true);
-    }).then(function () {
+    }).waitForUrl(/register\?message/, function () {
         // Redirected due to invalid information.
         test.assertUrlMatch(/register\?message=/, "Sent back to login page");
     }).run(function () {
@@ -67,10 +67,10 @@ casper.test.begin('Login fails with incorrect information', function suite(test)
 casper.test.begin('Logout works correctly', function suite(test) {
     casper.start(host + '/register', function () {
         this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
-    }).then(function () {
+    }).waitForUrl(/account/, function () {
         // Log out
         this.click("a[href='/logout']");
-    }).then(function () {
+    }).waitForUrl(/\/$/, function () {
         // Should be logged out. Check the navbar items.
         test.assertDoesntExist("a[href='/logout']", "Logout removes Logout button");
         test.assertExists("a[href='/register']", "Logout re-introduces Register");
@@ -80,16 +80,13 @@ casper.test.begin('Logout works correctly', function suite(test) {
 });
 
 /** Account Page */
-casper.test.begin('Account page appears correct', function suite(test) {
+casper.test.begin('Account page functions correct', function suite(test) {
     casper.start(host + '/register', function () {
         this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
-    }).then(function () {
-        // Conduct
-        test.assertExists("#conduct button.btn.btn-danger > i.fa.fa-2x.fa-remove", "Conduct check is off");
-        test.assertExists("#conduct a[href='/conduct']", "Link to conduct is present.");
-        // Details
-        test.assertExists("#details button.btn.btn-danger > i.fa.fa-2x.fa-remove", "Details check is off");
-        test.assertExists("#details a[href='/details']", "Link to details section is present.");
+    }).waitForUrl(/account$/, function () {
+        // Youth In Care
+        test.assertExists("#youthInCare button.btn.btn-danger > i.fa.fa-2x.fa-remove", "Youth in Care check is off");
+        test.assertExists("#youthInCare form[action='/youthInCare']", "Form for YIC exists.");
         // Members
         test.assertExists("#members button.btn.btn-danger[disabled] > i.fa.fa-2x.fa-remove", "Members check is off, is disabled");
         test.assertExists("#members a[href='/member']", "Link to members section is present");
@@ -110,6 +107,43 @@ casper.test.begin('Account page appears correct', function suite(test) {
     });
 });
 
+/** Conduct Step */
+casper.test.begin('Conduct Step', function suite(test) {
+    casper.start(host + '/register', function () {
+        this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
+    }).waitForUrl(/account$/, function () {
+        test.assertExists("#conduct button.btn-danger > .fa-remove", "Conduct check is off");
+        test.assertExists("#conduct a[href='/conduct']", "Link to conduct is present");
+        this.click("#conduct a[href='/conduct']");
+    }).waitForUrl(/conduct$/, function () {
+        test.assertUrlMatch(/conduct$/, "On conduct page");
+        test.assertExists("button#agree", "Agree button exists");
+        this.click("button#agree");
+    }).waitForUrl(/account$/, function () {
+        test.assertUrlMatch(/account$/, "Button click redirects to account page");
+        test.assertExists("#conduct button.btn-success > .fa-check", "Conduct is checked off");
+        this.click("#conduct a[href='/conduct']");
+    }).waitForUrl(/conduct$/, function () {
+        test.assertExists("a[href='/account']", "After checking off, the conduct form just has a link");
+    }).run(function () {
+        test.done();
+    });
+});
+
+/** Details Step */
+casper.test.begin('Conduct Step', function suite(test) {
+    casper.start(host + '/register', function () {
+        this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
+    }).waitForUrl(/account$/, function () {
+        test.assertExists("#details button.btn.btn-danger > i.fa.fa-2x.fa-remove", "Details check is off");
+        test.assertExists("#details a[href='/details']", "Link to details section is present");
+        this.click("#details a[href='/details']");
+    }).waitForUrl(/details$/, function () {
+        test.assertUrlMatch(/details$/, "Directed to details page");
+    }).run(function () {
+        test.done();
+    });
+});
 
 
 
