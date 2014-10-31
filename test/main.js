@@ -20,7 +20,6 @@ casper.test.begin('Registration works with complete information', function suite
         this.fill("form[action='/register']", util.group, true);
         // Success brings us to account page.
     }).waitForUrl(/account$/, function () {
-        this.capture('foo.jpg');
         test.assertUrlMatch(/account$/, "Sent to account page");
     }).run(function () {
         test.done();
