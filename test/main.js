@@ -88,18 +88,6 @@ casper.test.begin('Logout works correctly', function suite(test) {
     });
 });
 
-/** Account Page */
-casper.test.begin('Account page functions correct', function suite(test) {
-    casper.start(host + '/register', function () {
-        this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
-    }).waitForUrl(/account$/, function () {
-        // Workshops
-        test.assertExists("#workshops button.btn.btn-danger > i.fa.fa-2x.fa-remove", "Workshops check is off");
-    }).run(function () {
-        test.done();
-    });
-});
-
 /** Conduct Step */
 casper.test.begin('Conduct Step', function suite(test) {
     casper.start(host + '/register', function () {
@@ -126,18 +114,18 @@ casper.test.begin('Conduct Step', function suite(test) {
 /** Details Step */
 casper.test.begin('Details Step', function suite(test) {
     var updatedGroup = {
-        email: 'test-update@test.ca',
-        password: 'test-update',
-        passwordConfirm: 'test-update',
-        name: 'test name (updated)',
-        affiliation: 'test affilication (updated)',
-        address: 'test address (updated)',
-        city: 'test city (updated)',
-        region: 'Interior',
-        province: 'British Columbia',
-        postalCode: 'A1B 2C3 (updated)',
-        phone: '(123) 456-7890 (updated)',
-        affiliationType: 'Friendship Centre'
+        email           : 'test-update@test.ca',
+        password        : 'test-update',
+        passwordConfirm : 'test-update',
+        name            : 'test name (updated)',
+        affiliation     : 'test affilication (updated)',
+        address         : 'test address (updated)',
+        city            : 'test city (updated)',
+        region          : 'Interior',
+        province        : 'British Columbia',
+        postalCode      : 'A1B 2C3 (updated)',
+        phone           : '(123) 456-7890 (updated)',
+        affiliationType : 'Friendship Centre'
     };
     casper.start(host + '/register', function () {
         this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
@@ -263,17 +251,30 @@ casper.test.begin('Payment Step', function suite(test) {
     casper.start(host + '/register', function () {
         this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
     }).waitForUrl(/account$/, function () {
-        // Payments
+        // Payments on account page
         test.assertExists("#payments button.btn-danger > i.fa-remove", "Payments check is off");
         test.assertExists("#payments #cost", "Cost specification is present on account page");
         test.assertExists("#payments #paid", "Paid specification is present on account page");
         test.assertExists("#payments #balance", "Balance specification is present on account page");
         this.click("#payments a[href='/payments']");
     }).waitForUrl(/payments$/, function () {
+        // On payment page.
         test.assertExists("#cost", "Cost specification is present on payment page");
         test.assertExists("#paid", "Paid specification is present on payment page");
         test.assertExists("#balance", "Balance specification is present on payment page");
         test.assertExists("form[action='https://www.paypal.com/cgi-bin/webscr']", "Paypal form exists");
+    }).run(function () {
+        test.done();
+    });
+});
+
+/** Workshops */
+casper.test.begin('Workshop Step', function suite(test) {
+    casper.start(host + '/register', function () {
+        this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
+    }).waitForUrl(/account$/, function () {
+        // Workshops
+        test.assertExists("#workshops button.btn-danger > i.fa-remove", "Workshops check is off");
     }).run(function () {
         test.done();
     });
