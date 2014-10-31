@@ -2,7 +2,7 @@ var util = require('./util');
 
 /** Config */
 casper.viewportSize = {width: 1440, height: 900};
-var host = 'http://localhost:8080';
+var host            = 'http://localhost:8080';
 
 casper.test.begin('Index seems healthy', function suite(test) {
     casper.start(host, function () {

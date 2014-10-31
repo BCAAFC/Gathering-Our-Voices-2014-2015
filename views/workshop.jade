@@ -1,117 +1,117 @@
 extends templates/layout
 
 block content
-  .container
-    .row(style="text-align: center")
-      a.btn.btn-small.btn-primary(href="/workshops") 
-        .fa.fa-backward
-        |  Back to workshop listing
-  .container
-    .row
-      .col-sm-12
-        h2= workshop.name
-        p.lead Hosted by #{workshop.host}
-        span Allows: 
-          if workshop.allows.indexOf("Youth") != -1
-            .label.label-info Y
-            |  
-          if workshop.allows.indexOf("Young Adult") != -1
-            .label.label-success YA
-            |  
-          if workshop.allows.indexOf("Young Chaperone") != -1
-            .label.label-warning YC
-            |  
-          if workshop.allows.indexOf("Chaperone") != -1
-            .label.label-danger Ch
-            |  
-        br
-        br
-        for paragraph in workshop.description.split("\n")
-          p= paragraph
-    .row
-      h2 Sessions
-      #sessions.panel-group
-        for session, index in workshop.sessions
-          if index % 3 == 0
-            .row
-          .col-sm-4(style="margin-top:0px")
-            div
-              h4 Session #{session.session}
-              b Time: 
-              case session.session
-                when 0
-                  | Wed, March 19, 7:00 am till 8:00 am
-                when 1
-                  | Wed, March 19, 9:00 am till noon
-                when 2
-                  | Wed, March 19, 9:00 am till 10:30 am
-                when 3
-                  | Wed, March 19, 11:00 am till 12:30 pm
-                when 4
-                  | Wed, March 19, 1:30 pm till 4:30 pm
-                when 5
-                  | Wed, March 19, 1:30 pm till 3:00 pm
-                when 6
-                  | Wed, March 19, 3:30 pm till 5:00 pm
-                when 7
-                  | Thurs, March 20, 9:00 am till noon
-                when 8
-                  | Thurs, March 20, 9:00 am till 10:30 am
-                when 9
-                  | Thurs, March 20, 11:00 am till 12:30 pm
-                when 10
-                  | Thurs, March 20, 1:30 pm till 4:30 pm
-                when 11
-                  | Thurs, March 20, 1:30 pm till 3:00 pm
-                when 12
-                  | Thurs, March 20, 3:30 pm till 5:00 pm
-                when 13
-                  | Thurs, March 20, 7:00 am till 8:00 am
-              br 
-              b Room: 
-              | #{session.room}
-              br
-              b Venue: 
-              |  #{session.venue}
-              br
-              .row
-                .col-xs-6
-                  b Capacity: 
-                  if session._registered.length == session.capacity
-                    .label.label-default #{session._registered.length} / #{session.capacity}
-                  else if session._registered.length / session.capacity > .75
-                    .label.label-danger #{session._registered.length} / #{session.capacity}
-                  else if session._registered.length / session.capacity > .50
-                    .label.label-warning #{session._registered.length} / #{session.capacity}
-                  else
-                    .label.label-success #{session._registered.length} / #{session.capacity}
-                .col-xs-6
-                  if locals.session.group
-                    a.manage.btn.btn-xs.btn-block.btn-primary(data-toggle="collapse", href="##{session.session}-attending", data-id="#{workshop._id}", data-session="#{session.session}") 
-                      .fa.fa-female
-                      |  Manage Attendees 
-                      .fa.fa-male
-                  else
-                    a.manage.btn.btn-xs.btn-block.btn-disabled.btn-default(data-toggle="collapse", href="##{session.session}-attending", data-id="#{workshop._id}", data-session="#{session.session}", disabled) 
-                      .fa.fa-female
-                      |  Manage Attendees 
-                      .fa.fa-male
-            .panel.collapse(id="#{session.session}-attending")
-              p
-                .fa.fa-cloud-download
-                span.text-muted  Working....
-            br
-            br
+    .container
+        .row(style="text-align: center")
+            a.btn.btn-small.btn-primary(href="/workshops") 
+                .fa.fa-backward
+                |  Back to workshop listing
+    .container
+        .row
+            .col-sm-12
+                h2= workshop.name
+                p.lead Hosted by #{workshop.host}
+                span Allows: 
+                    if workshop.allows.indexOf("Youth") != -1
+                        .label.label-info Y
+                        |    
+                    if workshop.allows.indexOf("Young Adult") != -1
+                        .label.label-success YA
+                        |    
+                    if workshop.allows.indexOf("Young Chaperone") != -1
+                        .label.label-warning YC
+                        |    
+                    if workshop.allows.indexOf("Chaperone") != -1
+                        .label.label-danger Ch
+                        |    
+                br
+                br
+                for paragraph in workshop.description.split("\n")
+                    p= paragraph
+        .row
+            h2 Sessions
+            #sessions.panel-group
+                for session, index in workshop.sessions
+                    if index % 3 == 0
+                        .row
+                    .col-sm-4(style="margin-top:0px")
+                        div
+                            h4 Session #{session.session}
+                            b Time: 
+                            case session.session
+                                when 0
+                                    | Wed, March 19, 7:00 am till 8:00 am
+                                when 1
+                                    | Wed, March 19, 9:00 am till noon
+                                when 2
+                                    | Wed, March 19, 9:00 am till 10:30 am
+                                when 3
+                                    | Wed, March 19, 11:00 am till 12:30 pm
+                                when 4
+                                    | Wed, March 19, 1:30 pm till 4:30 pm
+                                when 5
+                                    | Wed, March 19, 1:30 pm till 3:00 pm
+                                when 6
+                                    | Wed, March 19, 3:30 pm till 5:00 pm
+                                when 7
+                                    | Thurs, March 20, 9:00 am till noon
+                                when 8
+                                    | Thurs, March 20, 9:00 am till 10:30 am
+                                when 9
+                                    | Thurs, March 20, 11:00 am till 12:30 pm
+                                when 10
+                                    | Thurs, March 20, 1:30 pm till 4:30 pm
+                                when 11
+                                    | Thurs, March 20, 1:30 pm till 3:00 pm
+                                when 12
+                                    | Thurs, March 20, 3:30 pm till 5:00 pm
+                                when 13
+                                    | Thurs, March 20, 7:00 am till 8:00 am
+                            br 
+                            b Room: 
+                            | #{session.room}
+                            br
+                            b Venue: 
+                            |    #{session.venue}
+                            br
+                            .row
+                                .col-xs-6
+                                    b Capacity: 
+                                    if session._registered.length == session.capacity
+                                        .label.label-default #{session._registered.length} / #{session.capacity}
+                                    else if session._registered.length / session.capacity > .75
+                                        .label.label-danger #{session._registered.length} / #{session.capacity}
+                                    else if session._registered.length / session.capacity > .50
+                                        .label.label-warning #{session._registered.length} / #{session.capacity}
+                                    else
+                                        .label.label-success #{session._registered.length} / #{session.capacity}
+                                .col-xs-6
+                                    if locals.session.group
+                                        a.manage.btn.btn-xs.btn-block.btn-primary(data-toggle="collapse", href="##{session.session}-attending", data-id="#{workshop._id}", data-session="#{session.session}") 
+                                            .fa.fa-female
+                                            |    Manage Attendees 
+                                            .fa.fa-male
+                                    else
+                                        a.manage.btn.btn-xs.btn-block.btn-disabled.btn-default(data-toggle="collapse", href="##{session.session}-attending", data-id="#{workshop._id}", data-session="#{session.session}", disabled) 
+                                            .fa.fa-female
+                                            |    Manage Attendees 
+                                            .fa.fa-male
+                        .panel.collapse(id="#{session.session}-attending")
+                            p
+                                .fa.fa-cloud-download
+                                span.text-muted    Working....
+                        br
+                        br
 
-    script.
-      $(function() {
-        'use strict';
-        $('a.manage').click(function() {
-          var session = $(this).data('session'),
-            id = $(this).data('id');
-          $.get('/workshop/members/' + id + '/' + session, function(data) {
-            $('#' + session + '-attending').html(data);
-          });
-        });
-      });
-        
+        script.
+            $(function() {
+                'use strict';
+                $('a.manage').click(function() {
+                    var session = $(this).data('session'),
+                        id = $(this).data('id');
+                    $.get('/workshop/members/' + id + '/' + session, function(data) {
+                        $('#' + session + '-attending').html(data);
+                    });
+                });
+            });
+                

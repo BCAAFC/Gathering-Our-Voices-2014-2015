@@ -1,90 +1,89 @@
 extends templates/layout
 
 block content
-  .container
-    if session.isAdmin
-      .row
-        .col-sm-8.col-sm-offset-2
-          .btn-group
-            a.btn.btn-success#add-section
-              i.fa.fa-plus
-              |  Add Section
-            a.btn.btn-info#add-question
-              i.fa.fa-plus
-              |  Add Question
-            a.btn.btn-danger#allow-removes
-              i.fa.fa-trash
-              |  Allow Removes
-          script.
-            $('#add-section').click(function () {
-              if ($('#new-section').is(':visible')) {
-                $('#new-section').hide('fast');
-              } else {
-                $('#new-section').show('fast');
-              }
-            });
-            $('#add-question').click(function () {
-              if ($('#new-question').is(':visible')) {
-                $('#new-question').hide('fast');
-              } else {
-                $('#new-question').show('fast');
-              }
-            });
-            $('a#allow-removes').click(function() {
-              var state = $('.remove').attr('disabled');
-              $('.remove').attr('disabled', !state);
-            });
-          #new-section.well(style="display: none;")
-            form(action="/faq/section", method="POST")
-              .form-group
-                label Title*
-                input.form-control(type="text", name="title", placeholder="How to ask Questions", required)
-              .form-group
-                label Prelude*
-                textarea.form-control(name="prelude", placeholder="Blah blah blah", required)
-              .form-group
-                input.btn.btn-primary(type="submit" value="Add Section")
-          #new-question.well(style="display: none;")
-            form(action="/faq/question", method="POST")
-              .form-group
-                label Question*
-                input.form-control(type="text", name="question", placeholder="Question?", required)
-              .form-group
-                label Answer*
-                textarea.form-control(name="answer", placeholder="Answer.", required)
-              .form-group
-                label Section*
-                select.form-control(name="section", required)
-                  for section in sections
-                    option(value="#{section._id}") #{section.title}
-              .form-group
-                input.btn.btn-primary(type="submit" value="Add Question")
+    .container
+        if session.isAdmin
+            .row
+                .col-sm-8.col-sm-offset-2
+                    .btn-group
+                        a.btn.btn-success#add-section
+                            i.fa.fa-plus
+                            |  Add Section
+                        a.btn.btn-info#add-question
+                            i.fa.fa-plus
+                            |  Add Question
+                        a.btn.btn-danger#allow-removes
+                            i.fa.fa-trash
+                            |  Allow Removes
+                    script.
+                        $('#add-section').click(function () {
+                            if ($('#new-section').is(':visible')) {
+                                $('#new-section').hide('fast');
+                            } else {
+                                $('#new-section').show('fast');
+                            }
+                        });
+                        $('#add-question').click(function () {
+                            if ($('#new-question').is(':visible')) {
+                                $('#new-question').hide('fast');
+                            } else {
+                                $('#new-question').show('fast');
+                            }
+                        });
+                        $('a#allow-removes').click(function() {
+                            var state = $('.remove').attr('disabled');
+                            $('.remove').attr('disabled', !state);
+                        });
+                    #new-section.well(style="display: none;")
+                        form(action="/faq/section", method="POST")
+                            .form-group
+                                label Title*
+                                input.form-control(type="text", name="title", placeholder="How to ask Questions", required)
+                            .form-group
+                                label Prelude*
+                                textarea.form-control(name="prelude", placeholder="Blah blah blah", required)
+                            .form-group
+                                input.btn.btn-primary(type="submit" value="Add Section")
+                    #new-question.well(style="display: none;")
+                        form(action="/faq/question", method="POST")
+                            .form-group
+                                label Question*
+                                input.form-control(type="text", name="question", placeholder="Question?", required)
+                            .form-group
+                                label Answer*
+                                textarea.form-control(name="answer", placeholder="Answer.", required)
+                            .form-group
+                                label Section*
+                                select.form-control(name="section", required)
+                                    for section in sections
+                                        option(value="#{section._id}") #{section.title}
+                            .form-group
+                                input.btn.btn-primary(type="submit" value="Add Question")
 
 
-    .row
-      .col-sm-offset-2.col-sm-8.well
-          p Looking for a printable version? <a href="/documents/faq.pdf">Click here.</a>
-          p Looking for a fundraising ideas? <a href="/documents/fundraising.pdf">Click here.</a>
-      .col-sm-offset-2.col-sm-8
-        for section in sections
-          if session.isAdmin
-            .pull-right
-              a.btn.btn-danger.btn-xs.remove(disabled, href="/faq/del/#{section._id}")
-                i.fa.fa-trash
-                |  Delete Section
-          h2= section.title
-          div
-            | !{section.prelude}
+        .row
+            .col-sm-offset-2.col-sm-8.well
+                p Looking for a printable version? <a href="/documents/faq.pdf">Click here.</a>
+                p Looking for a fundraising ideas? <a href="/documents/fundraising.pdf">Click here.</a>
+            .col-sm-offset-2.col-sm-8
+                for section in sections
+                    if session.isAdmin
+                        .pull-right
+                            a.btn.btn-danger.btn-xs.remove(disabled, href="/faq/del/#{section._id}")
+                                i.fa.fa-trash
+                                |    Delete Section
+                    h2= section.title
+                    div
+                        | !{section.prelude}
 
-          for question in section.items
-            if session.isAdmin
-              .pull-right
-                a.btn.btn-xs.btn-danger.remove(disabled, href="/faq/del/#{section._id}/#{question._id}")
-                  i.fa.fa-trash
-            h4= question.question
-            div
-              | !{question.answer}
+                    for question in section.items
+                        if session.isAdmin
+                            .pull-right
+                                a.btn.btn-xs.btn-danger.remove(disabled, href="/faq/del/#{section._id}/#{question._id}")
+                                    i.fa.fa-trash
+                        h4= question.question
+                        div
+                            | !{question.answer}
+                    hr.featurette-divider
 
-          hr.featurette-divider
-
-        p.text-muted Please email govcoordinator@bcaafc.com if you have any questions that you don't see listed here.
+                p.text-muted Please email govcoordinator@bcaafc.com if you have any questions that you don't see listed here.

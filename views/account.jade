@@ -1,264 +1,261 @@
 extends templates/layout
 
 block content
-  .container.marketing
-    .row
-      .col-xs-8.col-xs-offset-2.well.text-center
-        p As you complete each section of your registration, please click on the large button to the left, marking it complete (green) or incomplete (red). This will allow our conference team to track and assist you with your registration.
-        p You can stop, log out, or close this window at any time and your progress will be saved (up to the last page load). You can return any time by visiting the 'Register' page again and using the login to the right side.
-        p The workshop schedule will be released mid-February. Please stay tuned.
-    #conduct.row.featurette
-      .col-xs-2
-        if session.group._state.steps.conduct
-          button.btn.btn-success(style="margin-top: 50%;")
-            i.fa.fa-2x.fa-check
-        else
-          button.btn.btn-danger(style="margin-top: 50%;")
-            i.fa.fa-2x.fa-remove
-      .col-xs-10
-        h2.featurette-heading Code of Conduct
-        p Please ensure that your entire group has read and reviewed the code of conduct.
-        a.btn.btn-block.btn-primary(href="/conduct")
-          i.fa.fa-newspaper-o
-          |  View Code of Conduct
-    hr.featurette-divider
-
-    #details.row.featurette
-      .col-xs-2
-        if session.group._state.steps.details
-          button.btn.btn-success(style="margin-top: 50%;")
-            i.fa.fa-2x.fa-check
-        else
-          button.btn.btn-danger(style="margin-top: 50%;")
-            i.fa.fa-2x.fa-remove
-      .col-xs-10
-        h2.featurette-heading Group Details
-        p Update your group details if needed, this information was entered when you first registered.
-        p Each year the conference hosts a feast to honour Youth In Care.  Please indicate how many youth, and support chaperones from your group would like to attend.
-        a.btn.btn-block.btn-primary(href="/details")
-          i.fa.fa-edit
-          | Edit Details
-    hr.featurette-divider
-
-    #youthInCare.row.featurette
-      .col-xs-2
-        if session.group._state.steps.youthInCare
-          button.btn.btn-success(style="margin-top: 50%;")
-            i.fa.fa-2x.fa-check
-        else
-          button.btn.btn-danger(style="margin-top: 50%;")
-            i.fa.fa-2x.fa-remove
-      .col-xs-10
-        h2.feaurette-heading Youth In Care
-        p Each year the conference hosts a feast to honour Youth In Care. If some of this groups delegates are or have been a youth in the care of the Ministry of Children and Family Development or an Aboriginal Delegated Agency and would like to attend the feast, please indicate below how many of your group will attend.
-        form(action="/youthInCare", method="POST")
-          .col-sm-3
-            .form-group
-              label Youth In Care
-              input.form-control(type="number", name="youthInCare" value="#{session.group.youthInCare || 0}" step="1")
-          .col-sm-3
-            .form-group
-              label Chaperone or Support
-              input.form-control(type="number", name="youthInCareSupport" value="#{session.group.youthInCareSupport || 0}" step="1")
-          .col-sm-3
-              label
-              button.btn.btn-primary.btn-block(type="submit")
-                i.fa.fa-edit
-                |  Update Details
-    hr.featurette-divider
-
-    #members.row.featurette
-      .col-xs-2
-        if session.group._state.steps.members
-            button.btn.btn-success(style="margin-top: 50%;")
-              i.fa.fa-2x.fa-check
-        else
-          button.btn.btn-danger(style="margin-top: 50%;" disabled=(!enoughChaperones || !membersComplete))
-            i.fa.fa-2x.fa-remove
-      .col-xs-10
-        h2.featurette-heading Group Members
-        p Youth and Chaperones attending the conference. There are 4 types of attendees:
-        ul
-          li Youth (Ages 14-17): For every 5 Youth, you must have at least 1 Chaperone (Or Young Chaperone)
-          li Young Adults (Ages 18-24)
-          li Young Chaperones (Ages 21-24)
-          li Chaperones (Ages 24+)
+    .container.marketing
         .row
-          if enoughChaperones
-            #enoughChaperones.label.label-success
-              i.fa.fa-check
-            |  You have enough chaperones to support your youth.
-          else
-            .label.label-danger
-              i.fa.fa-remove
-            |  You do not have enough chaperones to support your youth.
-          br
-          if membersComplete
-            #membersComplete.label.label-success
-              i.fa.fa-check
-            |  All your group members have their required information complete.
-          else
-            .label.label-danger
-              i.fa.fa-remove
-            |  Some of your members are missing information.
-        table.table.table-responsive.table-condensed.table-hover
-          thead
-            tr
-              th Done
-              th Name
-              th Type
-              th Workshops
-              th Ticket Type
-              th
-                | Actions
-                br
-                small.text-muted Allow Removes?
-                button#allowRemove.btn.btn-xs.btn-link
-                  .fa.fa-times-circle
-          tbody
-            for member in members
-              tr(class=(member._state.complete ? 'success' : 'danger'))
-                td
-                  if member._state.complete
-                    i.fa.fa-check
-                  else
-                    i.fa.fa-remove
-                td= member.name
-                td= member.type
-                td= member._workshops.length
-                td= member._state.ticketType
-                td
-                  a.btn.btn-block.btn-xs.btn-default(href="/member/#{member._id}")
+            .col-xs-8.col-xs-offset-2.well.text-center
+                p As you complete each section of your registration, please click on the large button to the left, marking it complete (green) or incomplete (red). This will allow our conference team to track and assist you with your registration.
+                p You can stop, log out, or close this window at any time and your progress will be saved (up to the last page load). You can return any time by visiting the 'Register' page again and using the login to the right side.
+                p The workshop schedule will be released mid-February. Please stay tuned.
+        #conduct.row.featurette
+            .col-xs-2
+                if session.group._state.steps.conduct
+                    button.btn.btn-success(style="margin-top: 50%;")
+                        i.fa.fa-2x.fa-check
+                else
+                    button.btn.btn-danger(style="margin-top: 50%;")
+                        i.fa.fa-2x.fa-remove
+            .col-xs-10
+                h2.featurette-heading Code of Conduct
+                p Please ensure that your entire group has read and reviewed the code of conduct.
+                a.btn.btn-block.btn-primary(href="/conduct")
+                    i.fa.fa-newspaper-o
+                    |    View Code of Conduct
+        hr.featurette-divider
+
+        #details.row.featurette
+            .col-xs-2
+                if session.group._state.steps.details
+                    button.btn.btn-success(style="margin-top: 50%;")
+                        i.fa.fa-2x.fa-check
+                else
+                    button.btn.btn-danger(style="margin-top: 50%;")
+                        i.fa.fa-2x.fa-remove
+            .col-xs-10
+                h2.featurette-heading Group Details
+                p Update your group details if needed, this information was entered when you first registered.
+                p Each year the conference hosts a feast to honour Youth In Care.    Please indicate how many youth, and support chaperones from your group would like to attend.
+                a.btn.btn-block.btn-primary(href="/details")
                     i.fa.fa-edit
-                    |  Edit
-                  form(action="/member/#{member._id}" method="POST")
-                    input(name="_method" value="DELETE", style="display: none")
-                    button.btn.btn-xs.btn-block.btn-danger.removeButton(disabled)
-                      i.fa.fa-remove
-                      |  Remove
-        a.btn.btn-block.btn-primary(href="/member")
-          i.fa.fa-plus
-          |  Add Member
-    hr.featurette-divider
+                    | Edit Details
+        hr.featurette-divider
 
-    #documents.row.featurette
-      .col-xs-2
-        if session.group._state.steps.documents
-            button.btn.btn-success(style="margin-top: 50%;")
-              i.fa.fa-2x.fa-check
-          else
-            button.btn.btn-danger(style="margin-top: 50%;")
-              i.fa.fa-2x.fa-remove
-      .col-xs-8
-        h2.featurette-heading Useful Documents
-        p Please take a look at these documents and forms. When you're done, check it off!
-        .row
-          .col-sm-4
-            ul
-              li
-                a(href="/documents/talent.pdf") Talent Show Application
-          .col-sm-4
-            ul
-              li
-                a(href="/documents/honour-a-youth.pdf") Honour a Youth Application
+        #youthInCare.row.featurette
+            .col-xs-2
+                if session.group._state.steps.youthInCare
+                    button.btn.btn-success(style="margin-top: 50%;")
+                        i.fa.fa-2x.fa-check
+                else
+                    button.btn.btn-danger(style="margin-top: 50%;")
+                        i.fa.fa-2x.fa-remove
+            .col-xs-10
+                h2.feaurette-heading Youth In Care
+                p Each year the conference hosts a feast to honour Youth In Care. If some of this groups delegates are or have been a youth in the care of the Ministry of Children and Family Development or an Aboriginal Delegated Agency and would like to attend the feast, please indicate below how many of your group will attend.
+                form(action="/youthInCare", method="POST")
+                    .col-sm-3
+                        .form-group
+                            label Youth In Care
+                            input.form-control(type="number", name="youthInCare" value="#{session.group.youthInCare || 0}" step="1")
+                    .col-sm-3
+                        .form-group
+                            label Chaperone or Support
+                            input.form-control(type="number", name="youthInCareSupport" value="#{session.group.youthInCareSupport || 0}" step="1")
+                    .col-sm-3
+                            label
+                            button.btn.btn-primary.btn-block(type="submit")
+                                i.fa.fa-edit
+                                |    Update Details
+        hr.featurette-divider
 
+        #members.row.featurette
+            .col-xs-2
+                if session.group._state.steps.members
+                        button.btn.btn-success(style="margin-top: 50%;")
+                            i.fa.fa-2x.fa-check
+                else
+                    button.btn.btn-danger(style="margin-top: 50%;" disabled=(!enoughChaperones || !membersComplete))
+                        i.fa.fa-2x.fa-remove
+            .col-xs-10
+                h2.featurette-heading Group Members
+                p Youth and Chaperones attending the conference. There are 4 types of attendees:
+                ul
+                    li Youth (Ages 14-17): For every 5 Youth, you must have at least 1 Chaperone (Or Young Chaperone)
+                    li Young Adults (Ages 18-24)
+                    li Young Chaperones (Ages 21-24)
+                    li Chaperones (Ages 24+)
+                .row
+                    if enoughChaperones
+                        #enoughChaperones.label.label-success
+                            i.fa.fa-check
+                            |  You have enough chaperones to support your youth.
+                    else
+                        .label.label-danger
+                            i.fa.fa-remove
+                            |  You do not have enough chaperones to support your youth.
+                    br
+                    if membersComplete
+                        #membersComplete.label.label-success
+                            i.fa.fa-check
+                            |  All your group members have their required information complete.
+                    else
+                        .label.label-danger
+                            i.fa.fa-remove
+                            |  Some of your members are missing information.
+                table.table.table-responsive.table-condensed.table-hover
+                    thead
+                        tr
+                            th Done
+                            th Name
+                            th Type
+                            th Workshops
+                            th Ticket Type
+                            th
+                                | Actions
+                                br
+                                small.text-muted Allow Removes?
+                                button#allowRemove.btn.btn-xs.btn-link
+                                    .fa.fa-times-circle
+                    tbody
+                        for member in members
+                            tr(class=(member._state.complete ? 'success' : 'danger'))
+                                td
+                                    if member._state.complete
+                                        i.fa.fa-check
+                                    else
+                                        i.fa.fa-remove
+                                td= member.name
+                                td= member.type
+                                td= member._workshops.length
+                                td= member._state.ticketType
+                                td
+                                    a.btn.btn-block.btn-xs.btn-default(href="/member/#{member._id}")
+                                        i.fa.fa-edit
+                                        |  Edit
+                                    form(action="/member/#{member._id}" method="POST")
+                                        input(name="_method" value="DELETE", style="display: none")
+                                        button.btn.btn-xs.btn-block.btn-danger.removeButton(disabled)
+                                            i.fa.fa-remove
+                                            |  Remove
+                a.btn.btn-block.btn-primary(href="/member")
+                    i.fa.fa-plus
+                    |  Add Member
+        hr.featurette-divider
 
-    hr.featurette-divider
+        #documents.row.featurette
+            .col-xs-2
+                if session.group._state.steps.documents
+                        button.btn.btn-success(style="margin-top: 50%;")
+                            i.fa.fa-2x.fa-check
+                    else
+                        button.btn.btn-danger(style="margin-top: 50%;")
+                            i.fa.fa-2x.fa-remove
+            .col-xs-8
+                h2.featurette-heading Useful Documents
+                p Please take a look at these documents and forms. When you're done, check it off!
+                .row
+                    .col-sm-4
+                        ul
+                            li
+                                a(href="/documents/talent.pdf") Talent Show Application
+                    .col-sm-4
+                        ul
+                            li
+                                a(href="/documents/honour-a-youth.pdf") Honour a Youth Application
+        hr.featurette-divider
 
+        #payments.row.featurette
+            .col-xs-2
+                if session.group._state.steps.payments
+                        button.btn.btn-success(style="margin-top: 50%;")
+                            i.fa.fa-2x.fa-check
+                else
+                    button.btn.btn-danger(style="margin-top: 50%;" disabled=!(paid >= cost))
+                        i.fa.fa-2x.fa-remove
+            .col-xs-10
+                h2.featurette-heading Payments
+                p Payments can be made to Gathering Our Voices via credit card (phone or Paypal), or cheque.
+                p#cost Cost: $#{cost}
+                p#paid Paid: $#{paid}
+                p#balance.lead Balance: $#{cost - paid}
+                table.table.table-responsive.table-condensed.table-hover
+                    thead
+                        tr
+                            th Amount
+                            th Method
+                            th Date
+                            th Comment
+                    tbody
+                        for payment in payments
+                            tr
+                                td= payment.amount
+                                td= payment.type
+                                td #{payment.date.toDateString()}
+                                td= payment.description
+                a.btn.btn-block.btn-primary(href="/payments")
+                    i.fa.fa-credit-card
+                    |    Make a Payment
+        hr.featurette-divider
 
-    #payments.row.featurette
-      .col-xs-2
-        if session.group._state.steps.payments
-            button.btn.btn-success(style="margin-top: 50%;")
-              i.fa.fa-2x.fa-check
-        else
-          button.btn.btn-danger(style="margin-top: 50%;" disabled=!(paid >= cost))
-            i.fa.fa-2x.fa-remove
-      .col-xs-10
-        h2.featurette-heading Payments
-        p Payments can be made to Gathering Our Voices via credit card (phone or Paypal), or cheque.
-        p#cost Cost: $#{cost}
-        p#paid Paid: $#{paid}
-        p#balance.lead Balance: $#{cost - paid}
-        table.table.table-responsive.table-condensed.table-hover
-          thead
-            tr
-              th Amount
-              th Method
-              th Date
-              th Comment
-          tbody
-            for payment in payments
-              tr
-                td= payment.amount
-                td= payment.type
-                td #{payment.date.toDateString()}
-                td= payment.description
-        a.btn.btn-block.btn-primary(href="/payments")
-          i.fa.fa-credit-card
-          |  Make a Payment
-    hr.featurette-divider
+        #workshops.row.featurette
+            .col-xs-2
+                if session.group._state.steps.workshops
+                        button.btn.btn-success(style="margin-top: 50%;")
+                            i.fa.fa-2x.fa-check
+                    else
+                        button.btn.btn-danger(style="margin-top: 50%;")
+                            i.fa.fa-2x.fa-remove
+            .col-xs-10
+                h2.featurette-heading Workshops
+                p Hold tight... We are just as excited as you about workshops, but we have not finished up our schedule, or our redesign of the process! Check back mid February.
+                a.btn.btn-block.btn-primary
+                    i.fa.fa-arrow-right
+                    |    View Workshops
+        hr.featurette-divider
 
-    #workshops.row.featurette
-      .col-xs-2
-        if session.group._state.steps.workshops
-            button.btn.btn-success(style="margin-top: 50%;")
-              i.fa.fa-2x.fa-check
-          else
-            button.btn.btn-danger(style="margin-top: 50%;")
-              i.fa.fa-2x.fa-remove
-      .col-xs-10
-        h2.featurette-heading Workshops
-        p Hold tight... We are just as excited as you about workshops, but we have not finished up our schedule, or our redesign of the process! Check back mid February.
-        a.btn.btn-block.btn-primary
-          i.fa.fa-arrow-right
-          |  View Workshops
-    hr.featurette-divider
+        if session.isAdmin
+            #checkin.row.featurette
+                .col-xs-2
+                    if session.group._state.steps.checkin
+                            button.btn.btn-success(style="margin-top: 50%;")
+                                i.fa.fa-2x.fa-check
+                        else
+                            button.btn.btn-danger(style="margin-top: 50%;")
+                                i.fa.fa-2x.fa-remove
+                .col-xs-10
+                    h2.featurette-heading Check In (Admins only)
+                    p Check a group into the conference.
+            hr.featurette-divider
 
-    if session.isAdmin
-      #checkin.row.featurette
-        .col-xs-2
-          if session.group._state.steps.checkin
-              button.btn.btn-success(style="margin-top: 50%;")
-                i.fa.fa-2x.fa-check
-            else
-              button.btn.btn-danger(style="margin-top: 50%;")
-                i.fa.fa-2x.fa-remove
-        .col-xs-10
-          h2.featurette-heading Check In (Admins only)
-          p Check a group into the conference.
-      hr.featurette-divider
-
-    script.
-      $(function () {
-        // Enable or disable removing members for safety.
-        $('#allowRemove').click(function() {
-          var state = $('.removeButton').attr('disabled');
-          $('.removeButton').attr('disabled', !state);
-        });
-        // Checkboxes
-        $('.row.featurette > .col-xs-2 > button').click(function() {
-          var button = $(this),
-              clicked = $(this).closest('.row.featurette').attr('id'),
-              id = '!{session.group._id}';
-          button.attr('disabled', true);
-          $.getJSON('/checkoff/' + id + '/' + clicked).done(function (data) {
-            if (data.error) {
-              alert('Unable to mark! Group does not meet prerequisites.')
-            } else if (data.done === true) {
-              button.removeClass('btn-danger');
-              button.addClass('btn-success');
-              var icon = button.find('.fa');
-              icon.removeClass('fa-remove');
-              icon.addClass('fa-check');
-            } else if (data.done === false){
-              button.removeClass('btn-success');
-              button.addClass('btn-danger');
-              var icon = button.find('.fa');
-              icon.removeClass('fa-check');
-              icon.addClass('fa-remove');
-            }
-            button.removeAttr('disabled');
-          });
-        })
-      })
+        script.
+            $(function () {
+                // Enable or disable removing members for safety.
+                $('#allowRemove').click(function() {
+                    var state = $('.removeButton').attr('disabled');
+                    $('.removeButton').attr('disabled', !state);
+                });
+                // Checkboxes
+                $('.row.featurette > .col-xs-2 > button').click(function() {
+                    var button = $(this),
+                            clicked = $(this).closest('.row.featurette').attr('id'),
+                            id = '!{session.group._id}';
+                    button.attr('disabled', true);
+                    $.getJSON('/checkoff/' + id + '/' + clicked).done(function (data) {
+                        if (data.error) {
+                            alert('Unable to mark! Group does not meet prerequisites.')
+                        } else if (data.done === true) {
+                            button.removeClass('btn-danger');
+                            button.addClass('btn-success');
+                            var icon = button.find('.fa');
+                            icon.removeClass('fa-remove');
+                            icon.addClass('fa-check');
+                        } else if (data.done === false){
+                            button.removeClass('btn-success');
+                            button.addClass('btn-danger');
+                            var icon = button.find('.fa');
+                            icon.removeClass('fa-check');
+                            icon.addClass('fa-remove');
+                        }
+                        button.removeAttr('disabled');
+                    });
+                })
+            })

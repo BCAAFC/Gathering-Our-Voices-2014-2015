@@ -1,69 +1,69 @@
 extends templates/layout
 
 block content
-  .container
-    .row(style="text-align: center;")
-      .btn-group
-        a.btn.btn-info(href="/admin")
-          | Go Back
-        a.btn.btn-primary(href="/manage/#{group._id}")
-          .fa.fa-edit
-          |  Manage
-    .row
-      .col-sm-2
-      .col-sm-8
-        h2= group.affiliation
-        h3.text-muted= group.name
-        h4.text-muted= group.phone
-        h4.text-muted= group.email
-        p Registration Date: #{group.registrationDate.toDateString()}
-        form.form(method="POST", action="/notes/#{group._id}")
-          input(type="hidden", name="_method", value="put")
-          fieldset
-            legend(style="text-align: center") Private Data
-            p.text-muted Things the group can't see.
+    .container
+        .row(style="text-align: center;")
+            .btn-group
+                a.btn.btn-info(href="/admin")
+                    | Go Back
+                a.btn.btn-primary(href="/manage/#{group._id}")
+                    .fa.fa-edit
+                    |  Manage
+        .row
+            .col-sm-2
+            .col-sm-8
+                h2= group.affiliation
+                h3.text-muted= group.name
+                h4.text-muted= group.phone
+                h4.text-muted= group.email
+                p Registration Date: #{group.registrationDate.toDateString()}
+                form.form(method="POST", action="/notes/#{group._id}")
+                    input(type="hidden", name="_method", value="put")
+                    fieldset
+                        legend(style="text-align: center") Private Data
+                        p.text-muted Things the group can't see.
 
-            .form-group
-              label Notes
-              textarea.form-control(name="notes")= group._notes || ""
-            .form-group
-              label Tags
-              br
-              input.form-control(name="tags" data-role="tagsinput" type="text" value="#{group._state.tags}")
-              style.
-                .bootstrap-tagsinput {
-                  display: block;
-                }
+                        .form-group
+                            label Notes
+                            textarea.form-control(name="notes")= group._notes || ""
+                        .form-group
+                            label Tags
+                            br
+                            input.form-control(name="tags" data-role="tagsinput" type="text" value="#{group._state.tags}")
+                            style.
+                                .bootstrap-tagsinput {
+                                    display: block;
+                                }
 
-            button.btn.btn-block.btn-primary
-              .fa.fa-edit
-              |  Update Private Data
+                        button.btn.btn-block.btn-primary
+                            .fa.fa-edit
+                            |    Update Private Data
 
-  .container
-    .row
-      .col-sm-2
-      .col-sm-8
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        button#confirm.btn.btn-xs.btn-danger
-          .fa.fa-times-circle
-        small.text-muted  I confirm that I want to perform a very destructive and dangerous action. I have manually removed all members form this group to ensure that workshops are appropriately unpopulated and I have verified with both Andrew and Della that I should delete this group.
-        br
-        form(method="POST", action="/account/#{group._id}")
-          input(type="hidden", name="_method", value="delete")
-          button#delete.btn.btn-xs.btn-danger(disabled)
-            .fa.fa-times-circle
-          small.text-danger  Remove this group, even though I shouldn't ever need do this. Seriously, don't do it.
-      script.
-        $('#confirm').click(function () {
-          var state = $('#delete').attr('disabled');
-          $('#delete').attr('disabled', !state);
-        })
+    .container
+        .row
+            .col-sm-2
+            .col-sm-8
+                br
+                br
+                br
+                br
+                br
+                br
+                br
+                br
+                br
+                br
+                button#confirm.btn.btn-xs.btn-danger
+                    .fa.fa-times-circle
+                small.text-muted    I confirm that I want to perform a very destructive and dangerous action. I have manually removed all members form this group to ensure that workshops are appropriately unpopulated and I have verified with both Andrew and Della that I should delete this group.
+                br
+                form(method="POST", action="/account/#{group._id}")
+                    input(type="hidden", name="_method", value="delete")
+                    button#delete.btn.btn-xs.btn-danger(disabled)
+                        .fa.fa-times-circle
+                    small.text-danger    Remove this group, even though I shouldn't ever need do this. Seriously, don't do it.
+            script.
+                $('#confirm').click(function () {
+                    var state = $('#delete').attr('disabled');
+                    $('#delete').attr('disabled', !state);
+                })

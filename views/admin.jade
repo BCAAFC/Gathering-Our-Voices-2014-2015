@@ -1,96 +1,95 @@
 extends templates/layout
 
 block content
-  .container
-    .row
-      .col-sm-5
-        form.form-horizontal
-          .form-group
-            label Search by Member Name: (Partial Matches allowed)
-            input.form-control(type="text", name="member", placeholder="Della Preston")
-      .btn-group.pull-right
-        a.btn.btn-success(href="/statistics")
-          .fa.fa-bar-chart-o
-          |  View Statistics
-        a.pull-right.btn.btn-warning(href="/emails")
-          .fa.fa-mail-reply-all
-          |  Get Email Addresses
-        a.btn.btn-info(href="/facilitators")
-          | Facilitator Spreadsheet
-    .row
-      .table-responsive
-        table.table.table-striped
-          thead
-            tr
-              //- Registration Steps
-              th Steps
-              th Mems
-              th Affiliation
-              th Phone
-              th Tags
-              th Actions
-              th
-          tbody
-            for group in groups
-              tr
-                td
-                  - var steps = ['conduct', 'details', 'youthInCare', 'members', 'documents', 'payments', 'workshops', 'checkin']
-                  for step in steps
-                    if group._state.steps[step]
-                      button.steps.btn.btn-xs.btn-success.tooltipped(data-toggle="tooltip" title="#{step}" data-url="/checkoff/#{group._id}/#{step}")
-                        .fa.fa-check
-                    else
-                      button.steps.btn.btn-xs.btn-danger.tooltipped(data-toggle="tooltip" title="#{step}" data-url="/checkoff/#{group._id}/#{step}")
-                        .fa.fa-remove
-                  if group.youthInCare > 0 || group.youthInCareSupport > 0
-                    .label.label-success.tooltipped(data-toggle="tooltip", title="This group has Youth In Care!")
-                      .fa.fa-flag
-                      |  #{group.youthInCare} + #{group.youthInCareSupport}
-                td
-                  .label.label-default
-                    | #{group._members.length}
-                td #{group.affiliation}
-                  .text-muted #{group.name}
-                td= group.phone
-                td
-                  for tag in group._state.tags
-                    span.label.label-default= tag
-                    = ' '
-                td
-                  .btn-group
-                    a.btn.btn-sm.btn-info(href="/notes/#{group._id}")
-                      .fa.fa-file
-                      |  Notes
-                    a.btn.btn-sm.btn-primary(href="/manage/#{group._id}")
-                      .fa.fa-edit
-                      |  Manage
-            tr
-              td(colspan='8')
-                p Total # of Groups: #{groups.length}
-    script.
-      $(function() {
-        $('.tooltipped').tooltip();
-
-        $('.steps').click(function () {
-          var button = $(this);
-          button.attr('disabled', true);
-          $.getJSON(button.data('url')).done(function (data) {
-            if (data.error) {
-              alert('Unable to mark! Group does not meet prerequisites.');
-            } else if (data.done === true) {
-              button.removeClass('btn-danger');
-              button.addClass('btn-success');
-              var icon = button.find('.fa');
-              icon.removeClass('fa-remove');
-              icon.addClass('fa-check');
-            } else if (data.done === false) {
-              button.removeClass('btn-success');
-              button.addClass('btn-danger');
-              var icon = button.find('.fa');
-              icon.removeClass('fa-check');
-              icon.addClass('fa-remove');
-            }
-            button.removeAttr('disabled');
-          });
-        });
-      });
+    .container
+        .row
+            .col-sm-5
+                form.form-horizontal
+                    .form-group
+                        label Search by Member Name: (Partial Matches allowed)
+                        input.form-control(type="text", name="member", placeholder="Della Preston")
+            .btn-group.pull-right
+                a.btn.btn-success(href="/statistics")
+                    .fa.fa-bar-chart-o
+                    | View Statistics
+                a.pull-right.btn.btn-warning(href="/emails")
+                    .fa.fa-mail-reply-all
+                    | Get Email Addresses
+                a.btn.btn-info(href="/facilitators")
+                    | Facilitator Spreadsheet
+        .row
+            .table-responsive
+                table.table.table-striped
+                    thead
+                        tr
+                            //- Registration Steps
+                            th Steps
+                            th Mems
+                            th Affiliation
+                            th Phone
+                            th Tags
+                            th Actions
+                            th
+                    tbody
+                        for group in groups
+                            tr
+                                td
+                                    - var steps = ['conduct', 'details', 'youthInCare', 'members', 'documents', 'payments', 'workshops', 'checkin']
+                                    for step in steps
+                                        if group._state.steps[step]
+                                            button.steps.btn.btn-xs.btn-success.tooltipped(data-toggle="tooltip" title="#{step}" data-url="/checkoff/#{group._id}/#{step}")
+                                                .fa.fa-check
+                                        else
+                                            button.steps.btn.btn-xs.btn-danger.tooltipped(data-toggle="tooltip" title="#{step}" data-url="/checkoff/#{group._id}/#{step}")
+                                                .fa.fa-remove
+                                    if group.youthInCare > 0 || group.youthInCareSupport > 0
+                                        .label.label-success.tooltipped(data-toggle="tooltip", title="This group has Youth In Care!")
+                                            .fa.fa-flag
+                                            |    #{group.youthInCare} + #{group.youthInCareSupport}
+                                td
+                                    .label.label-default
+                                        | #{group._members.length}
+                                td #{group.affiliation}
+                                    .text-muted #{group.name}
+                                td= group.phone
+                                td
+                                    for tag in group._state.tags
+                                        span.label.label-default= tag
+                                        = ' '
+                                td
+                                    .btn-group
+                                        a.btn.btn-sm.btn-info(href="/notes/#{group._id}")
+                                            .fa.fa-file
+                                            |    Notes
+                                        a.btn.btn-sm.btn-primary(href="/manage/#{group._id}")
+                                            .fa.fa-edit
+                                            |    Manage
+                        tr
+                            td(colspan='8')
+                                p Total # of Groups: #{groups.length}
+        script.
+            $(function() {
+                $('.tooltipped').tooltip();
+                $('.steps').click(function () {
+                    var button = $(this);
+                    button.attr('disabled', true);
+                    $.getJSON(button.data('url')).done(function (data) {
+                        if (data.error) {
+                            alert('Unable to mark! Group does not meet prerequisites.');
+                        } else if (data.done === true) {
+                            button.removeClass('btn-danger');
+                            button.addClass('btn-success');
+                            var icon = button.find('.fa');
+                            icon.removeClass('fa-remove');
+                            icon.addClass('fa-check');
+                        } else if (data.done === false) {
+                            button.removeClass('btn-success');
+                            button.addClass('btn-danger');
+                            var icon = button.find('.fa');
+                            icon.removeClass('fa-check');
+                            icon.addClass('fa-remove');
+                        }
+                        button.removeAttr('disabled');
+                    });
+                });
+            });

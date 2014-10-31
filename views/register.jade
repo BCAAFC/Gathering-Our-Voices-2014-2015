@@ -1,120 +1,119 @@
 extends templates/layout
 
 block content
-  .container
-    .row
-      p(style="text-align: center;") First time visiting? You might want to take a look at the
-        a(href="/documents/reg-package.pdf", target="_blank")  registration package.
-        |  Struggling with something? Take a look at our
-        a(href="/faq")  FAQ
-
-
-    .well(style="padding-left: 25px; padding-right: 25px; padding-top: 25px")
-      form.form(method="POST", action="/login")
-        .row(style="text-align: center")
-          legend Log In
-          p Already registered? Log in here! If not, scroll down and complete the initial registration step.
+    .container
         .row
-          .form-group.col-sm-6
-            label Email Address
-            input#email.form-control(type="email" name="email" placeholder="someone@somewhere.ca" autofocus required value=lastForm.email)
-          .form-group.col-sm-6
-            label Password
-            input.form-control(type="password" name="password" placeholder="")
-        .row
-          .form-group.col-sm-4.col-sm-offset-4
-            button.btn.btn-primary(type="submit" style="width: 100%")
-              i.fa.fa.fa-check
-                |  Log In
-        .row(style="text-align: center")
-          p If you forgot your password, don't worry it's ok. Enter your email above, then click
-            a#recover  here
+            p(style="text-align: center;") First time visiting? You might want to take a look at the
+                a(href="/documents/reg-package.pdf", target="_blank") registration package.
+                |  Struggling with something? Take a look at our
+                a(href="/faq") FAQ
 
 
-    form.form.container(method="POST", action="/register")
-      .row
-        .col-md-12
-          h1 Register a New Group
-          p Welcome, please be aware this <b>does not</b> register you (the primary contact) as a group member. You must do that later!
-          p.text-muted Fields with a star (*) are required.
-          legend Login Details
-          .form-group
-            label.control-label Email Address*
-            input#email.form-control(type="email" name="email" placeholder="someone@somewhere.ca" required value=lastForm.email)
-          .form-group
-            label Password*
-            input.form-control(type="password" name="password" placeholder="My Secret Password" required)
-          .form-group
-            label Password Confirmation*
-            input.form-control(type="password" name="passwordConfirm" placeholder="My Secret Password" required)
-          fieldset
-            legend Group Details
-            .form-group
-              label Primary Contact Name*
-              input.form-control(type="text" name="name" placeholder="Greg Black" required value=lastForm.name)
-            .form-group
-              label Affiliation*
-              input.form-control(type="text" name="affiliation" placeholder="Some Organization" required value=lastForm.affiliation)
-            .form-group
-              label Street Address*
-              input.form-control(type="text" name="address" placeholder="123 Fake St." required value=lastForm.address)
-            .form-group
-              label City*
-              input.form-control(type="text", name="city", placeholder="Prince George" required value=lastForm.city)
-            .form-group
-              label Region*
-              select.form-control(name="region" required value=lastForm.region)
-                option(value="") Please choose...
-                option(value="North") North
-                option(value="Interior") Interior
-                option(value="Fraser") Fraser
-                option(value="Vancouver Coastal") Vancouver Coastal
-                option(value="Vancouver Island") Vancouver Island
-                option(value="Out of Province") Out of Province
-            .form-group
-              label Province*
-              select.form-control(name="province" required value=lastForm.province)
-                option(value="") Please choose...
-                option(value="British Columbia") British Columbia
-                option(value="Alberta") Alberta
-                option(value="Saskatchewan") Saskatchewan
-                option(value="Manitoba") Manitoba
-                option(value="Ontario") Ontario
-                option(value="Quebec") Quebec
-                option(value="New Brunswick") New Brunswick
-                option(value="Nova Scotia") Nova Scotia
-                option(value="Prince Edward Island") Prince Edward Island
-                option(value="Newfoundland and Labrador") Newfoundland and Labrador
-                option(value="Nunavut") Nunavut
-                option(value="Northwest Territories") Northwest Territories
-                option(value="Yukon") Yukon
-                option(value="Other (Outside Canada)") Other (Outside Canada)
-            .form-group
-              label Postal Code*
-              input.form-control(type="text", name="postalCode" placeholder="A1B 2C3" required value=lastForm.postalCode)
-            .form-group
-              label Daytime Phone #*
-              input.form-control(type="text", name="phone" placeholder="(123) 456-7980" required value=lastForm.phone)
-            .form-group
-              label Fax # (Optional)
-              input.form-control(type="text", name="fax" placeholder="(123) 456-7890" value=lastForm.fax)
-            .form-group
-              label Group Type*
-              select.form-control(name="affiliationType" required value=lastForm.affiliationType)
-                option(value="") Please Choose...
-                option(value="Friendship Centre") Friendship Centre
-                option(value="Off-reserve") Off-reserve
-                option(value="On-reserve") On-reserve
-                option(value="Other") Other
-            .form-group
-              button.btn.btn-primary.btn-block(type="submit" require)
-                i.fa.fa.fa-check
-                  |  Register
+        .well(style="padding-left: 25px; padding-right: 25px; padding-top: 25px")
+            form.form(method="POST", action="/login")
+                .row(style="text-align: center")
+                    legend Log In
+                    p Already registered? Log in here! If not, scroll down and complete the initial registration step.
+                .row
+                    .form-group.col-sm-6
+                        label Email Address
+                        input#email.form-control(type="email" name="email" placeholder="someone@somewhere.ca" autofocus required value=lastForm.email)
+                    .form-group.col-sm-6
+                        label Password
+                        input.form-control(type="password" name="password" placeholder="")
+                .row
+                    .form-group.col-sm-4.col-sm-offset-4
+                        button.btn.btn-primary(type="submit" style="width: 100%")
+                            i.fa.fa.fa-check
+                                |    Log In
+                .row(style="text-align: center")
+                    p If you forgot your password, don't worry it's ok. Enter your email above, then click
+                        a#recover    here
 
-  script.
-    $('#recover').click(function () {
-        var email = $('#email').val()
-        $.get("/recover/#{email}", function (data) {
-            alert(data);
-        });
-     });
+        form.form.container(method="POST", action="/register")
+            .row
+                .col-md-12
+                    h1 Register a New Group
+                    p Welcome, please be aware this <b>does not</b> register you (the primary contact) as a group member. You must do that later!
+                    p.text-muted Fields with a star (*) are required.
+                    legend Login Details
+                    .form-group
+                        label.control-label Email Address*
+                        input#email.form-control(type="email" name="email" placeholder="someone@somewhere.ca" required value=lastForm.email)
+                    .form-group
+                        label Password*
+                        input.form-control(type="password" name="password" placeholder="My Secret Password" required)
+                    .form-group
+                        label Password Confirmation*
+                        input.form-control(type="password" name="passwordConfirm" placeholder="My Secret Password" required)
+                    fieldset
+                        legend Group Details
+                        .form-group
+                            label Primary Contact Name*
+                            input.form-control(type="text" name="name" placeholder="Greg Black" required value=lastForm.name)
+                        .form-group
+                            label Affiliation*
+                            input.form-control(type="text" name="affiliation" placeholder="Some Organization" required value=lastForm.affiliation)
+                        .form-group
+                            label Street Address*
+                            input.form-control(type="text" name="address" placeholder="123 Fake St." required value=lastForm.address)
+                        .form-group
+                            label City*
+                            input.form-control(type="text", name="city", placeholder="Prince George" required value=lastForm.city)
+                        .form-group
+                            label Region*
+                            select.form-control(name="region" required value=lastForm.region)
+                                option(value="") Please choose...
+                                option(value="North") North
+                                option(value="Interior") Interior
+                                option(value="Fraser") Fraser
+                                option(value="Vancouver Coastal") Vancouver Coastal
+                                option(value="Vancouver Island") Vancouver Island
+                                option(value="Out of Province") Out of Province
+                        .form-group
+                            label Province*
+                            select.form-control(name="province" required value=lastForm.province)
+                                option(value="") Please choose...
+                                option(value="British Columbia") British Columbia
+                                option(value="Alberta") Alberta
+                                option(value="Saskatchewan") Saskatchewan
+                                option(value="Manitoba") Manitoba
+                                option(value="Ontario") Ontario
+                                option(value="Quebec") Quebec
+                                option(value="New Brunswick") New Brunswick
+                                option(value="Nova Scotia") Nova Scotia
+                                option(value="Prince Edward Island") Prince Edward Island
+                                option(value="Newfoundland and Labrador") Newfoundland and Labrador
+                                option(value="Nunavut") Nunavut
+                                option(value="Northwest Territories") Northwest Territories
+                                option(value="Yukon") Yukon
+                                option(value="Other (Outside Canada)") Other (Outside Canada)
+                        .form-group
+                            label Postal Code*
+                            input.form-control(type="text", name="postalCode" placeholder="A1B 2C3" required value=lastForm.postalCode)
+                        .form-group
+                            label Daytime Phone #*
+                            input.form-control(type="text", name="phone" placeholder="(123) 456-7980" required value=lastForm.phone)
+                        .form-group
+                            label Fax # (Optional)
+                            input.form-control(type="text", name="fax" placeholder="(123) 456-7890" value=lastForm.fax)
+                        .form-group
+                            label Group Type*
+                            select.form-control(name="affiliationType" required value=lastForm.affiliationType)
+                                option(value="") Please Choose...
+                                option(value="Friendship Centre") Friendship Centre
+                                option(value="Off-reserve") Off-reserve
+                                option(value="On-reserve") On-reserve
+                                option(value="Other") Other
+                        .form-group
+                            button.btn.btn-primary.btn-block(type="submit" require)
+                                i.fa.fa.fa-check
+                                    |    Register
+
+    script.
+        $('#recover').click(function () {
+                var email = $('#email').val()
+                $.get("/recover/#{email}", function (data) {
+                        alert(data);
+                });
+         });

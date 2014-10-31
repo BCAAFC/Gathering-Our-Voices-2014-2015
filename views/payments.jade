@@ -1,130 +1,116 @@
 extends templates/layout
 
 block content
-  .row
-    .col-sm-2
-    .col-sm-8
-      legend Payments
-      p The status of your payment as presented below will be updated as we receive, process and confirm payments arriving at our office. Due to the volume of payments being processed, there can be a slight delay in updating your payment information. If you are concerned that there is any discrepancy in this information, please call Kathryn Lacerte at 250-388-5522.
-
-      p For the groups and delegates registered by February 7th, we will honor the early registration fee until March 18th. If payment is not receive by March 18th, all delegates will be charged the regular registration fee of $200 and payment will be due 10 business day later: April 1, 2015.
-      p However, for the groups and delegates that register after February 7th, you will be required to pay the regular registration fee of $200.
-
-      h3 Totals
-      p Cost: $#{cost}
-      p Paid: $#{paid}
-      p Balance: $#{cost - paid}
-
-      h3 Transactions
-      if group._payments.length == 0
-        p.text-muted No payments yet!
-      else
-        .table-responsive
-          table.table.table-striped
-            thead
-              tr
-                th Amount
-                th Type
-                th Number
-                th Date
-                th Description
-                if session.isAdmin
-                  th
-            tbody
-              for payment in group._payments
-                tr
-                  td $#{payment.amount}
-                  td= payment.type
-                  td= payment.number
-                  td #{payment.date.toDateString()}
-                  td= payment.description
-                  if session.isAdmin
-                    td
-                      a.btn.btn-xs.btn-danger(href="/payment/delete/#{payment._id}")
-                        .fa.fa-trash-o
-                        |  Del
-
-      h3 How to Pay
-      ul
-        li Paypal: Just hit the button below! You can specify any amount you choose, please leave quantity as 1.
-          form(action="https://www.paypal.com/cgi-bin/webscr", method="post", target="_blank")
-            input(type="hidden", name="cmd", value="_xclick")
-            input(type="hidden", name="business", value="accounting@bcaafc.com")
-            input(type="hidden", name="currency_code", value="CAD")
-            input(type="hidden", name="undefined_quantity", value="1")
-
-            input(type="hidden", name="cn", value="You can leave us a note here...")
-            input(type="hidden", name="no_note", value="0")
-            input(type="hidden", name="custom", value="#{session.group.affiliation} -- #{session.group._id}")
-
-            input(type="hidden", name="no_shipping", value="1")
-            input(type="hidden", name="return", value="https://gatheringourvoices.bcaafc.com")
-            input(type="hidden", name="cancel_return", value="https://gatheringourvoices.bcaafc.com")
-
-            input(type="hidden", name="item_name", value="GOV 2015 Registration Payment")
-            input(type="hidden", name="quantity", value="1")
-
-            button.btn.btn-success.btn-xs.btn-block Pay with Paypal
-
-        li Cheque: Please make your check payable to the BCAAFC (Our address is at the bottom of the page), ATTN: Kathryn Lacerte
-        li VISA or MasterCard by Phone: Please call Kathryn Lacerte at 1-800-990-2432 with your information ready.
-
-
-  if session.isAdmin
     .row
-      .col-sm-2
-      form.col-sm-8(method="POST", action="/payment")
-        fieldset
-          legend Add Payment
-          .row
-            .form-group.col-sm-6
-              label Amount
-              input.form-control(type="number", name="amount", placeholder="9000", required)
-            .form-group.col-sm-6
-              label Type
-              select.form-control(name="type")
-                option(value="Cheque") Cheque
-                option(value="Money Order") Money Order
-                option(value="Invoice") Invoice
-                option(value="Credit Card") Credit Card
-                option(value="Paypal") Paypal
+        .col-sm-2
+        .col-sm-8
+            legend Payments
+            p The status of your payment as presented below will be updated as we receive, process and confirm payments arriving at our office. Due to the volume of payments being processed, there can be a slight delay in updating your payment information. If you are concerned that there is any discrepancy in this information, please call Kathryn Lacerte at 250-388-5522.
+            p For the groups and delegates registered by February 7th, we will honor the early registration fee until March 18th. If payment is not receive by March 18th, all delegates will be charged the regular registration fee of $200 and payment will be due 10 business day later: April 1, 2015.
+            p However, for the groups and delegates that register after February 7th, you will be required to pay the regular registration fee of $200.
+            h3 Totals
+            p Cost: $#{cost}
+            p Paid: $#{paid}
+            p Balance: $#{cost - paid}
+            h3 Transactions
+            if group._payments.length == 0
+                p.text-muted No payments yet!
+            else
+                .table-responsive
+                    table.table.table-striped
+                        thead
+                            tr
+                                th Amount
+                                th Type
+                                th Number
+                                th Date
+                                th Description
+                                if session.isAdmin
+                                    th
+                        tbody
+                            for payment in group._payments
+                                tr
+                                    td $#{payment.amount}
+                                    td= payment.type
+                                    td= payment.number
+                                    td #{payment.date.toDateString()}
+                                    td= payment.description
+                                    if session.isAdmin
+                                        td
+                                            a.btn.btn-xs.btn-danger(href="/payment/delete/#{payment._id}")
+                                                .fa.fa-trash-o
+                                                |    Del
 
-          .row
-            .form-group.col-sm-8
-              label Cheque Number / Paypal Transaction
-              input.form-control(type="text", name="number", placeholder="For heaven's sake don't put Credit Card info here")
+            h3 How to Pay
+            ul
+                li Paypal: Just hit the button below! You can specify any amount you choose, please leave quantity as 1.
+                    form(action="https://www.paypal.com/cgi-bin/webscr", method="post", target="_blank")
+                        input(type="hidden", name="cmd", value="_xclick")
+                        input(type="hidden", name="business", value="accounting@bcaafc.com")
+                        input(type="hidden", name="currency_code", value="CAD")
+                        input(type="hidden", name="undefined_quantity", value="1")
+                        input(type="hidden", name="cn", value="You can leave us a note here...")
+                        input(type="hidden", name="no_note", value="0")
+                        input(type="hidden", name="custom", value="#{session.group.affiliation} -- #{session.group._id}")
+                        input(type="hidden", name="no_shipping", value="1")
+                        input(type="hidden", name="return", value="https://gatheringourvoices.bcaafc.com")
+                        input(type="hidden", name="cancel_return", value="https://gatheringourvoices.bcaafc.com")
+                        input(type="hidden", name="item_name", value="GOV 2015 Registration Payment")
+                        input(type="hidden", name="quantity", value="1")
+                        button.btn.btn-success.btn-xs.btn-block Pay with Paypal
+                li Cheque: Please make your check payable to the BCAAFC (Our address is at the bottom of the page), ATTN: Kathryn Lacerte
+                li VISA or MasterCard by Phone: Please call Kathryn Lacerte at 1-800-990-2432 with your information ready.
 
-          .row
-            .form-group.col-sm-4
-              label Day
-              input.form-control(type="number", name="day", placeholder="13", min=1, max=31, required)
-
-            .form-group.col-sm-4
-              label Month
-              select.form-control(name="month")
-                option(value="January") January
-                option(value="February") February
-                option(value="March") March
-                option(value="April") April
-                option(value="May") May
-                option(value="June") June
-                option(value="July") July
-                option(value="August") August
-                option(value="September") September
-                option(value="October") October
-                option(value="November") November
-                option(value="December") December
-
-            .form-group.col-sm-4
-              label Year
-              input.form-control(type="number", name="year", placeholder="2014", min=2013, max=2015, required)
-          .row
-            .form-group.col-sm-12
-              label Description
-              textarea.form-control(name="description", placeholder="A description of the payment can go here. NOTE THIS IS VISIBLE TO THE GROUP.")
-            .col-sm-12
-              button.btn.btn-primary.btn-block
-                .fa.fa-money
-                |  Submit Payment
-
-  hr.featurette-divider
+    if session.isAdmin
+        .row
+            .col-sm-2
+            form.col-sm-8(method="POST", action="/payment")
+                fieldset
+                    legend Add Payment
+                    .row
+                        .form-group.col-sm-6
+                            label Amount
+                            input.form-control(type="number", name="amount", placeholder="9000", required)
+                        .form-group.col-sm-6
+                            label Type
+                            select.form-control(name="type")
+                                option(value="Cheque") Cheque
+                                option(value="Money Order") Money Order
+                                option(value="Invoice") Invoice
+                                option(value="Credit Card") Credit Card
+                                option(value="Paypal") Paypal
+                    .row
+                        .form-group.col-sm-8
+                            label Cheque Number / Paypal Transaction
+                            input.form-control(type="text", name="number", placeholder="For heaven's sake don't put Credit Card info here")
+                    .row
+                        .form-group.col-sm-4
+                            label Day
+                            input.form-control(type="number", name="day", placeholder="13", min=1, max=31, required)
+                        .form-group.col-sm-4
+                            label Month
+                            select.form-control(name="month")
+                                option(value="January") January
+                                option(value="February") February
+                                option(value="March") March
+                                option(value="April") April
+                                option(value="May") May
+                                option(value="June") June
+                                option(value="July") July
+                                option(value="August") August
+                                option(value="September") September
+                                option(value="October") October
+                                option(value="November") November
+                                option(value="December") December
+                        .form-group.col-sm-4
+                            label Year
+                            input.form-control(type="number", name="year", placeholder="2014", min=2013, max=2015, required)
+                    .row
+                        .form-group.col-sm-12
+                            label Description
+                            textarea.form-control(name="description", placeholder="A description of the payment can go here. NOTE THIS IS VISIBLE TO THE GROUP.")
+                        .col-sm-12
+                            button.btn.btn-primary.btn-block
+                                .fa.fa-money
+                                |    Submit Payment
+    hr.featurette-divider

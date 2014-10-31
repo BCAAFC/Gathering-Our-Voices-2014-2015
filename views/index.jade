@@ -1,150 +1,150 @@
 extends templates/layout
 
 block content
-  .container
-    .row
-      .col-sm-12.text-center
-        p.lead.timer
-        p Youth delegate spots filled: <span id='count'></span>
-        .progress
-          .progress-bar(role="progressbar" style="width: 0%")
-    .row
-      .col-sm-3(style="text-align: center")
-        img.img-rounded.lazy(src="/img/index/register.jpg", style="height: 150px")
-        h4 Group Registration
-        p Come share your spirit with us in Prince George by registering today. Register 5 delegates and the 6th is free!
-        p
-          .btn-group
-            a.btn.btn-primary(href="/register") Register
-            a.btn.btn-primary(target="_blank", href="/documents/reg-package.pdf") Get Package
-      .col-sm-3(style="text-align: center")
-        img.img-rounded.lazy(src="/img/index/volunteer.jpg", style="height: 150px")
-        h4 Volunteer or Exhibit
-        p Interested in making this year a success? Please join us by volunteering, or become an exhibitor for your organization!
-        p
-          .btn-group
-            a.btn.btn-primary(target="_blank", href="https://docs.google.com/a/hoverbear.org/forms/d/1xZeahexKKw7akm8g34oyjTGI86TMyy8CXT5sV_3-VEg/viewform") Volunteer
-            a.btn.btn-primary(target="_blank", href="/documents/exhibitor-application.doc") Exhibit
-      .col-sm-3(style="text-align: center")
-        img.img-rounded.lazy(src="/img/index/workshop_reg.jpg", style="height: 150px")
-        h4 Explore Workshops
-        p Curious what you can learn at GOV? Take a look at our diverse range of facilitators and workshops, or sign up to facilitate one!
-        p
-          .btn-group
-            a.btn.btn-primary(href="/workshops") Workshops
-            a.btn.btn-primary(target="_blank", href="/facilitator") Facilitate
-      .col-sm-3(style="text-align: center")
-        img.img-rounded.lazy(src="/img/index/social-media.jpg", style="height: 150px")
-        h4 Get Connected
-        p Join us on Twitter or Facebook. Interact with the team, ask questions, or just keep up to date!
-        p
-          .btn-group
-            a.btn.btn-primary(target="_blank", href="https://twitter.com/GOV_Conference")
-              i.fa.fa-twitter
-              |  Twitter
-            a.btn.btn-primary(target="_blank", href="https://www.facebook.com/gatheringourvoices")
-              i.fa.fa-facebook
-              |  Facebook
-    br
-    .row
-      .col-sm-6.col-sm-offset-3(style="text-align: center") Want to hear the latest news from GOV?
-        a(href="http://bcaafc.us5.list-manage.com/subscribe?u=2df229be67a6e024a5c741916&id=f98ad81590")  Sign up for our distribution list!
-  .container.marketing
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-7
-        h2.featurette-heading Participate in the action
-        p Get involved in interactive workshops and exciting shows with others from the community. You will have the opportunity to engage with your colleagues, mentors, and Elders in a way that is meaningful.
-
-        p Looking to get more from GOV? You can take part in our talent showcase and prove your salt, or nominate an Aboriginal Youth Champion who has made a difference in your community.
-        .text-center
-          .btn-group
-            a.btn.btn-default(target="_blank", href="/documents/honour-a-youth.pdf") Honour A Youth
-            a.btn.btn-default(target="_blank", href="/documents/talent.pdf") Talent Showcase
+    .container
+        .row
+            .col-sm-12.text-center
+                p.lead.timer
+                p Youth delegate spots filled: <span id='count'></span>
+                .progress
+                    .progress-bar(role="progressbar" style="width: 0%")
+        .row
+            .col-sm-3(style="text-align: center")
+                img.img-rounded.lazy(src="/img/index/register.jpg", style="height: 150px")
+                h4 Group Registration
+                p Come share your spirit with us in Prince George by registering today. Register 5 delegates and the 6th is free!
+                p
+                    .btn-group
+                        a.btn.btn-primary(href="/register") Register
+                        a.btn.btn-primary(target="_blank", href="/documents/reg-package.pdf") Get Package
+            .col-sm-3(style="text-align: center")
+                img.img-rounded.lazy(src="/img/index/volunteer.jpg", style="height: 150px")
+                h4 Volunteer or Exhibit
+                p Interested in making this year a success? Please join us by volunteering, or become an exhibitor for your organization!
+                p
+                    .btn-group
+                        a.btn.btn-primary(target="_blank", href="https://docs.google.com/a/hoverbear.org/forms/d/1xZeahexKKw7akm8g34oyjTGI86TMyy8CXT5sV_3-VEg/viewform") Volunteer
+                        a.btn.btn-primary(target="_blank", href="/documents/exhibitor-application.doc") Exhibit
+            .col-sm-3(style="text-align: center")
+                img.img-rounded.lazy(src="/img/index/workshop_reg.jpg", style="height: 150px")
+                h4 Explore Workshops
+                p Curious what you can learn at GOV? Take a look at our diverse range of facilitators and workshops, or sign up to facilitate one!
+                p
+                    .btn-group
+                        a.btn.btn-primary(href="/workshops") Workshops
+                        a.btn.btn-primary(target="_blank", href="/facilitator") Facilitate
+            .col-sm-3(style="text-align: center")
+                img.img-rounded.lazy(src="/img/index/social-media.jpg", style="height: 150px")
+                h4 Get Connected
+                p Join us on Twitter or Facebook. Interact with the team, ask questions, or just keep up to date!
+                p
+                    .btn-group
+                        a.btn.btn-primary(target="_blank", href="https://twitter.com/GOV_Conference")
+                            i.fa.fa-twitter
+                            |    Twitter
+                        a.btn.btn-primary(target="_blank", href="https://www.facebook.com/gatheringourvoices")
+                            i.fa.fa-facebook
+                            |    Facebook
         br
-        br
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(src="/img/index/participate.jpg", style="max-width: 100%;")
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(src="/img/index/learn.jpg", style="max-width: 100%;")
-      .col-sm-7
-        h2.featurette-heading Learn from valuable mentors
-        p More than 60 different workshops will be offered in 4 different areas: Cultural and Spiritual, Physical, Mental, and Emotional. Workshops will be grounded in cultural teachings and each delegate will have a chance to select from workshops in each area. Our goal is to provide youth with a unique experience and a chance to positively engage with each other.
-        p Workshop submissions are collected and reviewed by a panel of youth and selected to represent each of the four different areas. The panel considers: level of interaction, how the workshop is culturally based, and relevance to Aboriginal youth. Full workshop descriptions will be released in early February. Youth will be able to select from a wide array of workshops for a diverse, learning experience.
-        a.btn.btn-block.btn-default(href="/workshops") Explore Workshops
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-7
-        h2.featurette-heading Listen to inspiring leaders and peers
-        p We are looking for the best and brightest from our communities to motivate your dreams, uplift your spirit, and help you make a better tomorrow. You will have a chance to learn from speakers, Elders, and workshop facilitators, you will also learn from your peers and other delegates of the conference as well, just as they learn from you. We all carry a story, how will you share yours?
-        p In past years we hosted the likes of J.R. LaRose, Dr. Evan Adams, Grand Chief Ed John, Grand Chief Stewart Phillip, Chief Jody Wilson-Raybould, Adrian Duke, Justin Rain, Dakota Brant, Waneek Horn-Miller, Deidri Jack, Mathew Strongeagle, Richard Peters, Theresa Point, Ta’Kaiya Blaney. The schedule has not been confirmed for this year yet, so please stay tuned!
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(src="/img/index/listen.jpg", style="max-width: 100%;")
-    hr.featurette-divider
-    .row.featurette
-      .col-sm-5(style="text-align: center")
-        img.img-rounded.lazy(src="/img/index/connect.jpg", style="max-width: 100%;")
-      .col-sm-7
-        h2.featurette-heading Connect and prepare for the future
-        p A gathering of this size means an incredible opportunity to find new peers, employers, educators, teachers, Elders, and most of all, friends. A bustling career and education fair, an Elders lounge, and more will be ready for you to explore.
-        p Then, return to your community with newfound skills, a broader world view, and new friends to keep in touch with.
-    hr.featurette-divider
+        .row
+            .col-sm-6.col-sm-offset-3(style="text-align: center") Want to hear the latest news from GOV?
+                a(href="http://bcaafc.us5.list-manage.com/subscribe?u=2df229be67a6e024a5c741916&id=f98ad81590")    Sign up for our distribution list!
+    .container.marketing
+        hr.featurette-divider
+        .row.featurette
+            .col-sm-7
+                h2.featurette-heading Participate in the action
+                p Get involved in interactive workshops and exciting shows with others from the community. You will have the opportunity to engage with your colleagues, mentors, and Elders in a way that is meaningful.
 
-    script.
-      // Closure!
-      (function() {
-        'use strict';
-        // This code is ugly and hackish, I'm sorry. :(
-        var gov_time = new Date(2015, 2, 18, 18, 0, 0), // March 18, 2015, 6:00pm
-          time_in_second = 1000,
-          time_in_minute = (time_in_second * 60),
-          time_in_hour = (time_in_minute * 60),
-          time_in_day = (time_in_hour * 24);
+                p Looking to get more from GOV? You can take part in our talent showcase and prove your salt, or nominate an Aboriginal Youth Champion who has made a difference in your community.
+                .text-center
+                    .btn-group
+                        a.btn.btn-default(target="_blank", href="/documents/honour-a-youth.pdf") Honour A Youth
+                        a.btn.btn-default(target="_blank", href="/documents/talent.pdf") Talent Showcase
+                br
+                br
+            .col-sm-5(style="text-align: center")
+                img.img-rounded.lazy(src="/img/index/participate.jpg", style="max-width: 100%;")
+        hr.featurette-divider
+        .row.featurette
+            .col-sm-5(style="text-align: center")
+                img.img-rounded.lazy(src="/img/index/learn.jpg", style="max-width: 100%;")
+            .col-sm-7
+                h2.featurette-heading Learn from valuable mentors
+                p More than 60 different workshops will be offered in 4 different areas: Cultural and Spiritual, Physical, Mental, and Emotional. Workshops will be grounded in cultural teachings and each delegate will have a chance to select from workshops in each area. Our goal is to provide youth with a unique experience and a chance to positively engage with each other.
+                p Workshop submissions are collected and reviewed by a panel of youth and selected to represent each of the four different areas. The panel considers: level of interaction, how the workshop is culturally based, and relevance to Aboriginal youth. Full workshop descriptions will be released in early February. Youth will be able to select from a wide array of workshops for a diverse, learning experience.
+                a.btn.btn-block.btn-default(href="/workshops") Explore Workshops
+        hr.featurette-divider
+        .row.featurette
+            .col-sm-7
+                h2.featurette-heading Listen to inspiring leaders and peers
+                p We are looking for the best and brightest from our communities to motivate your dreams, uplift your spirit, and help you make a better tomorrow. You will have a chance to learn from speakers, Elders, and workshop facilitators, you will also learn from your peers and other delegates of the conference as well, just as they learn from you. We all carry a story, how will you share yours?
+                p In past years we hosted the likes of J.R. LaRose, Dr. Evan Adams, Grand Chief Ed John, Grand Chief Stewart Phillip, Chief Jody Wilson-Raybould, Adrian Duke, Justin Rain, Dakota Brant, Waneek Horn-Miller, Deidri Jack, Mathew Strongeagle, Richard Peters, Theresa Point, Ta’Kaiya Blaney. The schedule has not been confirmed for this year yet, so please stay tuned!
+            .col-sm-5(style="text-align: center")
+                img.img-rounded.lazy(src="/img/index/listen.jpg", style="max-width: 100%;")
+        hr.featurette-divider
+        .row.featurette
+            .col-sm-5(style="text-align: center")
+                img.img-rounded.lazy(src="/img/index/connect.jpg", style="max-width: 100%;")
+            .col-sm-7
+                h2.featurette-heading Connect and prepare for the future
+                p A gathering of this size means an incredible opportunity to find new peers, employers, educators, teachers, Elders, and most of all, friends. A bustling career and education fair, an Elders lounge, and more will be ready for you to explore.
+                p Then, return to your community with newfound skills, a broader world view, and new friends to keep in touch with.
+        hr.featurette-divider
 
-        if (new Date() < gov_time) {
-          var countdown = function countdown() {
-            // num_of_ms is our "remaining balance", we'll subtract from it.
-            var num_of_ms = Date.parse(gov_time) - Date.parse(new Date()),
-              // We need ~whole~ numbers for this. So we'll take the floor. This is the number of whole days.
-              num_of_days = Math.floor(num_of_ms / time_in_day),
-              num_of_hours = undefined,
-              num_of_minutes = undefined,
-              num_of_seconds = undefined;
+        script.
+            // Closure!
+            (function() {
+                'use strict';
+                // This code is ugly and hackish, I'm sorry. :(
+                var gov_time = new Date(2015, 2, 18, 18, 0, 0), // March 18, 2015, 6:00pm
+                    time_in_second = 1000,
+                    time_in_minute = (time_in_second * 60),
+                    time_in_hour = (time_in_minute * 60),
+                    time_in_day = (time_in_hour * 24);
 
-            num_of_ms -= num_of_days * time_in_day;
-            // Find number of hours.
-            num_of_hours = Math.floor(num_of_ms / time_in_hour); // Must be under 24.
-            num_of_ms -= num_of_hours * time_in_hour;
-            // Find number of minutes.
-            num_of_minutes = Math.floor(num_of_ms / time_in_minute); // Must be under 60.
-            num_of_ms -= num_of_minutes * time_in_minute;
-            // Find the number of seconds.
-            num_of_seconds = Math.floor(num_of_ms / time_in_second); // Must be under 60.
-            // We don't care about the remaining num_of_ms.
+                if (new Date() < gov_time) {
+                    var countdown = function countdown() {
+                        // num_of_ms is our "remaining balance", we'll subtract from it.
+                        var num_of_ms = Date.parse(gov_time) - Date.parse(new Date()),
+                            // We need ~whole~ numbers for this. So we'll take the floor. This is the number of whole days.
+                            num_of_days = Math.floor(num_of_ms / time_in_day),
+                            num_of_hours = undefined,
+                            num_of_minutes = undefined,
+                            num_of_seconds = undefined;
 
-            // Format the string.
-            $('.timer').html(
-                num_of_days + " Days " +
-                ((num_of_hours <= 9) ? '0' + num_of_hours : num_of_hours) + ":" +
-                ((num_of_minutes <= 9) ? '0' + num_of_minutes : num_of_minutes) + ":" +
-                ((num_of_seconds <= 9) ? '0' + num_of_seconds : num_of_seconds) +
-                " Until GOV 2015!"
-              );
-              setTimeout(countdown, 3000);
-          };
-          countdown();
-        } else {
-          $('.timer').html("GOV 2015 has begun!");
-        }
-        var count = function count() {
-          $.getJSON('/members/count').done(function (data) {
-            console.log(data);
-            $('.progress-bar').css('width', Math.ceil(data.count / data.limit) + '%');
-            $('#count').text(data.count + '/' + data.limit);
-          });
-          setTimeout(count, 1000*60*2); // 2 mins.
-        }
-        count();
-      })();
+                        num_of_ms -= num_of_days * time_in_day;
+                        // Find number of hours.
+                        num_of_hours = Math.floor(num_of_ms / time_in_hour); // Must be under 24.
+                        num_of_ms -= num_of_hours * time_in_hour;
+                        // Find number of minutes.
+                        num_of_minutes = Math.floor(num_of_ms / time_in_minute); // Must be under 60.
+                        num_of_ms -= num_of_minutes * time_in_minute;
+                        // Find the number of seconds.
+                        num_of_seconds = Math.floor(num_of_ms / time_in_second); // Must be under 60.
+                        // We don't care about the remaining num_of_ms.
+
+                        // Format the string.
+                        $('.timer').html(
+                                num_of_days + " Days " +
+                                ((num_of_hours <= 9) ? '0' + num_of_hours : num_of_hours) + ":" +
+                                ((num_of_minutes <= 9) ? '0' + num_of_minutes : num_of_minutes) + ":" +
+                                ((num_of_seconds <= 9) ? '0' + num_of_seconds : num_of_seconds) +
+                                " Until GOV 2015!"
+                            );
+                            setTimeout(countdown, 3000);
+                    };
+                    countdown();
+                } else {
+                    $('.timer').html("GOV 2015 has begun!");
+                }
+                var count = function count() {
+                    $.getJSON('/members/count').done(function (data) {
+                        console.log(data);
+                        $('.progress-bar').css('width', Math.ceil(data.count / data.limit) + '%');
+                        $('#count').text(data.count + '/' + data.limit);
+                    });
+                    setTimeout(count, 1000*60*2); // 2 mins.
+                }
+                count();
+            })();

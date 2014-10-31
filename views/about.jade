@@ -1,72 +1,60 @@
 extends templates/layout
 
 block content
-  .container.marketing
-    .row.featurette
-      .col-sm-12
-        h2.featurette-heading Culture, Opportunity, and Inspiration
-        p.lead We are honoured to hold Gathering Our Voices 2015 on the traditional territory of the Lheidli T'enneh First Nation.
+    .container.marketing
+        .row.featurette
+            .col-sm-12
+                h2.featurette-heading Culture, Opportunity, and Inspiration
+                p.lead We are honoured to hold Gathering Our Voices 2015 on the traditional territory of the Lheidli T'enneh First Nation.
+                p From March 17th through 20th GOV will bring together 1000 youth delegates as    well as chaperones, presenters, and guests    in Prince George, BC. Young people from all across B.C. and across Canada are invited to join us to explore, to learn and to engage with our culture among peers. This year’s conference is rooted in culture, youth will have an opportunity to engage in 4 areas through workshops including: Cultural and Spiritual, Physical, Mental and Emotional.
+                p Youth, chaperones, presenters, exhibitors, Elders, volunteers, and other guests will have the opportunity to make new connections, rekindle old bonds, engage their passions and discover a new drive. How can we improve the present? How can we create a brighter future for ourselves? Are we prepared to face the upcoming challenges?
+                p Join us and learn from pillars of our community, hear their stories, their struggles, and their triumphs. Then, forge your own way by creating your own special blend of workshops, it is your choice what you learn, just as it is your future. Spend your evenings participating in our live Talent Showcase and Much Music dance party. Finally, reconnect to your roots during our cultural morning and closing ceremonies.
+        hr.featurette-divider
 
-        p From March 17th through 20th GOV will bring together 1000 youth delegates as  well as chaperones, presenters, and guests  in Prince George, BC. Young people from all across B.C. and across Canada are invited to join us to explore, to learn and to engage with our culture among peers. This year’s conference is rooted in culture, youth will have an opportunity to engage in 4 areas through workshops including: Cultural and Spiritual, Physical, Mental and Emotional.
+        .row.featurette
+            .col-sm-7
+                h2.featurette-heading A Glimpse Of The Past
+                p The BCAAFC has previously hosted twelve Aboriginal Youth Conferences. Youth delegates and chaperones from all over B.C. and the country travel at their own expense to attend these conferences. The purpose of these conferences is to unite youth throughout the country in learning, healing and sharing and to provide tangible experiences of tools, resources and knowledge that the youth can bring back to their communities.
+                p The first two conferences hosted over 100 youth attendees, while the third saw attendance triple to over 460 youth delegates. The fourth and fifth conferences doubled attendance to over 800 youth. The 2008 Conference in Victoria had nearly 1000 people in attendance; the 2009 Conference in Kelowna had 1300 people attend; the 2010 Conference in Vancouver and the 2011 Conference in Prince Rupert, over 1500 people took part, in Nanaimo over 1600 people gathered together, in Penticton more than 2000 people participated and Vancouver saw more than 2200 participants. This overwhelming response serves to reinforce the need for a forum where Aboriginal youth can come together to begin to make positive changes in their own lives and in their communities.
+            .col-sm-5(style="text-align: center")
+                img.img-rounded(src="/img/about/past.jpg", style="width: 100%")
+        hr.featurette-divider
 
-        p Youth, chaperones, presenters, exhibitors, Elders, volunteers, and other guests will have the opportunity to make new connections, rekindle old bonds, engage their passions and discover a new drive. How can we improve the present? How can we create a brighter future for ourselves? Are we prepared to face the upcoming challenges?
+        .row.featurette
+            .col-sm-5(style="text-align: center")
+                img.img-rounded(src="/img/bcaafc.png", style="width: 100%")
+            .col-sm-7
+                h2.featurette-heading The Gathering Our Voices Team
+                ul
+                    li
+                        b
+                            a(href="mailto:govcoordinator@bcaafc.com") Kathryn Lacerte
+                        | , Interim Lead Conference Coordinator
+                    li
+                        b
+                            a(href="mailto:gatheringourvoices@bcaafc.com") Gregory Forsberg
+                        | , Assistant Conference Coordinator
+                    li
+                        b
+                            a(href="mailto:rrice@bcaafc.com") Ron Rice
+                        | , Cultural & Ceremonies Coordinator
+                    li
+                        b
+                            a(href="mailto:ahobden@bcaafc.com") Andrew Hobden
+                        | , Conference Technician
+        hr.featurette-divider
 
-        p Join us and learn from pillars of our community, hear their stories, their struggles, and their triumphs. Then, forge your own way by creating your own special blend of workshops, it is your choice what you learn, just as it is your future. Spend your evenings participating in our live Talent Showcase and Much Music dance party. Finally, reconnect to your roots during our cultural morning and closing ceremonies.
-
-    hr.featurette-divider
-
-    .row.featurette
-      .col-sm-7
-        h2.featurette-heading A Glimpse Of The Past
-        p The BCAAFC has previously hosted twelve Aboriginal Youth Conferences. Youth delegates and chaperones from all over B.C. and the country travel at their own expense to attend these conferences. The purpose of these conferences is to unite youth throughout the country in learning, healing and sharing and to provide tangible experiences of tools, resources and knowledge that the youth can bring back to their communities.
-
-        p The first two conferences hosted over 100 youth attendees, while the third saw attendance triple to over 460 youth delegates. The fourth and fifth conferences doubled attendance to over 800 youth. The 2008 Conference in Victoria had nearly 1000 people in attendance; the 2009 Conference in Kelowna had 1300 people attend; the 2010 Conference in Vancouver and the 2011 Conference in Prince Rupert, over 1500 people took part, in Nanaimo over 1600 people gathered together, in Penticton more than 2000 people participated and Vancouver saw more than 2200 participants. This overwhelming response serves to reinforce the need for a forum where Aboriginal youth can come together to begin to make positive changes in their own lives and in their communities.
-      .col-sm-5(style="text-align: center")
-        img.img-rounded(src="/img/about/past.jpg", style="width: 100%")
-
-    hr.featurette-divider
-
-    .row.featurette
-      .col-sm-5(style="text-align: center")
-        img.img-rounded(src="/img/bcaafc.png", style="width: 100%")
-      .col-sm-7
-        h2.featurette-heading The Gathering Our Voices Team
-        ul
-          li
-            b
-              a(href="mailto:govcoordinator@bcaafc.com") Kathryn Lacerte
-            | , Interim Lead Conference Coordinator
-          //li
-            b
-              a(href="mailto:rhartman@bcaafc.com") Rosie Hartman
-            | , Conference Coordinator
-          li
-            b
-              a(href="mailto:gatheringourvoices@bcaafc.com") Gregory Forsberg
-            | , Assistant Conference Coordinator
-          li
-            b
-              a(href="mailto:rrice@bcaafc.com") Ron Rice
-            | , Cultural & Ceremonies Coordinator
-          li
-            b
-              a(href="mailto:ahobden@bcaafc.com") Andrew Hobden
-            | , Conference Technician
-
-    hr.featurette-divider
-
-    .row.featurette
-      .col-sm-7
-        h2.featurette-heading Hosted by BCAAFC, BCAAFC-PAYC
-        p.lead The BC Association of Aboriginal Friendship Centres and their Provincial Aboriginal Youth Council
-        p The BCAAFC is mandated to:
-        ul
-          li To promote the betterment of Aboriginal Friendship Centres in the Province of British Columbia.
-          li To establish and maintain communications between Aboriginal Friendship Centres and other Provincial Associations and the National Association of Friendship Centres.
-          li To act as a unifying body for Aboriginal Friendship Centres.
-          li To provide an Association for Government Agencies to communicate through and obtain information from. This, in no way takes away a centre's right to negotiate directly with any agency.
-          li To advise the Government, when requested by the collective centres, on how and what programs may assist Aboriginal Friendship Centres, in the development programs to better the lives of Aboriginal Native people in British Columbia.
-      .col-sm-5(style="text-align: center")
-        img.img-rounded(src="/img/about/bcaafc.jpg", style="width: 100%")
-
-    hr.featurette-divider
+        .row.featurette
+            .col-sm-7
+                h2.featurette-heading Hosted by BCAAFC, BCAAFC-PAYC
+                p.lead The BC Association of Aboriginal Friendship Centres and their Provincial Aboriginal Youth Council
+                p The BCAAFC is mandated to:
+                ul
+                    li To promote the betterment of Aboriginal Friendship Centres in the Province of British Columbia.
+                    li To establish and maintain communications between Aboriginal Friendship Centres and other Provincial Associations and the National Association of Friendship Centres.
+                    li To act as a unifying body for Aboriginal Friendship Centres.
+                    li To provide an Association for Government Agencies to communicate through and obtain information from. This, in no way takes away a centre's right to negotiate directly with any agency.
+                    li To advise the Government, when requested by the collective centres, on how and what programs may assist Aboriginal Friendship Centres, in the development programs to better the lives of Aboriginal Native people in British Columbia.
+            .col-sm-5(style="text-align: center")
+                img.img-rounded(src="/img/about/bcaafc.jpg", style="width: 100%")
+        hr.featurette-divider

@@ -10,29 +10,29 @@ var async = require('async'),
 
 var FaqSchema = new Schema({
     title: {
-        type: String,
-        required: true,
-        trim: true,
-        index: {
-          unique: true
+        type     : String,
+        required : true,
+        trim     : true,
+        index    : {
+          unique : true
         }
     },
     prelude: {
-        type: String,
-        required: false,
-        trim: true
+        type     : String,
+        required : false,
+        trim     : true
     },
     items: {
         type: [{
           question: {
-            type: String,
-            required: true,
-            trim: true,
+            type     : String,
+            required : true,
+            trim     : true,
           },
           answer: {
-              type: String,
-              required: true,
-              trim: true
+              type     : String,
+              required : true,
+              trim     : true
           }
         }],
         default: []
