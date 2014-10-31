@@ -17,6 +17,11 @@ async.auto({
     routes      : ['httpd', routes]
 }, complete);
 
+/**
+ * Checks the environment for various settings and sets some defaults if none
+ * are present.
+ * @param  {Function} callback The callback for `async.auto`.
+ */
 function environment(callback) {
     if (process.env.SSL === undefined) {
         // Whether to use SSL. (NOTE: Don't use non-SSL in production)
@@ -58,11 +63,24 @@ function environment(callback) {
     callback();
 }
 
+/**
+ * Connects to the MongoDB server specified by the environment.
+ * Depends on: `environment`
+ * @param  {Function} callback The callback for `async.auto`.
+ * @param  {Object}   data     `async.auto`'s data object.
+ */
 function mongo(callback, data) {
     var mongoose = require('mongoose');
+    // Wait for a connection then invoke the task callback.
     mongoose.connect(process.env.MONGO, callback);
 }
 
+/**
+ * Connects to the Redis server specified by the environment.
+ * Depends on: `environment`
+ * @param  {Function} callback The callback for `async.auto`.
+ * @param  {Object}   data     `async.auto`'s data object.
+ */
 function redis(callback, data) {
     var uri    = require('url').parse(process.env.REDIS),
         client = require('redis').createClient(uri.port || 6379, uri.hostname);
@@ -76,22 +94,32 @@ function redis(callback, data) {
     });
 }
 
+/**
+ * Sets up the express httpd.
+ * Depends on: `environment`, `redis`
+ * @param  {Function} callback The callback for `async.auto`.
+ * @param  {Object}   data     `async.auto`'s data object.
+ */
 function httpd(callback, data) {
     var server = require('express')();
     // Ensure that requests that should be SSL use SSL.
     server.use(function ensureSecurity(req, res, next) {
+        // This detects if the original request (prior to Heroku's forwarding) was SSL based.
+        // If the requests aren't from localhost (eg. For development) it redirects them to the HTTPS site.
         if (process.env.SSL && req.headers['x-forwarded-proto'] !== 'https' && req.hostname !== 'localhost') {
             res.redirect('https://' + req.hostname + req.url);
         } else {
             next();
         }
     });
-    // Parsers for JSON/URL.
+    // Parsers for JSON/URL encoding.
     server.use(require('body-parser').json());
     server.use(require('body-parser').urlencoded({extended: true}));
+    // Multipart form handling, for image uploads.
     server.use(require('multer')());
     // Allow PUT/DELETE in forms.
     server.use(require('method-override')(function methodOverrider(req, res) {
+        // Just include a `_method` input on a form with the method you want.
         if (req.body && typeof req.body === 'object' && '_method' in req.body) {
             // look in urlencoded POST bodies and delete it
             var method = req.body._method;
@@ -113,7 +141,7 @@ function httpd(callback, data) {
     // View engine
     server.set('views', './views');
     server.set('view engine', 'jade');
-    // TODO: Improve/Remove this.
+    // Some pages pass along messages, which get dumped into the template.
     server.use(function message(req, res, next) {
         if (req.query.message) {
             req.session.message = req.query.message;
@@ -122,15 +150,25 @@ function httpd(callback, data) {
         }
         next();
     });
+    // Static items in `./static` are mapped as routes on `/`.
     server.use(require('express').static('./static', {maxAge: 86400000 * 4}));
     // Pass along the application.
     callback(null, server);
 }
 
+/**
+ * Sets up routing for the httpd server.
+ * Depends on: `httpd`
+ * @param  {Function} callback The callback for `async.auto`.
+ * @param  {Object}   data     `async.auto`'s data object.
+ */
 function routes(callback, data) {
-    _(['account', 'admin', 'general', 'member', 'payment', 'workshop', 'facilitator']).each(function (val) {
-        data.httpd.use(require('./routes/' + val)(data));
-    });
+    // The different route modules used.
+    _(['account', 'admin', 'general', 'member', 'payment', 'workshop', 'facilitator'])
+        .each(function (val) {
+            data.httpd.use(require('./routes/' + val)(data));
+        });
+    // If any 404 not founds prop up, handle them and log.
     data.httpd.use(function notFoundHandler(req, res) {
         res.status(404);
         console.warn('Path `' + req.originalUrl + '`does not exist.');
@@ -139,6 +177,11 @@ function routes(callback, data) {
     callback(null);
 }
 
+/**
+ * Completes the startup. Handles any errors and starts listening.
+ * @param  {Error}  error Any errors risen by the dependant tasks.
+ * @param  {Object} data  The finished, full, data object.
+ */
 function complete(error, data) {
     if (error) {
         console.error("There was an error.");
