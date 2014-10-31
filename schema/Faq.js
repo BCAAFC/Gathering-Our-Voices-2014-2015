@@ -46,7 +46,7 @@ var FaqSchema = new Schema({
 /* Validators */
 
 /* Middleware */
-FaqSchema.pre('save', function (next) {
+FaqSchema.pre('save', function sortItems(next) {
   var self = this;
   this.items.sort(function (a,b) {
     return a.title - b.title;

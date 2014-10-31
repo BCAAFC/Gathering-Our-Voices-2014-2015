@@ -195,6 +195,13 @@ var GroupSchema = new Schema({
 });
 
 /* Statics */
+
+/**
+ * Logs a group into the site by setting their `req.session.group`
+ * @param  {String}   email    The primary contact's email.
+ * @param  {String}   password The password to check against the hash.
+ * @param  {Function} next     The callback.
+ */
 GroupSchema.statics.login = function login(email, password, next) {
     var self = this;
     self.findOne({email: email}).exec(function (err, group) {
@@ -214,6 +221,12 @@ GroupSchema.statics.login = function login(email, password, next) {
 };
 
 /* Methods */
+
+/**
+ * Adds a member to the group if they're not already in it.
+ * @param {ObjectId} memberId The member's ID.
+ * @param {Function} next     The callback
+ */
 GroupSchema.methods.addMember = function addMember(memberId, next) {
     var self = this;
     if (self._members.indexOf(memberId) === -1) {
@@ -227,6 +240,10 @@ GroupSchema.methods.addMember = function addMember(memberId, next) {
     }
 };
 
+/**
+ * Calculates the groups total paid amount by looking at their payments.
+ * @param {Function} next The callback.
+ */
 GroupSchema.methods.getPaid = function getPaid(next) {
     var self = this;
     Payment.find({_id: {$in: self._payments }}).exec(function (err, payments) {
@@ -241,6 +258,10 @@ GroupSchema.methods.getPaid = function getPaid(next) {
     });
 };
 
+/**
+ * Calculates the groups total costs by looking at their members.
+ * @param {Function} next The callback.
+ */
 GroupSchema.methods.getCost = function getCost(next) {
     var self = this;
     Member.find({_id: {$in: self._members }}).exec(function (err, members) {
@@ -259,6 +280,10 @@ GroupSchema.methods.getCost = function getCost(next) {
     });
 };
 
+/**
+ * Calculates the groups balance by calling the `getCost` and `getPaid`.
+ * @param {Function} next The callback.
+ */
 GroupSchema.methods.getBalance = function getBalance(next) {
     var self = this;
     self.getCost(function (err, cost) {
@@ -272,11 +297,19 @@ GroupSchema.methods.getBalance = function getBalance(next) {
     });
 };
 
+/**
+ * Determines if the group is an administrator.
+ * @return {Boolean} `true` if they are, `false` if they are not.
+ */
 GroupSchema.methods.isAdmin = function () {
     var self = this;
     return (process.env.ADMINS.indexOf(self.email) != -1);
 };
 
+/**
+ * Determines if the group has enough chaperones in it.
+ * @param {Function} next The callback.
+ */
 GroupSchema.methods.enoughChaperones = function (next) {
     var self = this;
     Member.find({_id: {$in: self._members}})
@@ -301,6 +334,10 @@ GroupSchema.methods.enoughChaperones = function (next) {
         });
 };
 
+/**
+ * Detemines if all the groups members are completed.
+ * @param {Function} next The callback.
+ */
 GroupSchema.methods.allComplete = function allComplete(next) {
     var self = this;
     Member.find({_id: {$in: self._members}})
@@ -319,13 +356,18 @@ GroupSchema.methods.allComplete = function allComplete(next) {
 /* Validators */
 
 /* Middleware */
-GroupSchema.pre('validate', function (next) {
+
+/**
+ * Hashes the password and removes the plaintext.
+ * @param {Function} next The callback.
+ */
+GroupSchema.pre('validate', function hashPassword(next) {
     var self = this;
     if (self.password) {
         bcrypt.hash(self.password, 10, function (err, hash) {
             if (!err) {
                 self.hash     = hash;
-                self.password = null;
+                self.password = null; // This is important.
                 next();
             } else {
                 next(err);
@@ -336,7 +378,10 @@ GroupSchema.pre('validate', function (next) {
     }
 });
 
-GroupSchema.pre('remove', function (next) {
+/**
+ * Appropriately removes all the members and payments of the group one by one.
+ */
+GroupSchema.pre('remove', function removeGroup(next) {
     var self = this;
     // Note: We can't just `Member.remove ...` because middleware needs to happen on them.
     async.auto({
