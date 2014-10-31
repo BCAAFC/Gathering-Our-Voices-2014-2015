@@ -1,14 +1,23 @@
+/**
+ * The goal of this test is to go through the standard procedure of registering
+ * a group. It does not make an effort to expose edge cases or verify values,
+ * just makes sure a group can register without errors. It does not use the
+ * admin interface to verify things.
+ */
+
 var util = require('./util');
 
 /** Config */
 casper.viewportSize = {width: 1440, height: 900};
 var host            = 'http://localhost:8080';
 
+/** Index */
 casper.test.begin('Index seems healthy', function suite(test) {
     casper.start(host, function () {
         test.assertExists("nav", "There is a nav");
         test.assertExists(".timer", "There is a timer");
         test.assertExists(".progress > .progress-bar", "There is a progress bar");
+        test.assertExists("a[href='/register']", "There is a link to registration");
     }).run(function () {
         test.done();
     });
@@ -84,19 +93,6 @@ casper.test.begin('Account page functions correct', function suite(test) {
     casper.start(host + '/register', function () {
         this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
     }).waitForUrl(/account$/, function () {
-        // Members
-        test.assertExists("#members button.btn.btn-danger[disabled] > i.fa.fa-2x.fa-remove", "Members check is off, is disabled");
-        test.assertExists("#members a[href='/member']", "Link to members section is present");
-        test.assertExists("#members table", "Member table present");
-        test.assertExists("#members #allowRemove", "Allow remove button is present");
-        // Documents
-        test.assertExists("#documents button.btn.btn-danger > i.fa.fa-2x.fa-remove", "Documents check is off");
-        test.assertExists("#documents ul", "Document list is present");
-        // Payments
-        test.assertExists("#payments button.btn.btn-danger > i.fa.fa-2x.fa-remove", "Payments check is off");
-        test.assertExists("#payments #cost", "Cost specification is present");
-        test.assertExists("#payments #paid", "Paid specification is present");
-        test.assertExists("#payments #balance", "Balance specification is present");
         // Workshops
         test.assertExists("#workshops button.btn.btn-danger > i.fa.fa-2x.fa-remove", "Workshops check is off");
     }).run(function () {
@@ -204,6 +200,7 @@ casper.test.begin('Member Step', function suite(test) {
     casper.start(host + '/register', function () {
         this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
     }).waitForUrl(/account$/, function () {
+        // Visual verification
         test.assertExists("#members button.btn.btn-danger[disabled] > i.fa.fa-2x.fa-remove", "Members check is off, is disabled");
         test.assertExists("#members a[href='/member']", "Link to members section is present");
         test.assertExists("#members table", "Member table present");
@@ -247,4 +244,37 @@ casper.test.begin('Member Step', function suite(test) {
     });
 });
 
-//
+/** Documents */
+casper.test.begin('Document Step', function suite(test) {
+    casper.start(host + '/register', function () {
+        this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
+    }).waitForUrl(/account$/, function () {
+        // Documents
+        test.assertExists("#documents button.btn.btn-danger > i.fa.fa-2x.fa-remove", "Documents check is off");
+        test.assertExists("#documents ul", "Document list is present");
+        test.assertExists("#documents ul li", "There is at least one document in the list");
+    }).run(function () {
+        test.done();
+    });
+});
+
+/** Payments */
+casper.test.begin('Payment Step', function suite(test) {
+    casper.start(host + '/register', function () {
+        this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
+    }).waitForUrl(/account$/, function () {
+        // Payments
+        test.assertExists("#payments button.btn-danger > i.fa-remove", "Payments check is off");
+        test.assertExists("#payments #cost", "Cost specification is present on account page");
+        test.assertExists("#payments #paid", "Paid specification is present on account page");
+        test.assertExists("#payments #balance", "Balance specification is present on account page");
+        this.click("#payments a[href='/payments']");
+    }).waitForUrl(/payments$/, function () {
+        test.assertExists("#cost", "Cost specification is present on payment page");
+        test.assertExists("#paid", "Paid specification is present on payment page");
+        test.assertExists("#balance", "Balance specification is present on payment page");
+        test.assertExists("form[action='https://www.paypal.com/cgi-bin/webscr']", "Paypal form exists");
+    }).run(function () {
+        test.done();
+    });
+});
