@@ -3,11 +3,6 @@ extends templates/layout
 block content
     .container
         .row
-            .col-sm-5
-                form.form-horizontal
-                    .form-group
-                        label Search by Member Name: (Partial Matches allowed)
-                        input.form-control(type="text", name="member", placeholder="Della Preston")
             .btn-group.pull-right
                 a.btn.btn-success(href="/statistics")
                     .fa.fa-bar-chart-o
@@ -18,19 +13,22 @@ block content
                 a.btn.btn-info(href="/facilitators")
                     | Facilitator Spreadsheet
         .row
-            .table-responsive
+            #listing.table-responsive
+                p.text-muted You can sort results by clicking on the header you wish to sort by...
+                input.form-control.search(placeholder="Search...")
+                p Total # of Groups: #{groups.length}
                 table.table.table-striped
                     thead
                         tr
                             //- Registration Steps
                             th Steps
-                            th Mems
-                            th Affiliation
-                            th Phone
-                            th Tags
+                            th.sort(data-sort="members") Mems
+                            th.sort(data-sort="affiliation") Affiliation
+                            th.sort(data-sort="phone") Phone
+                            th.sort(data-sort="tags") Tags
                             th Actions
                             th
-                    tbody
+                    tbody.list
                         for group in groups
                             tr
                                 td
@@ -47,12 +45,12 @@ block content
                                             .fa.fa-flag
                                             |    #{group.youthInCare} + #{group.youthInCareSupport}
                                 td
-                                    .label.label-default
+                                    .label.label-default.members
                                         | #{group._members.length}
-                                td #{group.affiliation}
-                                    .text-muted #{group.name}
-                                td= group.phone
-                                td
+                                td.affiliation #{group.affiliation}
+                                    .text-muted.name #{group.name}
+                                td.phone= group.phone
+                                td.tags
                                     for tag in group._state.tags
                                         span.label.label-default= tag
                                         = ' '
@@ -64,12 +62,12 @@ block content
                                         a.btn.btn-sm.btn-primary(href="/manage/#{group._id}")
                                             .fa.fa-edit
                                             |    Manage
-                        tr
-                            td(colspan='8')
-                                p Total # of Groups: #{groups.length}
+
         script.
             $(function() {
+                // Make tooltips work.
                 $('.tooltipped').tooltip();
+                // Make set buttons work.
                 $('.steps').click(function () {
                     var button = $(this);
                     button.attr('disabled', true);
@@ -92,4 +90,10 @@ block content
                         button.removeAttr('disabled');
                     });
                 });
+                // List-ify
+                var options = {
+                    plugins: [ ListFuzzySearch() ],
+                    valueNames: [ 'affiliation', 'name', 'phone', 'members', 'tags' ]
+                };
+                var userList = new List('listing', options);
             });
