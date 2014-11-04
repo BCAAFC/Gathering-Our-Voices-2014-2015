@@ -13,6 +13,20 @@ module.exports = {
         phone           : '(123) 456-7890',
         affiliationType : 'Other'
     },
+    admin: {
+        email           : 'andrew@hoverbear.org',
+        password        : 'admin',
+        passwordConfirm : 'admin',
+        name            : 'admin name',
+        affiliation     : 'admin affilication',
+        address         : 'admin address',
+        city            : 'admin city',
+        region          : 'Out of Province',
+        province        : 'Other (Outside Canada)',
+        postalCode      : 'A1B 2C3',
+        phone           : '(123) 456-7890',
+        affiliationType : 'Other'
+    },
     memberCount: 0,
     member: function (type, year) {
         this.memberCount += 1;

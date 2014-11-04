@@ -27,12 +27,15 @@ module.exports = function(grunt) {
         casper: {
             options: {
                 test: true,
-                parallel: true,
-                concurrency: 5,
+                // parallel: true, // Mangles output
                 'fail-fast': true
             },
             test: {
-                src: ['test/*.js', '!test/util.js']
+                src: [
+                    'test/registration-flow.js',
+                    'test/admin-flow.js'
+
+                ]
             }
         },
         less: {
@@ -68,7 +71,6 @@ module.exports = function(grunt) {
             }
         }
     });
-
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');

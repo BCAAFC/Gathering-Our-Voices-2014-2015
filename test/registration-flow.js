@@ -6,7 +6,6 @@
  */
 
 var util = require('./util');
-
 /** Config */
 casper.viewportSize = {width: 1440, height: 900};
 var host            = 'http://localhost:8080';

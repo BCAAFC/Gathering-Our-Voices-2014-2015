@@ -34,6 +34,7 @@ module.exports = function(data) {
                     if (!err) {
                         util.mail(group, 'GOV2015 New Registration', './mails/registration.md', [], function (err, result) {
                             req.session.group = group;
+                            req.session.isAdmin = group.isAdmin();
                             res.redirect('/account');
                         });
                     } else if (err) {

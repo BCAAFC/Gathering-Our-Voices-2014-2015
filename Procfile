@@ -1,1 +1,1 @@
-web: node bin/gov
+web: npm start
