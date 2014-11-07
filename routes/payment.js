@@ -39,44 +39,74 @@ module.exports = function(data) {
     });
 
     router.post('/payment', util.admin, function (req, res) {
-        Payment.create({
-            amount      : req.body.amount,
-            type        : req.body.type,
-            number      : req.body.number,
-            description : req.body.description,
-            date        : new Date(req.body.month + ' ' + req.body.day + ', ' + req.body.year),
-            _group      : req.session.group._id
-        }, function (err, payment) {
-            // The Schema ensures that the payment is in the group already.
-            if (!err && payment) {
-                res.redirect('/account');
-            } else {
+        var group;
+        async.waterfall([
+            function createPayment(next) {
+                Payment.create({
+                    amount      : req.body.amount,
+                    type        : req.body.type,
+                    number      : req.body.number,
+                    description : req.body.description,
+                    date        : new Date(req.body.month + ' ' + req.body.day + ', ' + req.body.year),
+                    _group      : req.session.group._id
+                }, next);
+            },
+            function getGroup(payment, next) {
+                // The Schema ensures that the payment is in the group already.
+                Group.findById(req.session.group._id).exec(next);
+            },
+            function getPaid(foundGroup, next) {
+                group = foundGroup;
+                group.getPaid(next);
+            },
+            function setPaidAndSave(paid, next) {
+                group._state.balance.paid = paid;
+                if (group._state.balance.paid >= group._state.balance.cost) {
+                    group._state.steps.payments = true;
+                }
+                group.save(next);
+            }
+        ], function complete(err, result) {
+            if (err) {
                 var message = "Something didn't work out. Try again?";
                 res.redirect('/account?message=' + message);
                 console.error(err);
+            } else {
+                req.session.group = result;
+                res.redirect('/account');
             }
         });
     });
 
     router.get('/payment/delete/:id', util.admin, function (req, res) {
-        Payment.findById(req.params.id).exec(function (err, payment) {
-            if (!err && payment) {
-                payment.remove(function (err) {
-                    if (err) {
-                        res.redirect('/account?message=' + err);
-                    } else {
-                        Group.findByIdAndUpdate(payment._group, {
-                            $set: {
-                                '_state.steps.payments': false
-                            }
-                        }).exec(function (err, group) {
-                            req.session.group = group;
-                            res.redirect('/account');
-                        });
-                    }
-                });
-            } else {
+        var groupId, group;
+        async.waterfall([
+            function getPayment(next) {
+                Payment.findById(req.params.id).exec(next);
+            },
+            function removePayment(payment, next) {
+                groupId = payment._group;
+                payment.remove(next);
+            },
+            function getGroup(payment, next) {
+                Group.findById(groupId).exec(next);
+            },
+            function unsetPaymentsAndGetPaid(foundGroup, next) {
+                group = foundGroup;
+                group._state.steps.payments = false;
+                group.getPaid(next);
+            },
+            function getPaidAndSave(paid, next) {
+                group._state.balance.paid = paid;
+                group.save(next);
+            }
+        ], function complete(err, result) {
+            if (err) {
+                console.err(err);
                 res.redirect('/account?message=' + err);
+            } else {
+                req.session.group = result; // Is the group
+                res.redirect('/account');
             }
         });
     });

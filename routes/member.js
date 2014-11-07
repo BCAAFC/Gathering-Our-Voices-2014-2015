@@ -32,25 +32,27 @@ module.exports = function(data) {
                         emergencyContact : {
                             name         : req.body.emergName,
                             relation     : req.body.emergRelation,
-                            phone        : req.body.emergPhone
+                            phone        : req.bogdy.emergPhone
                         },
                         emergencyInfo    : {
                             medicalNum   : req.body.emergMedicalNum,
-                            allergies    :    req.body.emergAllergies.split(',').sort(),
+                            allergies    : req.body.emergAllergies.split(',').sort(),
                             conditions   : req.body.emergConditions.split(',').sort()
                         }
                     }, function (err, member) {
                         if (!err && member) {
                             // Refresh the group, make sure that steps are unset.
-                            Group.findByIdAndUpdate(member._group, {
-                                $set: {
-                                    '_state.steps.members': false, // Obviously a new member will unset the members.
-                                    '_state.steps.payments': false // Payments will change because of this, and needs to be unset.
-                                }
-                            }).exec(function (err, group) {
+                            Group.findById(member._group).exec(function (err, group) {
                                 if (!err && group) {
-                                    req.session.group = group;
-                                    res.redirect('/account');
+                                    group.getCost(function (err, cost) {
+                                        group._state.steps.members = false;
+                                        group._state.steps.payments = false;
+                                        group._state.balance.cost = cost;
+                                        group.save(function (err, group) {
+                                            req.session.group = group;
+                                            res.redirect('/account');
+                                        });
+                                    });
                                 } else {
                                     console.error(err);
                                     var message = "Couldn't refresh your group details. You might need to relog!";
@@ -142,14 +144,21 @@ module.exports = function(data) {
                 if (!err && member) {
                     member.remove(function (err) {
                         if (!err) {
-                            Group.findByIdAndUpdate(member._group, {
-                                $set: {
-                                    '_state.steps.members': false,
-                                    '_state.steps.payments': false
+                            Group.findById(member._group).exec(function (err, group) {
+                                if (!err && group) {
+                                    group.getCost(function (err, cost) {
+                                        group._state.steps.members = false;
+                                        group._state.steps.payments = false;
+                                        group._state.balance.cost = cost;
+                                        group.save(function (err, group) {
+                                            req.session.group = group;
+                                            res.redirect('/account');
+                                        });
+                                    });
+                                } else {
+                                    res.send('Sorry, there was an error removing that member. Try again?');
+                                    console.error(err);
                                 }
-                            }).exec(function (err, group) {
-                                req.session.group = group;
-                                res.redirect('/account');
                             });
                         } else {
                             res.send('Sorry, there was an error removing that member. Try again?');

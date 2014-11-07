@@ -216,8 +216,6 @@ module.exports = function(data) {
             .exec(function (err, group) {
                 if (!err && group) {
                     async.auto({
-                        paid             : group.getPaid.bind(group),
-                        cost             : group.getCost.bind(group),
                         enoughChaperones : group.enoughChaperones.bind(group),
                         allComplete      : group.allComplete.bind(group)
                     }, function complete(err, data) {
@@ -228,8 +226,6 @@ module.exports = function(data) {
                                 return a.name.localeCompare(b.name);
                             }),
                             payments         : group._payments,
-                            paid             : data.paid,
-                            cost             : data.cost,
                             enoughChaperones : data.enoughChaperones,
                             membersComplete  : data.allComplete
                         });

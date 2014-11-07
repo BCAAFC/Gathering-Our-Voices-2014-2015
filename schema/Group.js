@@ -143,6 +143,16 @@ var GroupSchema = new Schema({
             }],
             default: []
         },
+        balance: {
+            cost: {
+                type: Number,
+                default: 0
+            },
+            paid: {
+                type: Number,
+                default: 0
+            }
+        },
         steps: {
             conduct: {
                 type    : Boolean,
@@ -251,6 +261,7 @@ GroupSchema.methods.getPaid = function getPaid(next) {
             var sum = _.reduce(payments, function (sum, payment) {
                 return sum + payment.amount;
             }, 0);
+            self._state.balance.paid = sum; // Not saved. Save in your function.
             next(null, sum);
         } else {
             next(err);
@@ -273,6 +284,7 @@ GroupSchema.methods.getCost = function getCost(next) {
                     return sum + regularTicket;
                 }
             }, 0);
+            self._state.balance.cost = due; // Not saved. Save in your function.
             next(null, due);
         } else {
             next(err);
@@ -282,7 +294,7 @@ GroupSchema.methods.getCost = function getCost(next) {
 
 /**
  * Calculates the groups balance by calling the `getCost` and `getPaid`.
- * @param {Function} next The callback.
+ * @param {Function} next The callback. (err, balance)
  */
 GroupSchema.methods.getBalance = function getBalance(next) {
     var self = this;
