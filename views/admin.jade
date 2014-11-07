@@ -62,7 +62,7 @@ block content
                                         a.btn.btn-sm.btn-primary(href="/manage/#{group._id}")
                                             .fa.fa-edit
                                             |    Manage
-
+                ul.pagination
         script.
             $(function() {
                 // Make tooltips work.
@@ -92,8 +92,12 @@ block content
                 });
                 // List-ify
                 var options = {
-                    plugins: [ ListFuzzySearch() ],
-                    valueNames: [ 'affiliation', 'name', 'phone', 'members', 'tags' ]
+                    plugins: [ ListFuzzySearch(), ListPagination({
+                        innerWindow: 2,
+                        outerWindow: 1
+                    }) ],
+                    valueNames: [ 'affiliation', 'name', 'phone', 'members', 'tags' ],
+                    page: 20
                 };
                 var userList = new List('listing', options);
             });

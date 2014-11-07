@@ -236,8 +236,8 @@ block content
                 // Checkboxes
                 $('.row.featurette > .col-xs-2 > button').click(function() {
                     var button = $(this),
-                            clicked = $(this).closest('.row.featurette').attr('id'),
-                            id = '!{session.group._id}';
+                        clicked = $(this).closest('.row.featurette').attr('id'),
+                        id = '!{session.group._id}';
                     button.attr('disabled', true);
                     $.getJSON('/checkoff/' + id + '/' + clicked).done(function (data) {
                         if (data.error) {

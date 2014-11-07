@@ -3,3 +3,4 @@ node_modules/
 ssl/
 newrelic_agent.log
 npm-debug.log
+backupdb.sh
