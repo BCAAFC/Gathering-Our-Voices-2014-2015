@@ -11,10 +11,10 @@ block content
             .col-xs-2
                 if session.group._state.steps.conduct
                     button.btn.btn-success(style="margin-top: 50%;")
-                        i.fa.fa-2x.fa-check
+                        i.fa.fa-2x.fa-check.fa-fw
                 else
                     button.btn.btn-danger(style="margin-top: 50%;")
-                        i.fa.fa-2x.fa-remove
+                        i.fa.fa-2x.fa-remove.fa-fw
             .col-xs-10
                 h2.featurette-heading Code of Conduct
                 p Please ensure that your entire group has read and reviewed the code of conduct.
@@ -27,10 +27,10 @@ block content
             .col-xs-2
                 if session.group._state.steps.details
                     button.btn.btn-success(style="margin-top: 50%;")
-                        i.fa.fa-2x.fa-check
+                        i.fa.fa-2x.fa-check.fa-fw
                 else
                     button.btn.btn-danger(style="margin-top: 50%;")
-                        i.fa.fa-2x.fa-remove
+                        i.fa.fa-2x.fa-remove.fa-fw
             .col-xs-10
                 h2.featurette-heading Group Details
                 p Update your group details if needed, this information was entered when you first registered.
@@ -44,10 +44,10 @@ block content
             .col-xs-2
                 if session.group._state.steps.youthInCare
                     button.btn.btn-success(style="margin-top: 50%;")
-                        i.fa.fa-2x.fa-check
+                        i.fa.fa-2x.fa-check.fa-fw
                 else
                     button.btn.btn-danger(style="margin-top: 50%;")
-                        i.fa.fa-2x.fa-remove
+                        i.fa.fa-2x.fa-remove.fa-fw
             .col-xs-10
                 h2.feaurette-heading Youth In Care
                 p Each year the conference hosts a feast to honour Youth In Care. If some of this groups delegates are or have been a youth in the care of the Ministry of Children and Family Development or an Aboriginal Delegated Agency and would like to attend the feast, please indicate below how many of your group will attend.
@@ -71,10 +71,10 @@ block content
             .col-xs-2
                 if session.group._state.steps.members
                         button.btn.btn-success(style="margin-top: 50%;")
-                            i.fa.fa-2x.fa-check
+                            i.fa.fa-2x.fa-check.fa-fw
                 else
                     button.btn.btn-danger(style="margin-top: 50%;" disabled=(!enoughChaperones || !membersComplete))
-                        i.fa.fa-2x.fa-remove
+                        i.fa.fa-2x.fa-remove.fa-fw
             .col-xs-10
                 h2.featurette-heading Group Members
                 p Youth and Chaperones attending the conference. There are 4 types of attendees:
@@ -86,20 +86,20 @@ block content
                 .row
                     if enoughChaperones
                         #enoughChaperones.label.label-success
-                            i.fa.fa-check
+                            i.fa.fa-check.fa-fw
                             |  You have enough chaperones to support your youth.
                     else
                         .label.label-danger
-                            i.fa.fa-remove
+                            i.fa.fa-remove.fa-fw
                             |  You do not have enough chaperones to support your youth.
                     br
                     if membersComplete
                         #membersComplete.label.label-success
-                            i.fa.fa-check
+                            i.fa.fa-check.fa-fw
                             |  All your group members have their required information complete.
                     else
                         .label.label-danger
-                            i.fa.fa-remove
+                            i.fa.fa-remove.fa-fw
                             |  Some of your members are missing information.
                 table.table.table-responsive.table-condensed.table-hover
                     thead
@@ -114,27 +114,27 @@ block content
                                 br
                                 small.text-muted Allow Removes?
                                 button#allowRemove.btn.btn-xs.btn-link
-                                    .fa.fa-times-circle
+                                    .fa.fa-times-circle.fa-fw
                     tbody
                         for member in members
                             tr(class=(member._state.complete ? 'success' : 'danger'))
                                 td
                                     if member._state.complete
-                                        i.fa.fa-check
+                                        i.fa.fa-check.fa-fw
                                     else
-                                        i.fa.fa-remove
+                                        i.fa.fa-remove.fa-fw
                                 td= member.name
                                 td= member.type
                                 td= member._workshops.length
                                 td= member._state.ticketType
                                 td
                                     a.btn.btn-block.btn-xs.btn-default(href="/member/#{member._id}")
-                                        i.fa.fa-edit
+                                        i.fa.fa-edit.fa-fw
                                         |  Edit
                                     form(action="/member/#{member._id}" method="POST")
                                         input(name="_method" value="DELETE", style="display: none")
                                         button.btn.btn-xs.btn-block.btn-danger.removeButton(disabled)
-                                            i.fa.fa-remove
+                                            i.fa.fa-remove.fa-fw
                                             |  Remove
                 a.btn.btn-block.btn-primary(href="/member")
                     i.fa.fa-plus
@@ -145,10 +145,10 @@ block content
             .col-xs-2
                 if session.group._state.steps.documents
                         button.btn.btn-success(style="margin-top: 50%;")
-                            i.fa.fa-2x.fa-check
+                            i.fa.fa-2x.fa-check.fa-fw
                     else
                         button.btn.btn-danger(style="margin-top: 50%;")
-                            i.fa.fa-2x.fa-remove
+                            i.fa.fa-2x.fa-remove.fa-fw
             .col-xs-8
                 h2.featurette-heading Useful Documents
                 p Please take a look at these documents and forms. When you're done, check it off!
@@ -167,10 +167,10 @@ block content
             .col-xs-2
                 if session.group._state.steps.payments
                         button.btn.btn-success(style="margin-top: 50%;")
-                            i.fa.fa-2x.fa-check
+                            i.fa.fa-2x.fa-check.fa-fw
                 else
                     button.btn.btn-danger(style="margin-top: 50%;" disabled=!(paid >= cost))
-                        i.fa.fa-2x.fa-remove
+                        i.fa.fa-2x.fa-remove.fa-fw
             .col-xs-10
                 h2.featurette-heading Payments
                 p Payments can be made to Gathering Our Voices via credit card (phone or Paypal), or cheque.
@@ -192,7 +192,7 @@ block content
                                 td #{payment.date.toDateString()}
                                 td= payment.description
                 a.btn.btn-block.btn-primary(href="/payments")
-                    i.fa.fa-credit-card
+                    i.fa.fa-credit-card.fa-fw
                     |    Make a Payment
         hr.featurette-divider
 
@@ -200,15 +200,15 @@ block content
             .col-xs-2
                 if session.group._state.steps.workshops
                         button.btn.btn-success(style="margin-top: 50%;")
-                            i.fa.fa-2x.fa-check
+                            i.fa.fa-2x.fa-check.fa-fw
                     else
                         button.btn.btn-danger(style="margin-top: 50%;")
-                            i.fa.fa-2x.fa-remove
+                            i.fa.fa-2x.fa-remove.fa-fw
             .col-xs-10
                 h2.featurette-heading Workshops
                 p Hold tight... We are just as excited as you about workshops, but we have not finished up our schedule, or our redesign of the process! Check back mid February.
                 a.btn.btn-block.btn-primary
-                    i.fa.fa-arrow-right
+                    i.fa.fa-arrow-right.fa-fw
                     |    View Workshops
         hr.featurette-divider
 
@@ -217,10 +217,10 @@ block content
                 .col-xs-2
                     if session.group._state.steps.checkin
                             button.btn.btn-success(style="margin-top: 50%;")
-                                i.fa.fa-2x.fa-check
+                                i.fa.fa-2x.fa-check.fa-fw
                         else
                             button.btn.btn-danger(style="margin-top: 50%;")
-                                i.fa.fa-2x.fa-remove
+                                i.fa.fa-2x.fa-remove.fa-fw
                 .col-xs-10
                     h2.featurette-heading Check In (Admins only)
                     p Check a group into the conference.
