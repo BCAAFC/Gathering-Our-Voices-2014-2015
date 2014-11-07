@@ -7,6 +7,7 @@ block content
             p.lead Use BCC, do not use CC or TO.
             p Please avoid emailing more than once a month to delegates, and more than twice a month to groups.
         .row
+            pre= data
             h1 Group Emails
             p 
                 for group in groups
@@ -17,5 +18,5 @@ block content
             h1 Member Emails
             p 
                 for member in members
-                    span #{member}; 
+                    span #{member.email}; 
             

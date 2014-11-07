@@ -176,15 +176,16 @@ module.exports = function(data) {
 
     router.get('/emails', util.admin, function (req, res) {
         async.auto({
-            groups  : Group.find({}).select('name email').exec,
-            members : Member.find({email: {$exists: true}}).select('name email').exec
+            groups  : function (next) { Group.find({}).select('name email').exec(next); },
+            members : function (next) { Member.find({email: {$ne: ""}}).select('name email').exec(next); }
         }, function complete(err, data) {
             if (!err) {
                 res.render('emails', {
                     title   : 'Email listing',
                     session : req.session,
                     groups  : _.uniq(data.groups),
-                    members : _.uniq(data.members)
+                    members : _.uniq(data.members),
+                    data    : JSON.stringify(data, null, 2)
                 });
             } else {
                 res.send('There was an error fetching this.');
