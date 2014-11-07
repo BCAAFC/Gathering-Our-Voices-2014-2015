@@ -41,8 +41,13 @@ module.exports = function(data) {
                         }
                     }, function (err, member) {
                         if (!err && member) {
-                            // Refresh the group.
-                            Group.findById(member._group).exec(function (err, group) {
+                            // Refresh the group, make sure that steps are unset.
+                            Group.findByIdAndUpdate(member._group, {
+                                $set: {
+                                    '_state.steps.members': false, // Obviously a new member will unset the members.
+                                    '_state.steps.payments': false // Payments will change because of this, and needs to be unset.
+                                }
+                            }).exec(function (err, group) {
                                 if (!err && group) {
                                     req.session.group = group;
                                     res.redirect('/account');
@@ -139,7 +144,8 @@ module.exports = function(data) {
                         if (!err) {
                             Group.findByIdAndUpdate(member._group, {
                                 $set: {
-                                    '_state.steps.members': false
+                                    '_state.steps.members': false,
+                                    '_state.steps.payments': false
                                 }
                             }).exec(function (err, group) {
                                 req.session.group = group;
