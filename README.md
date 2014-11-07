@@ -10,9 +10,12 @@ The [BCAAFC](http://www.bcaafc.com/) needed a clean, simple, user friendly event
 It was decided at the start of the project, back in September 2012 to develop the project in the open, encouraging people to utilize our techniques for dealing with troubles, as well as letting them inspect how it works.
 
 ## What does it use? ##
-Gathering Our Voices is mostly composed in [CoffeeScript](http://coffeescript.org/), a simple, unfancy language that becomes the venerable Javascript. CoffeeScript was chosen to simplify the codebase and (hopefully) enhance understanding.
+Gathering Our Voices is mostly composed in Javascript, a simple.
 
-The server runs on [Node.js](http://nodejs.org/) and serves up [Jade](https://github.com/visionmedia/jade) templates. It uses [Mongoose](http://mongoosejs.com/) to utilize MongoDB as a datastore. Unit testing is done via [Mocha](http://visionmedia.github.io/mocha/) with plans to deploy via [Travis-CI](https://travis-ci.org/) to [Heroku](https://www.heroku.com/).
+The server runs on [Node.js](http://nodejs.org/) and serves up [Jade](https://github.com/visionmedia/jade) templates. It uses:
+* [Mongoose](http://mongoosejs.com/) to utilize MongoDB as a datastore.
+* Unit testing is done via [CasperJS](http://casperjs.org/) via [Travis-CI](https://travis-ci.org/)
+* Deployment to [Heroku](https://www.heroku.com/)
 
 ## How to Use ##
 To create a clone of this site, you'll probably want to have the following installed:
