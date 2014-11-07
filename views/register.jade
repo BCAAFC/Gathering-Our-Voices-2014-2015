@@ -113,7 +113,7 @@ block content
     script.
         $('#recover').click(function () {
                 var email = $('#email').val()
-                $.get("/recover/#{email}", function (data) {
+                $.get("/recover/" + email, function (data) {
                         alert(data);
                 });
          });
