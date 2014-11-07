@@ -133,7 +133,10 @@ function httpd(callback, data) {
         RedisStore = require('connect-redis')(session);
     server.use(require('express-session')({
         secret            : process.env.SECRET,
-        store             : new RedisStore({client: data.redis}),
+        store             : new RedisStore({
+            client: data.redis,
+            ttl: 60*60*8 // 8 hours
+        }),
         resave            : true,
         saveUninitialized : true,
         secure            : true

@@ -32,7 +32,7 @@ module.exports = function(data) {
                         emergencyContact : {
                             name         : req.body.emergName,
                             relation     : req.body.emergRelation,
-                            phone        : req.bogdy.emergPhone
+                            phone        : req.body.emergPhone
                         },
                         emergencyInfo    : {
                             medicalNum   : req.body.emergMedicalNum,
