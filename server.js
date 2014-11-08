@@ -112,6 +112,8 @@ function httpd(callback, data) {
             next();
         }
     });
+    // Favicon
+    server.use(require('serve-favicon')('./static/favicon.ico'));
     // Parsers for JSON/URL encoding.
     server.use(require('body-parser').json());
     server.use(require('body-parser').urlencoded({extended: true}));
