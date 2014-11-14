@@ -54,7 +54,8 @@ module.exports = function(data) {
                 accommodation : (req.body['compensation-accommodation'] === 'on'),
                 travel        : (req.body['compensation-travel'])? (req.body['compensation-travelAmount'] || 'Marked, but unspecified') : '',
                 honorarium    : (req.body['compensation-honorarium'])? (req.body['compensation-honorariumAmount'] || 'Marked, but unspecified') : ''
-            }
+            },
+            notes            : req.body.notes,
         }, function (err) {
             var message;
             if (err) {

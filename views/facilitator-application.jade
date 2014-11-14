@@ -184,6 +184,11 @@ block content
                                 | Facilitator Honorarium
                         textarea.form-control(name="compensation-honorariumAmount" placeholder="If you have set facilitator fees, please indicate your requested amount or include a breakdown of your facilitator fees with your application.")
                             = value=lastForm['compensation-honorariumAmount']
+                    .form-group
+                        label Additional Notes
+                        p Add any additional notes you may wish to add. (Optional)
+                        textarea.form-control(name="notes")
+                            = lastForm.biography
                 .form-group.text-center
                     input.btn.btn-block.btn-primary(type="submit" value="Submit application")
     script.
