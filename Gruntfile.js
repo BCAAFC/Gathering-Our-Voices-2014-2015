@@ -4,11 +4,11 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         uglify: {
             bootstrap: {
-                // options: {
-                //     mangle: false,
-                //     compress: false,
-                //     beautify: true
-                // },
+                options: {
+                    mangle: false,
+                    compress: false,
+                    beautify: true
+                },
                 files: {
                     'static/js/min.js': [
                         'lib/jquery-1.11.1.js',
@@ -25,9 +25,10 @@ module.exports = function(grunt) {
                         'lib/bootstrap/js/scrollspy.js',
                         'lib/bootstrap/js/tab.js',
                         'lib/tagsinput/bootstrap-tagsinput.js',
-                        'lib/listjs/list.js',
-                        'lib/listjs/list.fuzzysearch.js',
-                        'lib/listjs/list.pagination.js'
+                        'lib/datatables/jquery.dataTables.js',
+                        'lib/datatables/dataTables.colVis.js',
+                        'lib/datatables/dataTables.colReorder.js',
+                        'lib/datatables/dataTables.responsive.js',
                     ]
                 }
             }
@@ -56,6 +57,11 @@ module.exports = function(grunt) {
                         'lib/bootstrap/less/bootstrap.less',
                         'lib/font-awesome/less/font-awesome.less',
                         'lib/tagsinput/bootstrap-tagsinput.css',
+                        // 'lib/datatables/jquery.dataTables.css',
+                        'lib/datatables/dataTables.bootstrap.css',
+                        'lib/datatables/dataTables.colVis.css',
+                        'lib/datatables/dataTables.colReorder.css',
+                        // 'lib/datatables/dataTables.responsive.css',
                         'lib/styles.css'
                     ]
                 }

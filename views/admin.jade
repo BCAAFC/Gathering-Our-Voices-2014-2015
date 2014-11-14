@@ -3,101 +3,109 @@ extends templates/layout
 block content
     .container
         .row
-            .btn-group.pull-right
-                a.btn.btn-success(href="/statistics")
-                    .fa.fa-bar-chart-o
-                    | View Statistics
-                a.pull-right.btn.btn-warning(href="/emails")
-                    .fa.fa-mail-reply-all
-                    | Get Email Addresses
-                a.btn.btn-info(href="/facilitators")
-                    | Facilitator Spreadsheet
+            ul.nav.nav-tabs#options
+                li.tabled.active
+                    a Groups
+                li.tabled
+                    a Members
+                li 
+                    a(href="/facilitators") Facilitators
+                li 
+                    | Workshops
+                li
+                    a(href="/statistics") Statistics
+                li
+                    a(href="/emails") Emails
         .row
-            #listing.table-responsive
-                p.text-muted You can sort results by clicking on the header you wish to sort by...
-                input.form-control.search(placeholder="Search...")
-                p Total # of Groups: #{groups.length}
-                table.table.table-striped
-                    thead
-                        tr
-                            //- Registration Steps
-                            th Steps
-                            th.sort(data-sort="members") Mems
-                            th.sort(data-sort="affiliation") Affiliation
-                            th.sort(data-sort="phone") Phone
-                            th.sort(data-sort="tags") Tags
-                            th Actions
-                            th
-                    tbody.list
-                        for group in groups
-                            tr
-                                td
-                                    - var steps = ['conduct', 'details', 'youthInCare', 'members', 'documents', 'payments', 'workshops', 'checkin']
-                                    for step in steps
-                                        if group._state.steps[step]
-                                            button.steps.btn.btn-xs.btn-success.tooltipped(data-toggle="tooltip" title="#{step}" data-url="/checkoff/#{group._id}/#{step}")
-                                                .fa.fa-check.fa-fw
-                                        else
-                                            button.steps.btn.btn-xs.btn-danger.tooltipped(data-toggle="tooltip" title="#{step}" data-url="/checkoff/#{group._id}/#{step}")
-                                                .fa.fa-remove.fa-fw
-                                    if group.youthInCare > 0 || group.youthInCareSupport > 0
-                                        .label.label-success.tooltipped(data-toggle="tooltip", title="This group has Youth In Care!")
-                                            .fa.fa-flag.fa-fw
-                                            |    #{group.youthInCare} + #{group.youthInCareSupport}
-                                td
-                                    .label.label-default.members
-                                        | #{group._members.length}
-                                td.affiliation #{group.affiliation}
-                                    .text-muted.name #{group.name}
-                                td.phone= group.phone
-                                td.tags
-                                    for tag in group._state.tags
-                                        span.label.label-default= tag
-                                        = ' '
-                                td
-                                    .btn-group
-                                        a.btn.btn-sm.btn-info(href="/notes/#{group._id}")
-                                            .fa.fa-file
-                                            |    Notes
-                                        a.btn.btn-sm.btn-primary(href="/manage/#{group._id}")
-                                            .fa.fa-edit
-                                            |    Manage
-                ul.pagination
+            table.table.table-striped#table
         script.
             $(function() {
-                // Make tooltips work.
-                $('.tooltipped').tooltip();
-                // Make set buttons work.
-                $('.steps').click(function () {
-                    var button = $(this);
-                    button.attr('disabled', true);
-                    $.getJSON(button.data('url')).done(function (data) {
-                        if (data.error) {
-                            alert('Unable to mark! Group does not meet prerequisites.');
-                        } else if (data.done === true) {
-                            button.removeClass('btn-danger');
-                            button.addClass('btn-success');
-                            var icon = button.find('.fa');
-                            icon.removeClass('fa-remove');
-                            icon.addClass('fa-check');
-                        } else if (data.done === false) {
-                            button.removeClass('btn-success');
-                            button.addClass('btn-danger');
-                            var icon = button.find('.fa');
-                            icon.removeClass('fa-check');
-                            icon.addClass('fa-remove');
-                        }
-                        button.removeAttr('disabled');
-                    });
+                var table;
+                $('#options > li.tabled > a').click(function () {
+                    $('ul.nav-tabs > .active').toggleClass('active');
+                    $(this).parent().toggleClass('active');
+                    $('#table').dataTable().fnDestroy();
+                    $('#table').empty();
+                    $('.ColVis').remove();
+                    render($(this).html().toLowerCase());
                 });
-                // List-ify
-                var options = {
-                    plugins: [ ListFuzzySearch(), ListPagination({
-                        innerWindow: 2,
-                        outerWindow: 1
-                    }) ],
-                    valueNames: [ 'affiliation', 'name', 'phone', 'members', 'tags' ],
-                    page: 20
-                };
-                var userList = new List('listing', options);
+                render('groups');
+                // Setup Table
+                function render(selected) {
+                    $.get('/admin/' + selected, function (result) {
+                        var options = {
+                            data: result.data,
+                            columns: result.keys,
+                            stateSave: true,
+                        };
+                        var reorderOptions = {};
+                        if (selected === 'groups') {
+                            reorderOptions.fixedColumns = 1;
+                            reorderOptions.fixedColumnsLeft = 1;
+                            options.columnDefs = [
+                                {
+                                    render: function (data, type, row) {
+                                        var steps = ['conduct', 'details', 'youthInCare', 'members', 'documents', 'payments', 'workshops', 'checkin'];
+                                        var output = steps.map(function (v) {
+                                            if (data[v]) {
+                                                return "<button class='steps btn btn-xs btn-success' data-toggle='tooltip' title='" + v + "' data-url='/checkoff/" + row['_id'] + "/" + v + "'><i class='fa fa-check fa-fw'></i></button>";
+                                            } else {
+                                                return "<button class='steps btn btn-xs btn-danger' data-toggle='tooltip' title='" + v + "' data-url='/checkoff/" + row['_id'] + "/" + v + "'><i class='fa fa-remove fa-fw'></i></button>";
+                                            }
+                                        }).join('');
+                                        if (row['youthInCareSupport'] > 0 || row['youthInCare'] > 0) {
+                                            var yic = "<div class='label label-success'><i class='fa fa-flag fa-fw'></i>" + row['youthInCare'] + ", " + row['youthInCareSupport'] + "</div>";
+                                            output = output.concat(yic);
+                                        }
+                                        return output;
+                                    },
+                                    targets: 0
+                                },
+                                {
+                                    render: function (data, type, row) {
+                                        data = data.map(function (v) {
+                                            return "<span class='badge badge-default'>" + v + "</span><br>";
+                                        }).join('');
+                                        data = data.concat("<a class='btn btn-primary btn-xs' href='/manage/" + row._id + "'><i class='fa fa-edit'></i> Manage</a>");
+                                        data = data.concat("<a class='btn btn-info btn-xs' href='/notes/" + row._id + "'><i class='fa fa-file'></i> Notes</a>");
+                                        return data;
+                                    },
+                                    targets: -1
+                                }
+                            ];
+                            options.createdRow = function(row, data, dataIndex) {
+                                $(row).find('.steps').tooltip().click(function () {
+                                    var button = $(this);
+                                    button.attr('disabled', true);
+                                    $.getJSON(button.data('url')).done(function (data) {
+                                        if (data.error) {
+                                            alert('Unable to mark! Group does not meet prerequisites.');
+                                        } else if (data.done === true) {
+                                            button.removeClass('btn-danger');
+                                            button.addClass('btn-success');
+                                            var icon = button.find('.fa');
+                                            icon.removeClass('fa-remove');
+                                            icon.addClass('fa-check');
+                                        } else if (data.done === false) {
+                                            button.removeClass('btn-success');
+                                            button.addClass('btn-danger');
+                                            var icon = button.find('.fa');
+                                            icon.removeClass('fa-check');
+                                            icon.addClass('fa-remove');
+                                        }
+                                        button.removeAttr('disabled');
+                                    });
+                                });
+                            };
+                        } else {
+                            reorderOptions.fixedColumns = 1;
+                        }
+                        table = $('#table').dataTable(options);
+                        // Setup Colreorder
+                        new $.fn.dataTable.ColReorder(table, { fixedColumns: 2 });
+                        // Setup Colvis
+                        var colvis = new $.fn.dataTable.ColVis(table);
+                        $(colvis.button()).insertAfter('#options');
+                    });
+                }
             });

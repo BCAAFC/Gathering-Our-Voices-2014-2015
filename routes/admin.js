@@ -12,16 +12,75 @@ module.exports = function(data) {
         util   = require('./util');
 
     router.get('/admin', util.admin, function (req, res) {
-        // TODO: Searching for a member.
-        Group.find().sort('affiliation').exec(function (err, groups) {
+        res.render('admin', {
+            title   : 'Administration',
+            session : req.session
+        });
+    });
+
+    router.get('/admin/groups', util.admin, function (req, res) {
+        Group.find().select('-hash -password').exec(function (err, groups) {
+            var result = {
+                data: groups,
+                keys: [
+                    { title: 'Steps', data: '_state.steps' },
+                    { title: 'id', data: '_id' },
+                    { title: 'Name', data: 'name' },
+                    { title: 'Affiliation', data: 'affiliation' },
+                    { title: 'Address', data: 'address' },
+                    { title: 'City', data: 'city'},
+                    { title: 'Province', data: 'province'},
+                    { title: 'Postal Code', data: 'postalCode'},
+                    { title: 'Fax', data: 'fax'},
+                    { title: 'Phone', data: 'phone'},
+                    { title: 'Region', data: 'region'},
+                    { title: 'Type', data: 'affiliationType'},
+                    { title: 'Reg Date', data: 'registrationDate'},
+                    { title: 'Email', data: 'email' },
+                    { title: 'Tags', data: '_state.tags' }
+                ]
+            };
             if (!err) {
-                res.render('admin', {
-                    title   : 'Administration',
-                    session : req.session,
-                    groups  : groups
-                });
+                res.json(result);
             } else {
-                res.send('Sorry, something went wrong. Try again?');
+                res.send('There was an error.');
+                console.error(err);
+            }
+        });
+    });
+
+    router.get('/admin/members', util.admin, function (req, res) {
+        Member.find().exec(function (err, members) {
+            members.map(function (v) {
+                // So some simple mutation, so clients don't need to.
+                v.birthDate = v.birthDate.day + ' ' + v.birthDate.month + ' ' + v.birthDate.year;
+                v.emergencyContact = v.emergencyContact.name + ' ' + v.emergencyContact.phone;
+                return v;
+            });
+            var result = {
+                data: members,
+                keys: [
+                    { title: 'id', data: '_id' },
+                    { title: 'Group id', data: '_group' },
+                    { title: 'Name', data: 'name' },
+                    { title: 'Type', data: 'type' },
+                    { title: 'Gender', data: 'gender' },
+                    { title: 'B.Day', data: 'birthDate' },
+                    { title: 'Phone', data: 'phone' },
+                    { title: 'Email', data: 'email' },
+                    { title: 'Contact', data: 'emergencyContact' },
+                    { title: 'Medical Num', data: 'emergencyInfo.medicalNum' },
+                    { title: 'Allergies', data: 'emergencyInfo.allergies' },
+                    { title: 'Conditions', data: 'emergencyInfo.conditions' },
+                    { title: 'Complete', data: '_state.complete' },
+                    { title: 'Ticket', data: '_state.ticketType' },
+                    { title: 'Reg. Date', data: '_state.registrationDate' }
+                ]
+            };
+            if (!err) {
+                res.json(result);
+            } else {
+                res.send('There was an error.');
                 console.error(err);
             }
         });
@@ -90,7 +149,6 @@ module.exports = function(data) {
             groups  : groups,
             members : members
         }, function complete(err, data) {
-            console.log(data.groups);
             res.render('statistics', {
                 title                   : 'Statistics',
                 session                 : req.session,
