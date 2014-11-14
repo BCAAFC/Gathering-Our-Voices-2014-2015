@@ -15,7 +15,7 @@ block content
                 else
                     button.btn.btn-danger(style="margin-top: 50%;")
                         i.fa.fa-2x.fa-remove.fa-fw
-            .col-xs-10
+            .col-xs-8
                 h2.featurette-heading Code of Conduct
                 p Please ensure that your entire group has read and reviewed the code of conduct.
                 a.btn.btn-block.btn-primary(href="/conduct")
@@ -31,7 +31,7 @@ block content
                 else
                     button.btn.btn-danger(style="margin-top: 50%;")
                         i.fa.fa-2x.fa-remove.fa-fw
-            .col-xs-10
+            .col-xs-8
                 h2.featurette-heading Group Details
                 p Update your group details if needed, this information was entered when you first registered.
                 p Each year the conference hosts a feast to honour Youth In Care.    Please indicate how many youth, and support chaperones from your group would like to attend.
@@ -48,7 +48,7 @@ block content
                 else
                     button.btn.btn-danger(style="margin-top: 50%;")
                         i.fa.fa-2x.fa-remove.fa-fw
-            .col-xs-10
+            .col-xs-8
                 h2.feaurette-heading Youth In Care
                 p Each year the conference hosts a feast to honour Youth In Care. If some of this groups delegates are or have been a youth in the care of the Ministry of Children and Family Development or an Aboriginal Delegated Agency and would like to attend the feast, please indicate below how many of your group will attend.
                 form(action="/youthInCare", method="POST")
@@ -75,7 +75,7 @@ block content
                 else
                     button.btn.btn-danger(style="margin-top: 50%;" disabled=(!enoughChaperones || !membersComplete))
                         i.fa.fa-2x.fa-remove.fa-fw
-            .col-xs-10
+            .col-xs-8
                 h2.featurette-heading Group Members
                 p Youth and Chaperones attending the conference. There are 4 types of attendees:
                 ul
@@ -171,7 +171,7 @@ block content
                 else
                     button.btn.btn-danger(style="margin-top: 50%;" disabled=!(paid >= cost))
                         i.fa.fa-2x.fa-remove.fa-fw
-            .col-xs-10
+            .col-xs-8
                 h2.featurette-heading Payments
                 p Payments can be made to Gathering Our Voices via credit card (phone or Paypal), or cheque.
                 p#cost Cost: $#{session.group._state.balance.cost}
@@ -204,7 +204,7 @@ block content
                     else
                         button.btn.btn-danger(style="margin-top: 50%;")
                             i.fa.fa-2x.fa-remove.fa-fw
-            .col-xs-10
+            .col-xs-8
                 h2.featurette-heading Workshops
                 p Hold tight... We are just as excited as you about workshops, but we have not finished up our schedule, or our redesign of the process! Check back mid February.
                 a.btn.btn-block.btn-primary
@@ -221,7 +221,7 @@ block content
                         else
                             button.btn.btn-danger(style="margin-top: 50%;")
                                 i.fa.fa-2x.fa-remove.fa-fw
-                .col-xs-10
+                .col-xs-8
                     h2.featurette-heading Check In (Admins only)
                     p Check a group into the conference.
             hr.featurette-divider
