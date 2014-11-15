@@ -57,7 +57,7 @@ module.exports = function(grunt) {
                         'lib/bootstrap/less/bootstrap.less',
                         'lib/font-awesome/less/font-awesome.less',
                         'lib/tagsinput/bootstrap-tagsinput.css',
-                        // 'lib/datatables/jquery.dataTables.css',
+                        'lib/datatables/jquery.dataTables.css',
                         'lib/datatables/dataTables.bootstrap.css',
                         'lib/datatables/dataTables.colVis.css',
                         'lib/datatables/dataTables.colReorder.css',
