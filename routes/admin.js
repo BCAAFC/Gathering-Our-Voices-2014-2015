@@ -28,6 +28,7 @@ module.exports = function(data) {
                         { title: 'id', data: '_id' },
                         { title: 'Name', data: 'name' },
                         { title: 'Affiliation', data: 'affiliation' },
+                        { title: 'Members', data: '_members' },
                         { title: 'Address', data: 'address' },
                         { title: 'City', data: 'city'},
                         { title: 'Province', data: 'province'},
