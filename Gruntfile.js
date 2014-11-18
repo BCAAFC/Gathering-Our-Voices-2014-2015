@@ -4,11 +4,11 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         uglify: {
             bootstrap: {
-                options: {
-                    mangle: false,
-                    compress: false,
-                    beautify: true
-                },
+                // options: {
+                //     mangle: false,
+                //     compress: false,
+                //     beautify: true
+                // },
                 files: {
                     'static/js/min.js': [
                         'lib/jquery-1.11.1.js',
