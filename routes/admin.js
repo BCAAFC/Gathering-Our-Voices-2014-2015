@@ -20,28 +20,28 @@ module.exports = function(data) {
 
     router.get('/admin/groups', util.admin, function (req, res) {
         Group.find().select('-hash -password').exec(function (err, groups) {
-            var result = {
-                data: groups.map(function (v) { v.actions = ' '; return v; }),
-                keys: [
-                    { title: 'Steps', data: '_state.steps' },
-                    { title: 'id', data: '_id' },
-                    { title: 'Name', data: 'name' },
-                    { title: 'Affiliation', data: 'affiliation' },
-                    { title: 'Address', data: 'address' },
-                    { title: 'City', data: 'city'},
-                    { title: 'Province', data: 'province'},
-                    { title: 'Postal Code', data: 'postalCode'},
-                    { title: 'Fax', data: 'fax'},
-                    { title: 'Phone', data: 'phone'},
-                    { title: 'Region', data: 'region'},
-                    { title: 'Type', data: 'affiliationType'},
-                    { title: 'Reg Date', data: 'registrationDate'},
-                    { title: 'Email', data: 'email' },
-                    { title: 'Tags', data: '_state.tags' },
-                    { title: 'Actions', data: 'actions' }
-                ]
-            };
             if (!err) {
+                var result = {
+                    data: groups.map(function (v) { v.actions = ' '; return v; }),
+                    keys: [
+                        { title: 'Steps', data: '_state.steps' },
+                        { title: 'id', data: '_id' },
+                        { title: 'Name', data: 'name' },
+                        { title: 'Affiliation', data: 'affiliation' },
+                        { title: 'Address', data: 'address' },
+                        { title: 'City', data: 'city'},
+                        { title: 'Province', data: 'province'},
+                        { title: 'Postal Code', data: 'postalCode'},
+                        { title: 'Fax', data: 'fax'},
+                        { title: 'Phone', data: 'phone'},
+                        { title: 'Region', data: 'region'},
+                        { title: 'Type', data: 'affiliationType'},
+                        { title: 'Reg Date', data: 'registrationDate'},
+                        { title: 'Email', data: 'email' },
+                        { title: 'Tags', data: '_state.tags' },
+                        { title: 'Actions', data: 'actions' }
+                    ]
+                };
                 res.json(result);
             } else {
                 res.send('There was an error.');
@@ -52,33 +52,33 @@ module.exports = function(data) {
 
     router.get('/admin/members', util.admin, function (req, res) {
         Member.find().exec(function (err, members) {
-            members.map(function (v) {
-                // So some simple mutation, so clients don't need to.
-                v.birthDate = v.birthDate.day + ' ' + v.birthDate.month + ' ' + v.birthDate.year;
-                v.emergencyContact = v.emergencyContact.name + ' ' + v.emergencyContact.phone;
-                return v;
-            });
-            var result = {
-                data: members,
-                keys: [
-                    { title: 'id', data: '_id' },
-                    { title: 'Group id', data: '_group' },
-                    { title: 'Name', data: 'name' },
-                    { title: 'Type', data: 'type' },
-                    { title: 'Gender', data: 'gender' },
-                    { title: 'B.Day', data: 'birthDate' },
-                    { title: 'Phone', data: 'phone' },
-                    { title: 'Email', data: 'email' },
-                    { title: 'Contact', data: 'emergencyContact' },
-                    { title: 'Medical Num', data: 'emergencyInfo.medicalNum' },
-                    { title: 'Allergies', data: 'emergencyInfo.allergies' },
-                    { title: 'Conditions', data: 'emergencyInfo.conditions' },
-                    { title: 'Complete', data: '_state.complete' },
-                    { title: 'Ticket', data: '_state.ticketType' },
-                    { title: 'Reg. Date', data: '_state.registrationDate' }
-                ]
-            };
             if (!err) {
+                members.map(function (v) {
+                    // So some simple mutation, so clients don't need to.
+                    v.birthDate = v.birthDate.day + ' ' + v.birthDate.month + ' ' + v.birthDate.year;
+                    v.emergencyContact = v.emergencyContact.name + ' ' + v.emergencyContact.phone;
+                    return v;
+                });
+                var result = {
+                    data: members,
+                    keys: [
+                        { title: 'id', data: '_id' },
+                        { title: 'Group id', data: '_group' },
+                        { title: 'Name', data: 'name' },
+                        { title: 'Type', data: 'type' },
+                        { title: 'Gender', data: 'gender' },
+                        { title: 'B.Day', data: 'birthDate' },
+                        { title: 'Phone', data: 'phone' },
+                        { title: 'Email', data: 'email' },
+                        { title: 'Contact', data: 'emergencyContact' },
+                        { title: 'Medical Num', data: 'emergencyInfo.medicalNum' },
+                        { title: 'Allergies', data: 'emergencyInfo.allergies' },
+                        { title: 'Conditions', data: 'emergencyInfo.conditions' },
+                        { title: 'Complete', data: '_state.complete' },
+                        { title: 'Ticket', data: '_state.ticketType' },
+                        { title: 'Reg. Date', data: '_state.registrationDate' }
+                    ]
+                };
                 res.json(result);
             } else {
                 res.send('There was an error.');
@@ -87,14 +87,48 @@ module.exports = function(data) {
         });
     });
 
-    router.get('/facilitators', util.admin, function (req, res) {
+    router.get('/admin/facilitators', util.admin, function (req, res) {
         var Facilitator = require('../schema/Facilitator');
         Facilitator.find({}).exec(function (err, facilitators) {
-            res.render('facilitator-list', {
-                title        : 'Facilitator List',
-                session      : req.session,
-                facilitators : facilitators
-            });
+            if (!err) {
+                var result = {
+                    data: facilitators,
+                    keys: [
+                        { title: 'Submission Date', data: 'submissionDate' },
+                        { title: 'Facilitator Name', data: 'name' },
+                        { title: 'Affiliation', data: 'affiliation' },
+                        { title: 'Phone', data: 'phone' },
+                        { title: 'Fax', data: 'fax' },
+                        { title: 'Email', data: 'email' },
+                        { title: 'Mailing', data: 'mailing' },
+                        { title: 'Workshop Name', data: 'workshop' },
+                        { title: 'Length', data: 'length' },
+                        { title: 'Category', data: 'category' },
+                        { title: 'Audience', data: 'audience' },
+                        { title: 'Type', data: 'type' },
+                        { title: 'Eq - Flipchart', data: 'equipment.flipchart' },
+                        { title: 'Eq - Projector', data: 'equipment.projector' },
+                        { title: 'Eq - Screen', data: 'equipment.screen' },
+                        { title: 'Eq - Player', data: 'equipment.player' },
+                        { title: 'Room', data: 'roomRequirement' },
+                        { title: 'Capacity', data: 'capacity' },
+                        { title: 'Comp - Meal', data: 'compensation.meal' },
+                        { title: 'Comp - Accommodation', data: 'compensation.accommodation' },
+                        { title: 'Comp - Travel', data: 'compensation.travel' },
+                        { title: 'Comp - Honorarium', data: 'compensation.honorarium' },
+                        { title: 'Category Reason', data: 'categoryReason' },
+                        { title: 'Description', data: 'description' },
+                        { title: 'Summary', data: 'summary' },
+                        { title: 'Interaction Level', data: 'interactionLevel' },
+                        { title: 'Biography', data: 'biography' },
+                        { title: 'Notes', data: 'notes' }
+                    ]
+                };
+                res.json(result);
+            } else {
+                res.send('There was an error.');
+                console.error(err);
+            }
         });
     });
 
