@@ -37,11 +37,12 @@ block content
                             data: result.data,
                             columns: result.keys,
                             stateSave: true,
+                            //- scrollX: true
                         };
                         var reorderOptions = {};
                         if (selected === 'groups') {
-                            reorderOptions.fixedColumns = 1;
-                            reorderOptions.fixedColumnsLeft = 2;
+                            //- reorderOptions.fixedColumns = 1;
+                            //- reorderOptions.fixedColumnsLeft = 2;
                             options.columnDefs = [
                                 {
                                     render: function (data, type, row) {
@@ -104,7 +105,14 @@ block content
                                 });
                             };
                         } else {
-                            reorderOptions.fixedColumns = 1;
+                            options.columnDefs = [
+                                {
+                                    render: function (data, type, row) {
+                                        return ['<div class="limited">', data, '</div>'].join('');
+                                    },
+                                    targets: [-1, -2, -3 ,-4, -5, -6]
+                                }
+                            ];
                         }
                         table = $('#table').dataTable(options);
                         // Setup Colreorder
