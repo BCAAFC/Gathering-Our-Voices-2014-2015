@@ -41,7 +41,7 @@ block content
                         var reorderOptions = {};
                         if (selected === 'groups') {
                             reorderOptions.fixedColumns = 1;
-                            reorderOptions.fixedColumnsLeft = 1;
+                            reorderOptions.fixedColumnsLeft = 2;
                             options.columnDefs = [
                                 {
                                     render: function (data, type, row) {
@@ -66,7 +66,13 @@ block content
                                         data = data.map(function (v) {
                                             return "<span class='badge badge-default'>" + v + "</span><br>";
                                         }).join('');
-                                        data = data.concat("<a class='btn btn-primary btn-xs' href='/manage/" + row._id + "'><i class='fa fa-edit'></i> Manage</a>");
+                                        return data;
+                                    },
+                                    targets: -2
+                                },
+                                {
+                                    render: function (data, type, row) {
+                                        data = "<a class='btn btn-primary btn-xs' href='/manage/" + row._id + "'><i class='fa fa-edit'></i> Manage</a>";
                                         data = data.concat("<a class='btn btn-info btn-xs' href='/notes/" + row._id + "'><i class='fa fa-file'></i> Notes</a>");
                                         return data;
                                     },

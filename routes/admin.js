@@ -21,7 +21,7 @@ module.exports = function(data) {
     router.get('/admin/groups', util.admin, function (req, res) {
         Group.find().select('-hash -password').exec(function (err, groups) {
             var result = {
-                data: groups,
+                data: groups.map(function (v) { v.actions = ' '; return v; }),
                 keys: [
                     { title: 'Steps', data: '_state.steps' },
                     { title: 'id', data: '_id' },
@@ -37,7 +37,8 @@ module.exports = function(data) {
                     { title: 'Type', data: 'affiliationType'},
                     { title: 'Reg Date', data: 'registrationDate'},
                     { title: 'Email', data: 'email' },
-                    { title: 'Tags', data: '_state.tags' }
+                    { title: 'Tags', data: '_state.tags' },
+                    { title: 'Actions', data: 'actions' }
                 ]
             };
             if (!err) {
