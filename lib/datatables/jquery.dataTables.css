@@ -38,7 +38,7 @@ table.dataTable thead .sorting {
   cursor: pointer;
   *cursor: hand;
 }
-table.dataTable thead .sorting {
+/*table.dataTable thead .sorting {
   background: url("../images/sort_both.png") no-repeat center right;
 }
 table.dataTable thead .sorting_asc {
@@ -52,7 +52,7 @@ table.dataTable thead .sorting_asc_disabled {
 }
 table.dataTable thead .sorting_desc_disabled {
   background: url("../images/sort_desc_disabled.png") no-repeat center right;
-}
+}*/
 table.dataTable tbody tr {
   background-color: white;
 }
