@@ -90,7 +90,7 @@ module.exports = function(data) {
 
     router.get('/admin/facilitators', util.admin, function (req, res) {
         var Facilitator = require('../schema/Facilitator');
-        Facilitator.find({}).exec(function (err, facilitators) {
+        Facilitator.find({}).sort('submissionDate').exec(function (err, facilitators) {
             if (!err) {
                 var result = {
                     data: facilitators,
@@ -200,14 +200,14 @@ module.exports = function(data) {
         function groups(callback) {
             Group.find({}).select('youthInCare youthInCareSupport region')
                 .exec(function (err, groups) {
-                    console.log(groups);
+                    // console.log(groups);
                     var result = _.reduce(groups, function (sum, group) {
                         // Need Youth In Care Feat Counts
                         sum.youthInCare += group.youthInCare;
                         sum.youthInCareSupport += group.youthInCareSupport;
                         return sum;
                     }, {youthInCare: 0, youthInCareSupport: 0});
-                    console.log(result);
+                    // console.log(result);
                     callback(null, result);
                 });
         }
@@ -268,7 +268,7 @@ module.exports = function(data) {
                     // Must return summation.
                     return summation;
                 }, summation);
-                console.log(result.dates);
+                // console.log(result.dates);
                 callback(null, result);
             });
         }
