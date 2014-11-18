@@ -223,7 +223,12 @@ module.exports = function(data) {
                         dates = (function () {
                             var oneDay = 24*60*60*1000, // hours*minutes*seconds*milliseconds
                                     numDays = Math.round(Math.abs((startDate.getTime() - stopDate.getTime())/(oneDay)));
-                            return Array.apply(null, new Array(numDays)).map(Number.prototype.valueOf, 0);
+                            return Array.apply(null, new Array(numDays)).map(function (v) { return {
+                                'Youth': 0,
+                                'Young Adult': 0,
+                                'Chaperone': 0,
+                                'Young Chaperone': 0
+                            }; });
                         })();
                 function buildEmpties(array) {
                     return _(array).map(function (val) {
@@ -259,10 +264,11 @@ module.exports = function(data) {
                     var normalized = Date.parse(val._state.registrationDate) - startDate;
                     normalized = normalized / (24*60*60*1000); // One day
                     normalized = Math.floor(normalized);
-                    summation.dates[normalized] += 1;
+                    summation.dates[normalized][val.type] += 1;
                     // Must return summation.
                     return summation;
                 }, summation);
+                console.log(result.dates);
                 callback(null, result);
             });
         }

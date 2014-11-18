@@ -202,12 +202,21 @@ block content
                     chart.draw(data, options);
             }
             function drawDates() {
-                var total = 0;
+                var total = {
+                    'Youth': 0,
+                    'Young Adult': 0,
+                    'Chaperone': 0,
+                    'Young Chaperone': 0
+                };
                 dates = dates.map(function(val, index) {
-                    total += val;
-                    return [index, total, new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + total]; //
+                    total['Youth'] += val['Youth'];
+                    total['Young Adult'] += val['Young Adult'];
+                    total['Chaperone'] += val['Chaperone'];
+                    total['Young Chaperone'] += val['Young Chaperone'];
+                    return [index, total['Youth'], total['Young Adult'], total['Chaperone'], total['Young Chaperone'],
+                        new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + total]; //
                 })
-                dates.unshift(["Days since Sept 1, 2014", "Members", { type: 'string', role: 'tooltip' } ])
+                dates.unshift(["Days since Sept 1, 2014", "Youth", "Young Adults", "Chaperones", "Young Chaperones", { type: 'string', role: 'tooltip' } ])
                 var data = google.visualization.arrayToDataTable(dates);
                 var options = {
                     title: 'Members over time (since Sept 1, 2014)'
