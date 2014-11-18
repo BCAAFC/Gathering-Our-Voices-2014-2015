@@ -129,6 +129,7 @@ var FacilitatorSchema = new Schema({
     },
     notes: {
         type: String,
+        default: '',
         trim: true,
         required: false
     }
