@@ -99,6 +99,16 @@ block content
                             });
                         });
                     };
+                } else if (selected === 'members') {
+                    options.columnDefs = [
+                        {
+                            render: function (data, type, row) {
+                                data = "<a class='btn btn-default btn-xs' href='/manage/" + data + "'>Manage</a>";
+                                return data;
+                            },
+                            targets: 1
+                        }
+                    ]
                 } else if (selected === 'facilitators') {
                     options.columnDefs = [
                         {
