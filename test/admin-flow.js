@@ -27,7 +27,7 @@ casper.test.begin('Admin page seems populated', function suite(test) {
         // Success brings us to account page.
     }).waitForUrl(/account$/, function () {
         this.click("a[href='/admin']");
-    }).waitForUrl(/admin$/, function () {
+    }).waitForUrl(/admin\/groups$/, function () {
         test.assertExists("a[href='/statistics']", "Link to statistics present");
         test.assertExists("a[href='/emails']", "Link to emails present");
         test.assertExists(".tabled#facilitators a", "Link to facilitators present");
@@ -45,10 +45,10 @@ casper.test.begin('Admin page seems populated', function suite(test) {
         // Success brings us to account page.
     }).waitForUrl(/account$/, function () {
         this.click("a[href='/admin']");
-    }).waitForUrl(/admin$/, function () {
+    }).waitForUrl(/admin\/groups$/, function () {
         this.click("a[href='/statistics']");
     }).waitForUrl(/statistics$/, function () {
-        test.assertExists("")
+        test.assertExists("");
     }).run(function () {
         test.done();
     });

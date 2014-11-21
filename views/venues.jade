@@ -3,9 +3,37 @@ extends templates/layout
 block content
     .container.marketing
         .row.featurette
-                .col-sm-7
-                        .alert.alert-warning We haven't confirmed all of our venues yet. Check back after November 17th.
-                .col-sm-5(style="text-align: center")
+            .col-sm-7
+                h2 Conference Venues
+                ul
+                    li
+                        a(href="http://princegeorgeciviccentre.ca/") Prince George Civic Centre
+                        br
+                        strong Main Conference Venue
+                        br
+                        | 808 Canada Games Way, Prince George
+                        br
+                        | (250) 561-7723
+                    li
+                        a(href="http://www.coasthotels.com/hotels/bc/prince_george/coast-inn-of-the-north/") Coast Inn of the North
+                        br
+                        | 770 Brunswick Street, Prince George
+                        br
+                        | (250) 563-0121
+                    li
+                        a(href="http://ramadaprincegeorge.com/") Ramada Prince George
+                        br
+                        | 444 George St, Prince George
+                        br
+                        | (250) 563-0055
+                    li
+                        a(href="http://www.unbc.ca/northern-sport-centre/your-4-season-fitness-sport-and-recreation-facility") UNBC Northern Sport Centre
+                        br
+                        | 3333 University Way, Prince George
+                        br
+                        | (250) 960-5555
+            .col-sm-5(style="text-align: center")
+                iframe(src="https://mapsengine.google.com/map/embed?mid=zgOn5am8hxSg.k89JLyptpBaI", width="100%", height="480")
         hr.featurette-divider
         .row.featurette
             .col-sm-7
@@ -38,4 +66,4 @@ block content
                         br
                         | 1-250-565-2000
             .col-sm-5(style="text-align: center")
-                iframe(src="https://mapsengine.google.com/map/embed?mid=zgOn5am8hxSg.k89JLyptpBaI", width="100%", height="480")
+                
