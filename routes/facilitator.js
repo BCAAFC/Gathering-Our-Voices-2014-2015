@@ -60,7 +60,7 @@ module.exports = function(data) {
             var message;
             if (err) {
                 req.session.lastForm = req.body;
-                message              = "Something went wrong, sorry! Did you forget a field? All are required. Is your 'Capacity' a word? It must be a number! If you're still struggling, please call us.";
+                message              = "Something went wrong, sorry! Did you forget a field? All are required. Is your 'Capacity' a word? It must be a number! If you're still struggling, please call us. **Note: You can just hit the 'Back' button in your browser and you will not loose your data in the form.";
                 res.redirect('/facilitator?message=' + message);
             } else {
                 req.session.lastForm = {};
