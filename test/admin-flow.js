@@ -30,16 +30,16 @@ casper.test.begin('Admin page seems populated', function suite(test) {
     }).waitForUrl(/admin\/groups$/, function () {
         test.assertExists("a[href='/statistics']", "Link to statistics present");
         test.assertExists("a[href='/emails']", "Link to emails present");
-        test.assertExists(".tabled#facilitators a", "Link to facilitators present");
-        test.assertExists(".tabled#members a", "Link to members present");
-        test.assertExists(".tabled.active#groups a", "Link to groups present, and active.");
+        test.assertExists("a[href='/admin/facilitators']", "Link to facilitators present");
+        test.assertExists("a[href='/admin/members']", "Link to members present");
+        test.assertExists("a[href='/admin/groups']", "Link to groups present, and active.");
     }).run(function () {
         test.done();
     });
 });
 
 /** Statistics */
-casper.test.begin('Admin page seems populated', function suite(test) {
+casper.test.begin('Statistics page seems populated', function suite(test) {
     casper.start(host + '/register', function () {
         this.fill("form[action='/login']", { email: util.admin.email, password: util.admin.password }, true);
         // Success brings us to account page.
@@ -48,7 +48,10 @@ casper.test.begin('Admin page seems populated', function suite(test) {
     }).waitForUrl(/admin\/groups$/, function () {
         this.click("a[href='/statistics']");
     }).waitForUrl(/statistics$/, function () {
-        test.assertExists("");
+        test.assertExists("#typeChart");
+        test.assertExists("#ageChart");
+        test.assertExists("#regionChart");
+        test.assertExists("#dateChart");
     }).run(function () {
         test.done();
     });
