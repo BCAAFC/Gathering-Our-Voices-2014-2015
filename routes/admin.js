@@ -12,18 +12,16 @@ module.exports = function(data) {
         util   = require('./util');
 
     router.get('/admin', util.admin, function (req, res) {
-        res.render('admin', {
-            title   : 'Administration',
-            session : req.session
-        });
+        res.redirect('/admin/groups');
     });
 
-    router.get('/admin/groups', util.admin, function (req, res) {
-        Group.find().select('-hash -password').exec(function (err, groups) {
-            if (!err) {
-                var result = {
-                    data: groups.map(function (v) { v.actions = ' '; return v; }),
-                    keys: [
+    router.get('/admin/:type', util.admin, function (req, res) {
+        var data, keys, selected = req.params.type;
+        if (selected == 'groups') {
+            Group.find().select('-hash -password').exec(function (err, groups) {
+                if (!err) {
+                    data = groups.map(function (v) { v.actions = ' '; return v; });
+                    keys = [
                         { title: 'Steps', data: '_state.steps' },
                         { title: 'id', data: '_id' },
                         { title: 'Name', data: 'name' },
@@ -41,28 +39,30 @@ module.exports = function(data) {
                         { title: 'Email', data: 'email' },
                         { title: 'Tags', data: '_state.tags' },
                         { title: 'Actions', data: 'actions' }
-                    ]
-                };
-                res.json(result);
-            } else {
-                res.send('There was an error.');
-                console.error(err);
-            }
-        });
-    });
-
-    router.get('/admin/members', util.admin, function (req, res) {
-        Member.find().exec(function (err, members) {
-            if (!err) {
-                members.map(function (v) {
-                    // So some simple mutation, so clients don't need to.
-                    v.birthDate = v.birthDate.day + ' ' + v.birthDate.month + ' ' + v.birthDate.year;
-                    v.emergencyContact = v.emergencyContact.name + ' ' + v.emergencyContact.phone;
-                    return v;
-                });
-                var result = {
-                    data: members,
-                    keys: [
+                    ];
+                    res.render('admin', {
+                        title    : 'Administration',
+                        session  : req.session,
+                        data     : data,
+                        keys     : keys,
+                        selected : selected
+                    });
+                } else {
+                    res.send('There was an error.');
+                    console.error(err);
+                }
+            });
+        } else if (selected == 'members') {
+            Member.find().exec(function (err, members) {
+                if (!err) {
+                    members.map(function (v) {
+                        // So some simple mutation, so clients don't need to.
+                        v.birthDate = v.birthDate.day + ' ' + v.birthDate.month + ' ' + v.birthDate.year;
+                        v.emergencyContact = v.emergencyContact.name + ' ' + v.emergencyContact.phone;
+                        return v;
+                    });
+                    data = members;
+                    keys = [
                         { title: 'id', data: '_id' },
                         { title: 'Group id', data: '_group' },
                         { title: 'Name', data: 'name' },
@@ -78,23 +78,25 @@ module.exports = function(data) {
                         { title: 'Complete', data: '_state.complete' },
                         { title: 'Ticket', data: '_state.ticketType' },
                         { title: 'Reg. Date', data: '_state.registrationDate' }
-                    ]
-                };
-                res.json(result);
-            } else {
-                res.send('There was an error.');
-                console.error(err);
-            }
-        });
-    });
-
-    router.get('/admin/facilitators', util.admin, function (req, res) {
-        var Facilitator = require('../schema/Facilitator');
-        Facilitator.find({}).sort('submissionDate').exec(function (err, facilitators) {
-            if (!err) {
-                var result = {
-                    data: facilitators,
-                    keys: [
+                    ];
+                    res.render('admin', {
+                        title    : 'Administration',
+                        session  : req.session,
+                        data     : data,
+                        keys     : keys,
+                        selected : selected
+                    });
+                } else {
+                    res.send('There was an error.');
+                    console.error(err);
+                }
+            });
+        } else if (selected == 'facilitators') {
+            var Facilitator = require('../schema/Facilitator');
+            Facilitator.find({}).sort('submissionDate').exec(function (err, facilitators) {
+                if (!err) {
+                    data = facilitators;
+                    keys = [
                         { title: 'Submission Date', data: 'submissionDate' },
                         { title: 'Facilitator Name', data: 'name' },
                         { title: 'Affiliation', data: 'affiliation' },
@@ -123,14 +125,20 @@ module.exports = function(data) {
                         { title: 'Interaction Level', data: 'interactionLevel' },
                         { title: 'Biography', data: 'biography' },
                         { title: 'Notes', data: 'notes' }
-                    ]
-                };
-                res.json(result);
-            } else {
-                res.send('There was an error.');
-                console.error(err);
-            }
-        });
+                    ];
+                    res.render('admin', {
+                        title    : 'Administration',
+                        session  : req.session,
+                        data     : data,
+                        keys     : keys,
+                        selected : selected
+                    });
+                } else {
+                    res.send('There was an error.');
+                    console.error(err);
+                }
+            });
+        }
     });
 
     router.get('/manage/:id', util.admin, function (req, res) {
