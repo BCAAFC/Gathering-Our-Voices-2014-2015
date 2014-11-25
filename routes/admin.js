@@ -95,8 +95,9 @@ module.exports = function(data) {
             var Facilitator = require('../schema/Facilitator');
             Facilitator.find({}).sort('submissionDate').exec(function (err, facilitators) {
                 if (!err) {
-                    data = facilitators;
+                    data = facilitators.map(function (v) { v.actions = ' '; return v; });
                     keys = [
+                        { title: 'Actions', data: 'actions' },
                         { title: 'Submission Date', data: 'submissionDate' },
                         { title: 'Facilitator Name', data: 'name' },
                         { title: 'Affiliation', data: 'affiliation' },

@@ -6,6 +6,9 @@ block content
             display: block;
         }
     form(action="/facilitator", method="POST")
+        if lastForm._id
+            input(type="hidden", name="_method", value="put")
+            input(type="hidden", name="id", value=lastForm._id)
         .row.text-center
             h1 Facilitator Application
             strong Closing Date: November 21, 2014 at 5:00 PM, PST.
@@ -31,7 +34,7 @@ block content
                         input.form-control(type="text" required name="name" value=lastForm.name placeholder="Please list lead contact and support presenters/facilitators.")
                     .form-group
                         label Affiliiation
-                        input.form-control(type="text" required name="affiliation" placeholder="Organization, Band, Tribe, Institution, independant, etc." value=lastForm.affiliation)
+                        input.form-control(type="text" required name="affiliation" value=lastForm.affiliation placeholder="Organization, Band, Tribe, Institution, independant, etc.")
                     .form-group
                         label Phone Number
                         input.form-control(type="text" required name="phone" value=lastForm.phone placeholder="Main and alternate contact number(s).")
@@ -147,7 +150,7 @@ block content
                         select.form-control(name="roomRequirement")
                             option(value="" selected=(lastForm.roomRequirement === '')) Please choose...
                             option(value="circle" selected=(lastForm.roomRequirement === 'circle')) Chairs in a Circle
-                            option(value="semicircle" selected=(lastForm.roomRequirement === 'semicricle')) Chairs in a semi-circle
+                            option(value="semicircle" selected=(lastForm.roomRequirement === 'semicircle')) Chairs in a semi-circle
                             option(value="gym" selected=(lastForm.roomRequirement === 'gym')) Gym
                             option(value="banquet" selected=(lastForm.roomRequirement === 'banquet')) Banquet (rounds)
                             option(value="classroom" selected=(lastForm.roomRequirement === 'classroom')) Classroom

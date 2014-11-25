@@ -119,6 +119,12 @@ block content
                                 return ['<div class="limited">', data, '</div>'].join('');
                             },
                             targets: [-1, -2, -3 ,-4, -5, -6]
+                        },
+                        {
+                            render: function (data, type, row) {
+                                return "<a class='btn btn-default btn-xs' href='/facilitator/" + row._id + "'>Edit</a>"
+                            },
+                            targets: 0
                         }
                     ];
                 }
