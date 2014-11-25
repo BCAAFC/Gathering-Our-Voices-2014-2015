@@ -27,7 +27,7 @@ module.exports = function(grunt) {
                         'lib/tagsinput/bootstrap-tagsinput.js',
                         'lib/datatables/jquery.dataTables.js',
                         'lib/datatables/dataTables.colVis.js',
-                        // 'lib/datatables/dataTables.colReorder.js',
+                        // 'lib/datatables/dataTables.fontAwesome.js',
                         'lib/datatables/dataTables.responsive.js',
                     ]
                 }
@@ -60,7 +60,7 @@ module.exports = function(grunt) {
                         'lib/datatables/jquery.dataTables.css',
                         'lib/datatables/dataTables.bootstrap.css',
                         'lib/datatables/dataTables.colVis.css',
-                        // 'lib/datatables/dataTables.colReorder.css',
+                        'lib/datatables/dataTables.fontAwesome.css',
                         // 'lib/datatables/dataTables.responsive.css',
                         'lib/styles.css'
                     ]
@@ -96,7 +96,7 @@ module.exports = function(grunt) {
     grunt.registerTask('drop', 'Drop the \'testing\' database', function() {
         // async mode
         var done = this.async(),
-              mongoose = require('mongoose');
+            mongoose = require('mongoose');
         mongoose.connect('localhost/testing', function () {
             mongoose.connection.on('open', function () {
                 mongoose.connection.db.dropDatabase(function(err) {

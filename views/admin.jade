@@ -17,7 +17,8 @@ block content
                 li#email
                     a(href="/emails") Emails
         .row
-            table.table.table-striped#table
+            .col-xs-12
+                table.table.table-striped#table
         script.
             $(function() {
                 var table, selected = '#{selected}';
@@ -32,6 +33,7 @@ block content
                 if (selected === 'groups') {
                     //- reorderOptions.fixedColumns = 1;
                     //- reorderOptions.fixedColumnsLeft = 2;
+                    options.scrollX = true;
                     options.columnDefs = [
                         {
                             render: function (data, type, row) {
@@ -100,6 +102,7 @@ block content
                         });
                     };
                 } else if (selected === 'members') {
+                    options.scrollX = true;
                     options.columnDefs = [
                         {
                             render: function (data, type, row) {
@@ -119,6 +122,7 @@ block content
                         }
                     ];
                 }
+                console.log(options);
                 table = $('#table').dataTable(options);
                 // Setup Colreorder
                 //- new $.fn.dataTable.ColReorder(table, { fixedColumns: 2 });
