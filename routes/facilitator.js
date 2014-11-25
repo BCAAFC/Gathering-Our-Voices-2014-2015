@@ -81,7 +81,6 @@ module.exports = function(data) {
         })
         .put(util.admin, function (req, res) {
             if (!req.body.id) { return; } // ignore it.
-            console.log('finding');
             Facilitator.findByIdAndUpdate(req.body.id, facilitatorParser(req.body)).exec(function (err, facilitator) {
                 if (!err && facilitator) {
                     res.redirect('/admin/facilitators?message=Success!');
