@@ -6,6 +6,8 @@ To regain access to your account, please visit the following location:
 
 \*|RECOVERY|\*
 
+Once there, please visit the "Group Details" section and change your password to something you can remember.
+
 In friendship,
 
 The Gathering Our Voices Team
