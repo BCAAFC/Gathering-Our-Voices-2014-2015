@@ -27,6 +27,7 @@ block content
                     data: !{JSON.stringify(data)},
                     columns: !{JSON.stringify(keys)},
                     stateSave: true,
+                    stateDuration: 60*60*24*5 // 5 days.
                     //- scrollX: true
                 };
                 var reorderOptions = {};
@@ -128,7 +129,7 @@ block content
                         }
                     ];
                 }
-                console.log(options);
+                //- console.log(options);
                 table = $('#table').dataTable(options);
                 // Setup Colreorder
                 //- new $.fn.dataTable.ColReorder(table, { fixedColumns: 2 });
