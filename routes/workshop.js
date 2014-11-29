@@ -7,24 +7,41 @@ module.exports = function(data) {
         var router   = require('express').Router(),
             Group    = require('../schema/Group'),
             Workshop = require('../schema/Workshop'),
+            Session  = require('../schema/Session'),
             util     = require('./util');
 
         router.get('/workshops', function (req, res) {
-            // Handle query strings.
-            var query = {};
-            if (req.query.sessions) {
-                query['sessions.session'] = {$in: req.query.sessions.split(',').map(function (val) { return Number(val); })};
-            }
-            if (req.query.query) {
-                query.description = new RegExp(req.query.query, 'i');
-            }
             // Build output.
-            Workshop.find(query).sort('name').exec(function (err, workshops) {
+            Workshop.find({}).sort('name').select("-description").populate('_sessions', 'start end capacity _registered').exec(function (err, workshops) {
                 if (!err) {
+                    // We only care about how many there are,
+                    // and we don't really want to send this otherwise.
+                    workshops = workshops.map(function (workshop) {
+                        workshop._sessions = workshop._sessions.map(function (session) {
+                            session.registered = session._registered.length;
+                            delete session._registered; // Don't send it.
+                            return session;
+                        });
+                        return workshop;
+                    });
                     res.render('workshops', {
                         title     : 'Workshops',
                         session   : req.session,
-                        workshops : workshops || {}
+                        data      : workshops || {},
+                        keys      : [
+                            {
+                                "orderable":      false,
+                                "data":           null,
+                                "defaultContent": ''
+                            },
+                            { title: 'Name', data: 'name' },
+                            { title: 'Host', data: 'host' },
+                            // { title: 'Description', data: 'description' },
+                            { title: 'Allows', data: 'allows' },
+                            { title: 'Category', data: 'category' },
+                            { title: 'Tags', data: 'tags' },
+                            { title: 'Sessions', data: '_sessions' },
+                        ]
                     });
                 } else {
                     res.send('There was a strange error. Please go back and try again.');
@@ -33,80 +50,97 @@ module.exports = function(data) {
             });
         });
 
-        router.get('/workshop/:id', function (req, res) {
-            Workshop.findById(req.params.id).exec(function (err, workshop) {
-                if (!err && workshop) {
-                    res.render('workshop', {
-                        title    : "Workshop Details",
-                        session  : req.session,
-                        workshop : workshop
+        router.get('/workshop/create', util.admin, function (req, res) {
+            res.render('workshopModify', {
+                title: "Create a workshop",
+                session: req.session,
+                lastForm : req.session.lastForm || {}
+            });
+        });
+
+        router.post('/workshop/:id/session', util.admin, function (req, res) {
+            Session.create({
+                start: req.body.start,
+                end: req.body.end,
+                room: req.body.room,
+                venue: req.body.venue,
+                capacity: req.body.capacity,
+                _workshop: req.params.id,
+                _registered: []
+            }, function (err, session) {
+                if (!err) {
+                    Workshop.findById(session._workshop).exec(function (err, workshop) {
+                        if (!err) {
+                            workshop._sessions.push(session._id);
+                            workshop.save(function (err) {
+                                if (!err) {
+                                    res.redirect('/workshop/' + req.params.id);
+                                } else {
+                                    res.send('There was an error, try again?');
+                                    console.error(err);
+                                }
+                            });
+                        } else {
+                            res.send('There was an error, try again?');
+                            console.error(err);
+                        }
                     });
                 } else {
-                    res.send('There was an error or we weren\'t able to find that workshop. Try again?');
+                    res.send('There was an error, try again?');
                     console.error(err);
                 }
             });
         });
 
-        router.get('/workshop/members/:id/:session', util.auth, function (req, res) {
-            if (req.session.isAdmin) {
-                // Admins can see all members in the workshop.
-                async.auto({
-                    workshop : Workshop.findById(req.params.id).populate("sessions._registered").exec,
-                    group    : Group.findById(req.session.group._id).populate("_members").exec
-                }, function complete(err, data) {
-                    if (!err && data.group && data.workshop) {
-                        res.render('templates/workshopMembers', {
-                            session         : {group: data.group, isAdmin: req.session.isAdmin},
-                            workshops       : data.workshop,
-                            workshopSession : Number(req.params.session),
-                            message         : req.query.message || null
+        router.route('/workshop/:id')
+            .get(function (req, res) {
+                Workshop.findById(req.params.id).populate('_sessions').exec(function (err, workshop) {
+                    if (!err && workshop) {
+                        res.render('workshop', {
+                            title    : "Workshop Details",
+                            session  : req.session,
+                            workshop : workshop
                         });
                     } else {
-                        res.send('There was an error, please try again.');
+                        res.send('There was an error or we weren\'t able to find that workshop. Try again?');
                         console.error(err);
                     }
                 });
-            } else {
-                // Normal users can only see their group
-                async.auto({
-                    workshop : Workshop.findById(req.params.id).exec,
-                    group    : Group.findById(req.session.group._id).populate("_members").exec
-                }, function complete(err, data) {
-                    if (!err && data.workshop && data.group) {
-                        res.render('templates/workshopMembers', {
-                            session         : {group: data.group},
-                            workshop        : data.workshop,
-                            workshopSession : Number(req.params.session),
-                            message         : req.query.message || null
+            })
+            .put(util.admin, function (req, res) {
+                Workshop.findById(req.body.id).exec(function (err, workshop) {
+                    if (!err && workshop) {
+                        workshop.name        = req.body.name;
+                        workshop.host        = req.body.host;
+                        workshop.description = req.body.description;
+                        workshop.label       = req.body.label;
+                        workshop.allows      = allowsTransformer(req.body);
+                        workshop.save(function (err) {
+                            if (!err) {
+                                res.redirect('/workshops');
+                            } else {
+                                res.send('There was an error doing that, try again?');
+                                console.error(err);
+                            }
                         });
                     } else {
-                        res.send('There was an error, please try again.');
+                        res.send('There was an error making that change. Try again?');
                         console.error(err);
                     }
                 });
-            }
-        });
+            });
+
 
         /**
          * Transforms a choice into an array of types that can sign up.
          */
         function allowsTransformer(val) {
-            switch (val) {
-                case 'default':
-                    return ["Youth", "Young Adult", "Young Chaperone"];
-                case 'all':
-                    return ["Youth", "Young Adult", "Young Chaperone", "Chaperone"];
-                case 'chaperones':
-                    return ["Young Chaperone", "Chaperone"];
-                case 'young':
-                    return ["Youth", "Young Adult"];
-                case 'youngAdult':
-                    return ["Young Adult"];
-                case 'youth':
-                    return ["Youth"];
-            }
-
+            var allowed = [];
+            if (val['allows-youth']) { allowed.push("Youth"); }
+            if (val['allows-youngAdult']) { allowed.push("Young Adult"); }
+            if (val['allows-youngChaperone']) { allowed.push("Young Chaperone"); }
+            if (val['allows-chaperone']) { allowed.push("Chaperone"); }
+            return allowed;
         }
 
         router.route('/workshop')
@@ -130,70 +164,14 @@ module.exports = function(data) {
                     name        : req.body.name,
                     host        : req.body.host,
                     description : req.body.description,
-                    label       : req.body.label,
-                    allows      : allowsTransformer(req.body.allows),
-                    sessions    : _(_.range(0, 13+1)).map(function (val) {
-                        if (req.body.enabled[val] == 'on') {
-                            return {
-                                session: val,
-                                room: req.body.room[val],
-                                venue: req.body.venue[val],
-                                capacity: req.body.capacity[val]
-                            };
-                        } // Else nothing.
-                    })
+                    category    : req.body.category,
+                    tags        : req.body.tags.split(','),
+                    allows      : allowsTransformer(req.body)
                 }, function (err, workshop) {
                     if (err) {
                         res.redirect('/workshops?message=' + JSON.stringify(err));
                     } else {
-                        res.redirect('/workshops');
-                    }
-                });
-            })
-            .put(util.admin, function (req, res) {
-                Workshop.findById(req.body.id).exec(function (err, workshop) {
-                    if (!err && workshop) {
-                        workshop.name        = req.body.name;
-                        workshop.host        = req.body.host;
-                        workshop.description = req.body.description;
-                        workshop.label       = req.body.label;
-                        workshop.allows      = allowsTransformer(req.body.allows);
-                        workshop.sessions    = _(_.range(0, 13+1)).map(function (val) {
-                            var session = workshop.session(val);
-                            if (req.body.enabled[val] == 'on') {
-                                if (session) {
-                                    // The session exists already, edit it.
-                                    session.room     = req.body.room[val];
-                                    session.venue    = req.body.venue[val];
-                                    session.capacity = req.body.capacity[val];
-                                } else {
-                                    // The session does not exist.
-                                    workshop.sessions.push({
-                                        session  : val,
-                                        room     : req.body.room[val],
-                                        venue    : req.body.venue[val],
-                                        capacity : req.body.capacity[val]
-                                    });
-                                }
-                            } else {
-                                if (session) {
-                                    // The session needs to be removed.
-                                    // TODO
-                                    console.error('The session needs to be removed, but that is not implemented yet.');
-                                }
-                            }
-                        });
-                        workshop.save(function (err) {
-                            if (!err) {
-                                res.redirect('/workshops');
-                            } else {
-                                res.send('There was an error doing that, try again?');
-                                console.error(err);
-                            }
-                        });
-                    } else {
-                        res.send('There was an error making that change. Try again?');
-                        console.error(err);
+                        res.redirect('/workshop/' + workshop._id);
                     }
                 });
             });

@@ -38,7 +38,11 @@ module.exports = function(data) {
                         { title: 'Reg Date', data: 'registrationDate'},
                         { title: 'Email', data: 'email' },
                         { title: 'Tags', data: '_state.tags' },
-                        { title: 'Actions', data: 'actions' }
+                        {
+                            "orderable":      false,
+                            "data":           null,
+                            "defaultContent": ''
+                        }
                     ];
                     res.render('admin', {
                         title    : 'Administration',
@@ -95,9 +99,12 @@ module.exports = function(data) {
             var Facilitator = require('../schema/Facilitator');
             Facilitator.find({}).sort('submissionDate').exec(function (err, facilitators) {
                 if (!err) {
-                    data = facilitators.map(function (v) { v.actions = ' '; return v; });
                     keys = [
-                        { title: 'Actions', data: 'actions' },
+                        {
+                            "orderable":      false,
+                            "data":           null,
+                            "defaultContent": ''
+                        },
                         { title: 'Submission Date', data: 'submissionDate' },
                         { title: 'Facilitator Name', data: 'name' },
                         { title: 'Affiliation', data: 'affiliation' },
@@ -130,7 +137,7 @@ module.exports = function(data) {
                     res.render('admin', {
                         title    : 'Administration',
                         session  : req.session,
-                        data     : data,
+                        data     : facilitators,
                         keys     : keys,
                         selected : selected
                     });
