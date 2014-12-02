@@ -3,7 +3,6 @@ extends templates/layout
 block content
     .container
         .row
-            .alert.alert-warning This form is only tested in Firefox for now.
             form(method="POST" action="/workshop")
                 if lastForm._id
                     input(type="hidden", name="_method", value="put")

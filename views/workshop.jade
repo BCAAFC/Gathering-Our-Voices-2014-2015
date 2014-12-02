@@ -8,7 +8,7 @@ block content
                 |  Back to workshop listing
     .container
         .row
-            .col-sm-12
+            .col-sm-5
                 h2= workshop.name
                 p.lead Hosted by #{workshop.host}
                 p Category: #{workshop.category}
@@ -33,12 +33,40 @@ block content
                 br
                 for paragraph in workshop.description.split("\n")
                     p= paragraph
-        .row
-            .col-sm-12
+            .col-sm-5.col-sm-offset-1
                 h2 Sessions
                 #sessions
-                    for session in workshop._sessions
-                        pre= session
+                    ul.list-group
+                        for session in workshop._sessions
+                            li.list-group-item(data-session="#{session._id}")
+                                strong Start:
+                                |  #{session.start.toLocaleString()}
+                                br
+                                strong End:
+                                |  #{session.end.toLocaleString()}
+                                br
+                                strong Location:
+                                |  #{session.room} <strong>at</strong> #{session.venue}
+                                br
+                                strong Attendees:
+                                |  #{session._registered.length}/#{session.capacity}
+                                br
+                                strong Add Member:
+                                select.memberSelect
+                                    option Please choose...
+                                    for member in members
+                                        if workshop.allows.indexOf(member.type) != -1
+                                            option(value='#{member._id}')= member.name
+                                        else
+                                            option(disabled) #{member.name} (Wrong type!)
+                                button.btn.btn-xs.btn-success.memberAdd(data-toggle="tooltip" title="Add Member")
+                                    .fa.fa-plus
+                                br
+                                for member in members
+                                    if member._workshops.indexOf(session._id) != -1
+                                        span #{member.name}
+                                        a.btn.btn-xs.btn-danger.memberDel(data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
+                                            .fa.fa-minus
         if session.isAdmin
             .row
                 .col-sm-12
@@ -105,5 +133,19 @@ block content
         
         script.
             $(function () {
-                $('.label').tooltip();
+                $('.label, .memberAdd, .memberDel').tooltip();
+                $('.memberAdd').click(function () {
+                    var session = $(this).parent().data('session'),
+                        member = $(this).parent().find('.memberSelect').val();
+                    $.get('/member/add/' + member + '/' + session, function (data) {
+                        window.location.search = "message=" + data.message
+                    });
+                });
+                $('.memberDel').click(function () {
+                    var session = $(this).parent().data('session'),
+                        member = $(this).data('member');
+                    $.get('/member/del/' + member + '/' + session, function (data) {
+                        window.location.search = "message=" + data.message
+                    });
+                });
             });

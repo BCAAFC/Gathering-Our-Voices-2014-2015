@@ -7,6 +7,7 @@ module.exports = function(data) {
         var router   = require('express').Router(),
             Group    = require('../schema/Group'),
             Workshop = require('../schema/Workshop'),
+            Member   = require('../schema/Member'),
             Session  = require('../schema/Session'),
             util     = require('./util');
 
@@ -94,12 +95,22 @@ module.exports = function(data) {
 
         router.route('/workshop/:id')
             .get(function (req, res) {
-                Workshop.findById(req.params.id).populate('_sessions').exec(function (err, workshop) {
-                    if (!err && workshop) {
+                async.auto({
+                    workshops: function (next) { Workshop.findById(req.params.id).populate('_sessions').exec(next); },
+                    members: function (next) {
+                        if (req.session) {
+                            Member.find({ _group: req.session.group._id }).exec(next);
+                        } else {
+                            return [];
+                        }
+                    }
+                }, function complete(err, data) {
+                    if (!err && data.workshops) {
                         res.render('workshop', {
                             title    : "Workshop Details",
                             session  : req.session,
-                            workshop : workshop
+                            workshop : data.workshops,
+                            members  : data.members
                         });
                     } else {
                         res.send('There was an error or we weren\'t able to find that workshop. Try again?');
