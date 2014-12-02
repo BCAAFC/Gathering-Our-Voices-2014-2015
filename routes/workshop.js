@@ -58,6 +58,25 @@ module.exports = function(data) {
                 lastForm : req.session.lastForm || {}
             });
         });
+        router.get('/workshop/modify/:id', util.admin, function (req, res) {
+            Workshop.findById(req.params.id).exec(function (err, workshop) {
+                if (!err && workshop) {
+                    req.lastForm = workshop;
+                    if (workshop.allows.indexOf("Youth") != -1) { req.lastForm['allows-youth'] = 'on'; }
+                    if (workshop.allows.indexOf("Young Adult") != -1) { req.lastForm['allows-youngAdult'] = 'on'; }
+                    if (workshop.allows.indexOf("Young Chaperone") != -1) { req.lastForm['allows-youngChaperone'] = 'on'; }
+                    if (workshop.allows.indexOf("Chaperone") != -1) { req.lastForm['allows-chaperone'] = 'on'; }
+                    res.render('workshopModify', {
+                        title: "Create a workshop",
+                        session: req.session,
+                        lastForm : req.lastForm || {}
+                    });
+                } else {
+                    res.send('There was an error, try again?');
+                    console.error(err);
+                }
+            });
+        });
 
         router.post('/workshop/:id/session', util.admin, function (req, res) {
             Session.create({
@@ -117,28 +136,6 @@ module.exports = function(data) {
                         console.error(err);
                     }
                 });
-            })
-            .put(util.admin, function (req, res) {
-                Workshop.findById(req.body.id).exec(function (err, workshop) {
-                    if (!err && workshop) {
-                        workshop.name        = req.body.name;
-                        workshop.host        = req.body.host;
-                        workshop.description = req.body.description;
-                        workshop.label       = req.body.label;
-                        workshop.allows      = allowsTransformer(req.body);
-                        workshop.save(function (err) {
-                            if (!err) {
-                                res.redirect('/workshops');
-                            } else {
-                                res.send('There was an error doing that, try again?');
-                                console.error(err);
-                            }
-                        });
-                    } else {
-                        res.send('There was an error making that change. Try again?');
-                        console.error(err);
-                    }
-                });
             });
 
 
@@ -183,6 +180,29 @@ module.exports = function(data) {
                         res.redirect('/workshops?message=' + JSON.stringify(err));
                     } else {
                         res.redirect('/workshop/' + workshop._id);
+                    }
+                });
+            })
+            .put(util.admin, function (req, res) {
+                Workshop.findById(req.body._id).exec(function (err, workshop) {
+                    if (!err && workshop) {
+                        workshop.name        = req.body.name;
+                        workshop.host        = req.body.host;
+                        workshop.description = req.body.description;
+                        workshop.category    = req.body.category;
+                        workshop.tags        = req.body.tags.split(',');
+                        workshop.allows      = allowsTransformer(req.body);
+                        workshop.save(function (err) {
+                            if (!err) {
+                                res.redirect('/workshops');
+                            } else {
+                                res.send('There was an error doing that, try again?');
+                                console.error(err);
+                            }
+                        });
+                    } else {
+                        res.send('There was an error making that change. Try again?');
+                        console.error(err);
                     }
                 });
             });

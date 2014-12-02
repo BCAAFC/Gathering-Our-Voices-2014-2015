@@ -70,9 +70,13 @@ block content
         if session.isAdmin
             .row
                 .col-sm-12
-                    a.btn.btn-primary#createSession
-                        span.fa.fa-plus
-                        |  Add Session
+                    .btn-group
+                        a.btn.btn-primary#createSession
+                            span.fa.fa-plus
+                            |  Add Session
+                        a.btn.btn-info#editWorkshop(href="/workshop/modify/#{workshop._id}")
+                            span.fa.fa-edit
+                            |  Edit Workshop
                     form#add(style="display: none" method="POST" action="/workshop/#{workshop._id}/session")
                         fieldset#sessions
                             legend Sessions

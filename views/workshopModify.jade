@@ -6,7 +6,7 @@ block content
             form(method="POST" action="/workshop")
                 if lastForm._id
                     input(type="hidden", name="_method", value="put")
-                    input(type="hidden", name="id", value=lastForm._id)
+                    input(type="hidden", name="_id", value=lastForm._id)
                 fieldset
                     legend Add a Workshop
                     .form-group
@@ -40,11 +40,11 @@ block content
                     .form-group
                         label Category
                         select.form-control(type="text" required name="category" value=lastForm.category placeholder="Please specify the category of the workshop.")
-                            option(value="" selected=lastForm.type == "") Choose one...
-                            option(value="Spiritual" selected=lastForm.type == "Spiritual") Spiritual
-                            option(value="Emotional" selected=lastForm.type == "Emotional") Emotional
-                            option(value="Mental" selected=lastForm.type == "Mental") Mental
-                            option(value="Physical" selected=lastForm.type == "Physical") Physical
+                            option(value="" selected=lastForm.category == "") Choose one...
+                            option(value="Spiritual" selected=lastForm.category == "Spiritual") Spiritual
+                            option(value="Emotional" selected=lastForm.category == "Emotional") Emotional
+                            option(value="Mental" selected=lastForm.category == "Mental") Mental
+                            option(value="Physical" selected=lastForm.category == "Physical") Physical
                     .form-group
                         label Tags
                         br
