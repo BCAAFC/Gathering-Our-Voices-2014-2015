@@ -160,7 +160,7 @@ block content
                             window.location.search = "message=" + data.message
                         } else {
                             if (data.workshop) {
-                                $(self).siblings('.memberMessage').html("<div class='alert alert-danger'>" + data.message + " <a href='" + data.workshop + "'>View conflicting workshop</a></div>");
+                                $(self).siblings('.memberMessage').html("<div class='alert alert-danger'>" + data.message + " <a href='" + data.workshop + "'>View conflicting workshop.</a></div>");
                             } else {
                                 $(self).siblings('.memberMessage').html("<div class='alert alert-danger'>" + data.message + "</div>");
                             }
