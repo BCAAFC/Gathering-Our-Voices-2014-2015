@@ -193,18 +193,17 @@ module.exports = function(data) {
                 member.addWorkshop(req.params.session, function (err, member) {
                     var message;
                     if (!err) {
-                        console.log('Success!');
                         message = member.name + " has been added to session.";
-                        res.status(200).json({success: true, message: message});
+                        res.json({success: true, message: message});
                     } else {
-                        console.log('Fail!');
-                        message = "Couldn't add that member to the workshop... Try again?";
-                        res.status(400).json({success: false, message: message});
+                        // The error here is a bit odd... It's an object.
+                        err.success = false;
+                        res.json(err);
                         console.error(err);
                     }
                 });
             } else {
-                res.status(400).json({success: false, message:'Sorry, there was an error finding that member. Try again?'});
+                res.json({success: false, message:'Sorry, there was an error finding that member. Try again?'});
                 console.error(err);
             }
         });
@@ -217,15 +216,15 @@ module.exports = function(data) {
                     var message;
                     if (!err) {
                         message = member.name + " has been removed from session.";
-                        res.status(200).json({success: true, message: message});
+                        res.json({success: true, message: message});
                     } else {
                         message = "Couldn't remove that member from the workshop... Try again?";
-                        res.status(400).json({success: false, message: message});
+                        res.json({success: false, message: message});
                         console.error(err);
                     }
                 });
             } else {
-                res.status(400).json({success: false, message:'Sorry, there was an error finding that member. Try again?'});
+                res.json({success: false, message:'Sorry, there was an error finding that member. Try again?'});
                 console.error(err);
             }
         });

@@ -146,14 +146,15 @@ MemberSchema.methods.hasConflicts = function hasConflicts(start, end, next) {
             var fail,
                 conflict = _.some(sessions, function (session) {
                     if (session.conflicts(start, end)) {
-                        fail = session._id;
+                        fail = session;
                         return true;
                     } else {
                         return false;
                     }
                 });
             if (conflict) {
-                next("Session " + fail + " conflicts.", fail);
+                next({ session: fail._id, workshop: fail._workshop,
+                    message: "Workshop conflict." }, fail);
             } else {
                 next(null, conflict);
             }

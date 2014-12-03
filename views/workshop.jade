@@ -34,24 +34,34 @@ block content
                 for paragraph in workshop.description.split("\n")
                     p= paragraph
             .col-sm-5.col-sm-offset-1
-                h2 Sessions
+                div
+                    .pull-right
+                        a.btn.btn-xs.btn-danger#allowRemovals
+                            .fa.fa-minus
+                            |  Allow Removals
+                    h2 Sessions
                 #sessions
                     ul.list-group
                         for session in workshop._sessions
                             li.list-group-item(data-session="#{session._id}")
-                                strong Start:
-                                |  #{session.start.toLocaleString()}
-                                br
-                                strong End:
-                                |  #{session.end.toLocaleString()}
-                                br
-                                strong Location:
-                                |  #{session.room} <strong>at</strong> #{session.venue}
-                                br
-                                strong Attendees:
-                                |  #{session._registered.length}/#{session.capacity}
-                                br
+                                .description
+                                    strong Start:
+                                    |  #{session.start.toLocaleString()}
+                                    br
+                                    strong End:
+                                    |  #{session.end.toLocaleString()}
+                                    br
+                                    strong Location:
+                                    |  #{session.room} <strong>at</strong> #{session.venue}
+                                    br
+                                    strong Attendees:
+                                    |  #{session._registered.length}/#{session.capacity}
+                                    br
                                 strong Add Member:
+                                br
+                                button.btn.btn-xs.btn-success.memberAdd(data-toggle="tooltip" title="Add Member")
+                                    .fa.fa-plus
+                                |  
                                 select.memberSelect
                                     option Please choose...
                                     for member in members
@@ -59,14 +69,16 @@ block content
                                             option(value='#{member._id}')= member.name
                                         else
                                             option(disabled) #{member.name} (Wrong type!)
-                                button.btn.btn-xs.btn-success.memberAdd(data-toggle="tooltip" title="Add Member")
-                                    .fa.fa-plus
+                                br
+                                .memberMessage
                                 br
                                 for member in members
                                     if member._workshops.indexOf(session._id) != -1
-                                        span #{member.name}
-                                        a.btn.btn-xs.btn-danger.memberDel(data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
+                                        a.btn.btn-xs.btn-danger.memberDel(disabled data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
                                             .fa.fa-minus
+                                        span  #{member.name}
+                                        br
+        hr.featurette-divider
         if session.isAdmin
             .row
                 .col-sm-12
@@ -114,16 +126,17 @@ block content
                             .form-group
                                 label 
                                 input.form-control.btn.btn-primary(type="submit" value="Create Session")
-                            script.
-                                $(function () {
-                                    // Date hinting.
-                                    function refreshDate() {
-                                        var date = new Date($(this).val());
-                                        $(this).siblings('p').find('.timeSelected').text(date);
-                                    }
-                                    $('.time').bind('keydown blur', refreshDate);
-                                    $('.time').each(refreshDate);
-                                });
+                    hr.featurette-divider
+                    script.
+                        $(function () {
+                            // Date hinting.
+                            function refreshDate() {
+                                var date = new Date($(this).val());
+                                $(this).siblings('p').find('.timeSelected').text(date);
+                            }
+                            $('.time').bind('keydown blur', refreshDate);
+                            $('.time').each(refreshDate);
+                        });
             script.
                 $(function () {
                     $('#createSession').click(function () {
@@ -139,10 +152,20 @@ block content
             $(function () {
                 $('.label, .memberAdd, .memberDel').tooltip();
                 $('.memberAdd').click(function () {
+                    var self = this;
                     var session = $(this).parent().data('session'),
                         member = $(this).parent().find('.memberSelect').val();
                     $.get('/member/add/' + member + '/' + session, function (data) {
-                        window.location.search = "message=" + data.message
+                        if (data.success) {
+                            window.location.search = "message=" + data.message
+                        } else {
+                            if (data.workshop) {
+                                $(self).siblings('.memberMessage').html("<div class='alert alert-danger'>" + data.message + " <a href='" + data.workshop + "'>View conflicting workshop</a></div>");
+                            } else {
+                                $(self).siblings('.memberMessage').html("<div class='alert alert-danger'>" + data.message + "</div>");
+                            }
+                        }
+                        
                     });
                 });
                 $('.memberDel').click(function () {
@@ -151,5 +174,13 @@ block content
                     $.get('/member/del/' + member + '/' + session, function (data) {
                         window.location.search = "message=" + data.message
                     });
+                });
+                $('#allowRemovals').click(function () {
+                    var state = $('.memberDel').attr('disabled');
+                    if (state === 'disabled') {
+                        $('.memberDel').attr('disabled', false);
+                    } else {
+                        $('.memberDel').attr('disabled', true);
+                    }
                 });
             });

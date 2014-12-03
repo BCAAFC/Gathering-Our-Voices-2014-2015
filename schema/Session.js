@@ -54,7 +54,7 @@ var SessionSchema = new Schema({
 /* Methods */
 SessionSchema.methods.register = function register(memberId, next) {
     var self = this;
-    if (self.capacity > self._registered) {
+    if (self.capacity > self._registered.length) {
         self.update({
             $push: {
                 _registered: memberId
