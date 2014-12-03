@@ -168,15 +168,12 @@ MemberSchema.methods.addWorkshop = function addWorkshop(sessionId, next) {
     var self = this;
     async.auto({
         session: function (next) {
-            console.log('Session');
             Session.findById(sessionId).populate('_workshop').exec(next);
         },
         conflicts: ['session', function conflicts(cb, data) {
-            console.log('Conflicts');
             self.hasConflicts(data.session.start, data.session.end, cb);
         }],
         allows: ['session', function allows(cb, data) {
-            console.log('Allows');
             if (data.session._workshop.permits(self.type)) {
                 cb(null);
             } else {
@@ -184,11 +181,9 @@ MemberSchema.methods.addWorkshop = function addWorkshop(sessionId, next) {
             }
         }],
         registerSession: ['session', 'conflicts', 'allows', function registerSession(cb, data) {
-            console.log('registerSession');
             data.session.register(self._id, cb);
         }],
         registerMember: ['registerSession', function member(cb) {
-            console.log('registerMember');
             self.update({
                 $push: {
                     _workshops: sessionId

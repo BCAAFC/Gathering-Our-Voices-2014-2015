@@ -45,7 +45,19 @@ block content
                     },
                     targets: [3]
                 }, {
-                render: function (data, type, row) {
+                    render: function (data, type, row) {
+                        var out = "";
+                        for (i=0; i<data.length; i++) {
+                            var date = new Date(data[i].start).getDate(),
+                                start = new Date(data[i].start).toLocaleTimeString({formatMatcher: "hour, minute"}),
+                                end = new Date(data[i].end).toLocaleTimeString({formatMatcher: "hour, minute"}),
+                            out = out.concat("<span class='label label-default'>" + date + "th, " + start + "-" + end + "</span><br>");
+                        }
+                        return out;
+                    },
+                    targets: [-1]
+                }, {
+                    render: function (data, type, row) {
                         // Can't use .map since IE doesn't have any brains.
                         var out = "";
                         for (i = 0; i < data.length; i++) {
