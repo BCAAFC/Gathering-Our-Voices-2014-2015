@@ -115,12 +115,21 @@ module.exports = function(data) {
         router.route('/workshop/:id')
             .get(function (req, res) {
                 async.auto({
-                    workshops: function (next) { Workshop.findById(req.params.id).populate('_sessions').exec(next); },
+                    workshops: function (next) {
+                        return Workshop.findById(req.params.id).populate({
+                            path: '_sessions',
+                            options: {
+                                sort: {
+                                    start: 1
+                                }
+                            }
+                        }).exec(next);
+                    },
                     members: function (next) {
-                        if (req.session) {
-                            Member.find({ _group: req.session.group._id }).exec(next);
+                        if (req.session && req.session.group) {
+                            return Member.find({ _group: req.session.group._id }).sort('name').exec(next);
                         } else {
-                            return [];
+                            return next(null, []);
                         }
                     }
                 }, function complete(err, data) {

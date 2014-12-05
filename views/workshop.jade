@@ -34,29 +34,35 @@ block content
                 for paragraph in workshop.description.split("\n")
                     p= paragraph
             .col-sm-5.col-sm-offset-1
-                div
-                    .pull-right
-                        a.btn.btn-xs.btn-danger#allowRemovals
-                            .fa.fa-minus
-                            |  Allow Removals
-                    h2 Sessions
+                if session.group
+                    div
+                        .pull-right
+                            a.btn.btn-xs.btn-danger#allowRemovals
+                                .fa.fa-minus
+                                |  Allow Removals
+                h2 Sessions
                 #sessions
                     ul.list-group
-                        for session in workshop._sessions
+                        for workshopSession in workshop._sessions
                             li.list-group-item(data-session="#{session._id}")
+                                if session.isAdmin
+                                    code Remove Session:
+                                    a.btn.btn-xs.btn-danger.tooltipped.sessionDel(disabled data-toggle="tooltip" title="Remove Session")
+                                        .fa.fa-minus
                                 .description
                                     strong Start:
-                                    |  #{session.start.toLocaleString()}
+                                    |  #{workshopSession.start.toLocaleString()}
                                     br
                                     strong End:
-                                    |  #{session.end.toLocaleString()}
+                                    |  #{workshopSession.end.toLocaleString()}
                                     br
                                     strong Location:
-                                    |  #{session.room} <strong>at</strong> #{session.venue}
+                                    |  #{workshopSession.room} <strong>at</strong> #{workshopSession.venue}
                                     br
                                     strong Attendees:
-                                    |  #{session._registered.length}/#{session.capacity}
+                                    |  #{workshopSession._registered.length}/#{workshopSession.capacity}
                                     br
+                                
                                 strong Add Member:
                                 br
                                 button.btn.btn-xs.btn-success.memberAdd(data-toggle="tooltip" title="Add Member")
@@ -65,15 +71,19 @@ block content
                                 select.memberSelect
                                     option Please choose...
                                     for member in members
-                                        if workshop.allows.indexOf(member.type) != -1
-                                            option(value='#{member._id}')= member.name
-                                        else
+                                        if member._workshops.indexOf(workshopSession._id) != -1
+                                            //- Do nothing.
+                                        else if workshop.allows.indexOf(member.type) == -1
                                             option(disabled) #{member.name} (Wrong type!)
+                                        else if member._state.complete === false
+                                            option(disabled) #{member.name} (Not complete!)
+                                        else
+                                            option(value='#{member._id}')= member.name
                                 br
                                 .memberMessage
                                 br
                                 for member in members
-                                    if member._workshops.indexOf(session._id) != -1
+                                    if member._workshops.indexOf(workshopSession._id) != -1
                                         a.btn.btn-xs.btn-danger.memberDel(disabled data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
                                             .fa.fa-minus
                                         span  #{member.name}
@@ -150,7 +160,7 @@ block content
         
         script.
             $(function () {
-                $('.label, .memberAdd, .memberDel').tooltip();
+                $('.label, .memberAdd, .memberDel, .tooltipped').tooltip();
                 $('.memberAdd').click(function () {
                     var self = this;
                     var session = $(this).parent().data('session'),
@@ -178,9 +188,9 @@ block content
                 $('#allowRemovals').click(function () {
                     var state = $('.memberDel').attr('disabled');
                     if (state === 'disabled') {
-                        $('.memberDel').attr('disabled', false);
+                        $('.memberDel, .sessionDel').attr('disabled', false);
                     } else {
-                        $('.memberDel').attr('disabled', true);
+                        $('.memberDel, .sessionDel').attr('disabled', true);
                     }
                 });
             });
