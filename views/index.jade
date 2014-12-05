@@ -143,7 +143,7 @@ block content
                 var count = function count() {
                     $.getJSON('/members/count').done(function (data) {
                         console.log(data);
-                        $('.progress-bar').css('width', Math.ceil(data.count / data.limit) + '%');
+                        $('.progress-bar').css('width', ((data.count / data.limit) * 100) + '%');
                         $('#count').text(data.count + '/' + data.limit);
                     });
                     setTimeout(count, 1000*60*2); // 2 mins.
