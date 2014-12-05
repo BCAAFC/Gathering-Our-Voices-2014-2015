@@ -65,9 +65,9 @@ block content
                         },
                         {
                             render: function (data, type, row) {
-                                data = "<a class='btn btn-primary btn-xs' href='/manage/" + row._id + "'><i class='fa fa-edit'></i> Manage</a>";
-                                data = data.concat("<a class='btn btn-info btn-xs' href='/notes/" + row._id + "'><i class='fa fa-file'></i> Notes</a>");
-                                return data;
+                                var out = "<a class='btn btn-primary btn-xs' href='/manage/" + row._id + "'><i class='fa fa-edit'></i> Manage</a>";
+                                out = out.concat("<a class='btn btn-info btn-xs' href='/notes/" + row._id + "'><i class='fa fa-file'></i> Notes</a>");
+                                return out;
                             },
                             targets: -1
                         },

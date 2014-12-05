@@ -1,0 +1,54 @@
+extends templates/layout
+
+block content
+    .container
+        .row
+            form(method="POST" action="/workshop")
+                if lastForm._id
+                    input(type="hidden", name="_method", value="put")
+                    input(type="hidden", name="_id", value=lastForm._id)
+                fieldset
+                    legend Add a Workshop
+                    .form-group
+                        label Name
+                        input.form-control(type="text" required name="name" value=lastForm.name placeholder="Please specify the name of the workshop.")
+                    .form-group
+                        label Host
+                        input.form-control(type="text" required name="host" value=lastForm.host placeholder="Please specify the host of the workshop.")
+                    .form-group
+                        label Description
+                        textarea.form-control(type="text" required name="description" placeholder="Please specify the description of the workshop.")
+                            | #{lastForm.description}
+                    .form-group
+                        label Allows
+                        .checkbox
+                            label
+                                input(type="checkbox" name="allows-youth" checked=(lastForm['allows-youth'] === 'on'))
+                                | Youth (14-18)
+                        .checkbox
+                            label
+                                input(type="checkbox" name="allows-youngAdult" checked=(lastForm['allows-youngAdult'] === 'on'))
+                                | Young Adults (19-24)
+                        .checkbox
+                            label
+                                input(type="checkbox" name="allows-chaperone" checked=(lastForm['allows-chaperone'] === 'on'))
+                                | Young Chaperones (24+)
+                        .checkbox
+                            label
+                                input(type="checkbox" name="allows-youngChaperone" checked=(lastForm['allows-youngChaperone'] === 'on'))
+                                | Chaperones (24+)
+                    .form-group
+                        label Category
+                        select.form-control(type="text" required name="category" value=lastForm.category placeholder="Please specify the category of the workshop.")
+                            option(value="" selected=lastForm.category == "") Choose one...
+                            option(value="Spiritual" selected=lastForm.category == "Spiritual") Spiritual
+                            option(value="Emotional" selected=lastForm.category == "Emotional") Emotional
+                            option(value="Mental" selected=lastForm.category == "Mental") Mental
+                            option(value="Physical" selected=lastForm.category == "Physical") Physical
+                    .form-group
+                        label Tags
+                        br
+                        input.form-control(type="text" required name="tags" value=lastForm.tags data-role="tagsinput" placeholder="Please specify the tags of the workshop.")
+                    .form-group
+                        label
+                        input.btn.btn-primary.form-control(type="submit" value="Submit and add sessions")

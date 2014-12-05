@@ -143,11 +143,18 @@ MemberSchema.methods.hasConflicts = function hasConflicts(start, end, next) {
     var self = this;
     Session.find({_id: {$in: self._workshops}}).exec(function (err, sessions) {
         if (!err) {
-            var conflict = _.some(sessions, function (session) {
-                return session.conflicts(start, end);
-            });
+            var fail,
+                conflict = _.some(sessions, function (session) {
+                    if (session.conflicts(start, end)) {
+                        fail = session;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
             if (conflict) {
-                next("Session " + conflict + " conflicts.", conflict);
+                next({ session: fail._id, workshop: fail._workshop,
+                    message: "Workshop conflict." }, fail);
             } else {
                 next(null, conflict);
             }
@@ -160,7 +167,9 @@ MemberSchema.methods.hasConflicts = function hasConflicts(start, end, next) {
 MemberSchema.methods.addWorkshop = function addWorkshop(sessionId, next) {
     var self = this;
     async.auto({
-        session: Session.findById(sessionId).populate('_workshop').exec,
+        session: function (next) {
+            Session.findById(sessionId).populate('_workshop').exec(next);
+        },
         conflicts: ['session', function conflicts(cb, data) {
             self.hasConflicts(data.session.start, data.session.end, cb);
         }],
@@ -171,8 +180,8 @@ MemberSchema.methods.addWorkshop = function addWorkshop(sessionId, next) {
                 cb('Workshop does not allow that member type.');
             }
         }],
-        registerSession: ['conflicts', 'allows', function session(cb) {
-            session.register(self._id, cb);
+        registerSession: ['session', 'conflicts', 'allows', function registerSession(cb, data) {
+            data.session.register(self._id, cb);
         }],
         registerMember: ['registerSession', function member(cb) {
             self.update({
@@ -181,7 +190,9 @@ MemberSchema.methods.addWorkshop = function addWorkshop(sessionId, next) {
                 }
             }, cb);
         }]
-    }, next);
+    }, function complete(err, data) {
+        next(err, self);
+    });
 };
 
 MemberSchema.methods.removeWorkshop = function removeWorkshop(sessionId, next) {
@@ -201,7 +212,9 @@ MemberSchema.methods.removeWorkshop = function removeWorkshop(sessionId, next) {
                 }
             }, cb);
         }
-    ], next);
+    ], function complete(err, data) {
+        next(err, self);
+    });
 };
 
 /* Validators */

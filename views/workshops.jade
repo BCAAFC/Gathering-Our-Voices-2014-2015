@@ -2,5 +2,77 @@ extends templates/layout
 
 block content
     .container
-        .row.text-center
-            p.alert.alert-success.lead The workshop listing will be available mid-February.
+        if session && session.isAdmin
+            .row
+                a.btn.btn-primary(href="/workshop/create")
+                    .fa.fa-plus
+                    |  Create new Workshop
+        if data.length == 0
+            .row.text-center
+                p.alert.alert-success.lead The workshop listing will be available mid-February.
+        else
+            .row
+                .col-xs-12
+                    #options
+                    table.table.table-striped#table
+            script.
+                $(function() {
+                    var options = {
+                        data: !{JSON.stringify(data)},
+                        columns: !{JSON.stringify(keys)},
+                        stateSave: true,
+                        scrollX: true
+                    };
+                    options.columnDefs = [{
+                        render: function (data, type, row) {
+                            return "<a class='btn btn-primary btn-xs' href='/workshop/" + row._id + "'><span class='fa fa-arrow-right'>View</span></a>"
+                        },
+                        targets: [0]
+                    }, {
+                        render: function (data, type, row) {
+                            var out = "";
+                            if (data.indexOf("Youth") != -1) {
+                                out = out.concat("<span class='label label-info' data-toggle='tooltip' title='Youth'>Y</span>  ");
+                            }
+                            if (data.indexOf("Young Adult") != -1) {
+                                out = out.concat("<span class='label label-success' data-toggle='tooltip' title='Young Adult'>YA</span>  ");
+                            }
+                            if (data.indexOf("Young Chaperone") != -1) {
+                                out = out.concat("<span class='label label-warning' data-toggle='tooltip' title='Young Chaperone'>YC</span>  ");
+                            }
+                            if (data.indexOf("Chaperone") != -1) {
+                                out = out.concat("<span class='label label-danger' data-toggle='tooltip' title='Chaperone'>Ch</span>  ");
+                            }
+                            return out;
+                        },
+                        targets: [3]
+                    }, {
+                        render: function (data, type, row) {
+                            var out = "";
+                            for (i=0; i<data.length; i++) {
+                                var date = new Date(data[i].start).getDate(),
+                                    start = new Date(data[i].start).toLocaleTimeString({formatMatcher: "hour, minute"}),
+                                    end = new Date(data[i].end).toLocaleTimeString({formatMatcher: "hour, minute"}),
+                                out = out.concat("<span class='label label-default'>" + date + "th, " + start + "-" + end + "</span><br>");
+                            }
+                            return out;
+                        },
+                        targets: [-1]
+                    }, {
+                        render: function (data, type, row) {
+                            // Can't use .map since IE doesn't have any brains.
+                            var out = "";
+                            for (i = 0; i < data.length; i++) {
+                                out = out.concat("<span class='label label-default'>" + data[i] + "</span>  ")
+                            }
+                            return out;
+                        },
+                        targets: [5]
+                    }];
+                    options.createdRow = function(row, data, dataIndex) {
+                        $(row).find('.label').tooltip();
+                    }
+                    var table = $('#table').dataTable(options);
+                    var colvis = new $.fn.dataTable.ColVis(table);
+                    $(colvis.button()).insertAfter('#options');
+                });

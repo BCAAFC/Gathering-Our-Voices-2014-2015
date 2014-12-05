@@ -8,110 +8,199 @@ block content
                 |  Back to workshop listing
     .container
         .row
-            .col-sm-12
+            .col-sm-5
                 h2= workshop.name
                 p.lead Hosted by #{workshop.host}
+                p Category: #{workshop.category}
+                p Tags: 
+                    for tag in workshop.tags
+                        span.label.label-default= tag
+                        |    
                 span Allows: 
                     if workshop.allows.indexOf("Youth") != -1
-                        .label.label-info Y
+                        .label.label-info(data-toggle="tooltip" title="Youth") Y
                         |    
                     if workshop.allows.indexOf("Young Adult") != -1
-                        .label.label-success YA
+                        .label.label-success(data-toggle="tooltip" title="Young Adult") YA
                         |    
                     if workshop.allows.indexOf("Young Chaperone") != -1
-                        .label.label-warning YC
+                        .label.label-warning(data-toggle="tooltip" title="Young Chaperone") YC
                         |    
                     if workshop.allows.indexOf("Chaperone") != -1
-                        .label.label-danger Ch
+                        .label.label-danger(data-toggle="tooltip" title="Chaperone") Ch
                         |    
                 br
                 br
                 for paragraph in workshop.description.split("\n")
                     p= paragraph
-        .row
-            h2 Sessions
-            #sessions.panel-group
-                for session, index in workshop.sessions
-                    if index % 3 == 0
-                        .row
-                    .col-sm-4(style="margin-top:0px")
-                        div
-                            h4 Session #{session.session}
-                            b Time: 
-                            case session.session
-                                when 0
-                                    | Wed, March 19, 7:00 am till 8:00 am
-                                when 1
-                                    | Wed, March 19, 9:00 am till noon
-                                when 2
-                                    | Wed, March 19, 9:00 am till 10:30 am
-                                when 3
-                                    | Wed, March 19, 11:00 am till 12:30 pm
-                                when 4
-                                    | Wed, March 19, 1:30 pm till 4:30 pm
-                                when 5
-                                    | Wed, March 19, 1:30 pm till 3:00 pm
-                                when 6
-                                    | Wed, March 19, 3:30 pm till 5:00 pm
-                                when 7
-                                    | Thurs, March 20, 9:00 am till noon
-                                when 8
-                                    | Thurs, March 20, 9:00 am till 10:30 am
-                                when 9
-                                    | Thurs, March 20, 11:00 am till 12:30 pm
-                                when 10
-                                    | Thurs, March 20, 1:30 pm till 4:30 pm
-                                when 11
-                                    | Thurs, March 20, 1:30 pm till 3:00 pm
-                                when 12
-                                    | Thurs, March 20, 3:30 pm till 5:00 pm
-                                when 13
-                                    | Thurs, March 20, 7:00 am till 8:00 am
-                            br 
-                            b Room: 
-                            | #{session.room}
-                            br
-                            b Venue: 
-                            |    #{session.venue}
-                            br
-                            .row
-                                .col-xs-6
-                                    b Capacity: 
-                                    if session._registered.length == session.capacity
-                                        .label.label-default #{session._registered.length} / #{session.capacity}
-                                    else if session._registered.length / session.capacity > .75
-                                        .label.label-danger #{session._registered.length} / #{session.capacity}
-                                    else if session._registered.length / session.capacity > .50
-                                        .label.label-warning #{session._registered.length} / #{session.capacity}
-                                    else
-                                        .label.label-success #{session._registered.length} / #{session.capacity}
-                                .col-xs-6
-                                    if locals.session.group
-                                        a.manage.btn.btn-xs.btn-block.btn-primary(data-toggle="collapse", href="##{session.session}-attending", data-id="#{workshop._id}", data-session="#{session.session}") 
-                                            .fa.fa-female
-                                            |    Manage Attendees 
-                                            .fa.fa-male
-                                    else
-                                        a.manage.btn.btn-xs.btn-block.btn-disabled.btn-default(data-toggle="collapse", href="##{session.session}-attending", data-id="#{workshop._id}", data-session="#{session.session}", disabled) 
-                                            .fa.fa-female
-                                            |    Manage Attendees 
-                                            .fa.fa-male
-                        .panel.collapse(id="#{session.session}-attending")
-                            p
-                                .fa.fa-cloud-download
-                                span.text-muted    Working....
-                        br
-                        br
-
-        script.
-            $(function() {
-                'use strict';
-                $('a.manage').click(function() {
-                    var session = $(this).data('session'),
-                        id = $(this).data('id');
-                    $.get('/workshop/members/' + id + '/' + session, function(data) {
-                        $('#' + session + '-attending').html(data);
+            .col-sm-5.col-sm-offset-1
+                if session.group
+                    div
+                        .pull-right
+                            a.btn.btn-xs.btn-danger#allowRemovals
+                                .fa.fa-minus
+                                |  Allow Removals
+                h2 Sessions
+                #sessions
+                    ul.list-group
+                        for workshopSession in workshop._sessions
+                            li.list-group-item(data-session="#{workshopSession._id}")
+                                if session.isAdmin
+                                    code Remove Session:
+                                    a.btn.btn-xs.btn-danger.tooltipped.sessionDel(disabled data-toggle="tooltip" title="Remove Session")
+                                        .fa.fa-minus
+                                .description
+                                    strong Start:
+                                    |  #{workshopSession.start.toLocaleString()}
+                                    br
+                                    strong End:
+                                    |  #{workshopSession.end.toLocaleString()}
+                                    br
+                                    strong Location:
+                                    |  #{workshopSession.room} <strong>at</strong> #{workshopSession.venue}
+                                    br
+                                    strong Attendees:
+                                    |  #{workshopSession._registered.length}/#{workshopSession.capacity}
+                                    br
+                                if session.group
+                                    strong Add Member:
+                                    br
+                                    button.btn.btn-xs.btn-success.memberAdd(data-toggle="tooltip" title="Add Member")
+                                        .fa.fa-plus
+                                    |  
+                                    select.memberSelect
+                                        option Please choose...
+                                        for member in members
+                                            if member._workshops.indexOf(workshopSession._id) != -1
+                                                //- Do nothing.
+                                            else if workshop.allows.indexOf(member.type) == -1
+                                                option(disabled) #{member.name} (Wrong type!)
+                                            else if member._state.complete === false
+                                                option(disabled) #{member.name} (Not complete!)
+                                            else
+                                                option(value='#{member._id}')= member.name
+                                    br
+                                    .memberMessage
+                                    br
+                                    p.text-muted.pull-right Group
+                                    for member in members
+                                        if member._workshops.indexOf(workshopSession._id) != -1
+                                            a.btn.btn-xs.btn-danger.memberDel(disabled data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
+                                                .fa.fa-minus
+                                            span  #{member.name}
+                                            br
+                                    if session.isAdmin
+                                        hr
+                                        p.text-muted.pull-right All
+                                        for member in admin
+                                            if member._workshops.indexOf(workshopSession._id) != -1
+                                                a.btn.btn-xs.btn-danger.memberDel(disabled data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
+                                                    .fa.fa-minus
+                                                span  #{member.name}
+                                                br
+        hr.featurette-divider
+        if session.isAdmin
+            .row
+                .col-sm-12
+                    .btn-group
+                        a.btn.btn-primary#createSession
+                            span.fa.fa-plus
+                            |  Add Session
+                        a.btn.btn-info#editWorkshop(href="/workshop/modify/#{workshop._id}")
+                            span.fa.fa-edit
+                            |  Edit Workshop
+                    form#add(style="display: none" method="POST" action="/workshop/#{workshop._id}/session")
+                        fieldset#sessions
+                            legend Sessions
+                            .alert.alert-warning
+                                p Note: Sunday March 8th, 2015 is when Daylight Savings Time comes into effect. Thus your workshops should all be in 'PDT' time.
+                                p It is now <code id='theTime'></code>
+                                p Sample inputs for a "Time" field is <code>March 20, 2015 8:00 PDT</code> and <code>9 February 2015, 9:00 PDT</code>. If you do not specify 'PDT' things may go haywire.
+                            script.
+                                $(function () {
+                                    function now() {
+                                    $('#theTime').text(new Date());
+                                        setTimeout(now, 2000);
+                                    }
+                                    now();
+                                });
+                            .form-group
+                                label Start Time
+                                input.time.form-control(type="text" required name="start" placeholder="Please specify the start of the session.")
+                                p The Start Time is:
+                                    code.timeSelected
+                            .form-group
+                                label End Time
+                                input.time.form-control(type="text" required name="end" placeholder="Please specify the end of the session.")
+                                p The End Time is:
+                                    code.timeSelected
+                            .form-group
+                                label Room
+                                input.form-control(type="text" required name="room" placeholder="Please specifiy the room of the session.")
+                            .form-group
+                                label Venue
+                                input.form-control(type="text" required name="venue" placeholder="Please specifiy the venue of the session.")
+                            .form-group
+                                label Capacity
+                                input.form-control(type="number" required name="capacity" placeholder="Please specify the capacity of the session (must be numeric)")
+                            .form-group
+                                label 
+                                input.form-control.btn.btn-primary(type="submit" value="Create Session")
+                    hr.featurette-divider
+                    script.
+                        $(function () {
+                            // Date hinting.
+                            function refreshDate() {
+                                var date = new Date($(this).val());
+                                $(this).siblings('p').find('.timeSelected').text(date);
+                            }
+                            $('.time').bind('keydown blur', refreshDate);
+                            $('.time').each(refreshDate);
+                        });
+            script.
+                $(function () {
+                    $('#createSession').click(function () {
+                        if ($('#add').is(':visible')) {
+                            $('#add').hide('fast');
+                        } else {
+                            $('#add').show('fast');
+                        }
                     });
                 });
+        
+        script.
+            $(function () {
+                $('.label, .memberAdd, .memberDel, .tooltipped').tooltip();
+                $('.memberAdd').click(function () {
+                    var self = this;
+                    var session = $(this).parent().data('session'),
+                        member = $(this).parent().find('.memberSelect').val();
+                    $.get('/member/add/' + member + '/' + session, function (data) {
+                        if (data.success) {
+                            window.location.search = "message=" + data.message
+                        } else {
+                            if (data.workshop) {
+                                $(self).siblings('.memberMessage').html("<div class='alert alert-danger'>" + data.message + " <a href='" + data.workshop + "'>View conflicting workshop.</a></div>");
+                            } else {
+                                $(self).siblings('.memberMessage').html("<div class='alert alert-danger'>" + data.message + "</div>");
+                            }
+                        }
+                        
+                    });
+                });
+                $('.memberDel').click(function () {
+                    var session = $(this).parent().data('session'),
+                        member = $(this).data('member');
+                    $.get('/member/del/' + member + '/' + session, function (data) {
+                        window.location.search = "message=" + data.message
+                    });
+                });
+                $('#allowRemovals').click(function () {
+                    var state = $('.memberDel').attr('disabled');
+                    if (state === 'disabled') {
+                        $('.memberDel, .sessionDel').attr('disabled', false);
+                    } else {
+                        $('.memberDel, .sessionDel').attr('disabled', true);
+                    }
+                });
             });
-                

@@ -187,39 +187,44 @@ module.exports = function(data) {
             });
     });
 
-    router.get('/member/:id/add/:workshop/:session', util.inGroup, function (req, res) {
+    router.get('/member/add/:id/:session', util.inGroup, function (req, res) {
         Member.findById(req.params.id).exec(function (err, member) {
             if (!err && member) {
-                member.addWorkshop(req.params.workshop, Number(req.params.session), function (err, member) {
+                member.addWorkshop(req.params.session, function (err, member) {
                     var message;
                     if (!err) {
-                        message = member.name + " has been added to session " + req.params.session + ".";
+                        message = member.name + " has been added to session.";
+                        res.json({success: true, message: message});
                     } else {
-                        message = "Couldn't add that member to the workshop... Try again?";
+                        // The error here is a bit odd... It's an object.
+                        err.success = false;
+                        res.json(err);
+                        console.error(err);
                     }
-                    res.redirect('/workshops/members/' + req.params.workshop + '/' + req.params.session + '?message=' + message);
                 });
             } else {
-                res.send('Sorry, there was an error finding that member. Try again?');
+                res.json({success: false, message:'Sorry, there was an error finding that member. Try again?'});
                 console.error(err);
             }
         });
     });
 
-    router.get('/member/:id/del/:workshop/:session', util.inGroup, function (req, res) {
+    router.get('/member/del/:id/:session', util.inGroup, function (req, res) {
         Member.findById(req.params.id).exec(function (err, member) {
             if (!err && member) {
-                member.removeWorkshop(req.params.workshop, Number(req.params.session), function (err, member) {
+                member.removeWorkshop(req.params.session, function (err, member) {
                     var message;
                     if (!err) {
-                        message = member.name + " has been removed from session " + req.params.session + ".";
+                        message = member.name + " has been removed from session.";
+                        res.json({success: true, message: message});
                     } else {
                         message = "Couldn't remove that member from the workshop... Try again?";
+                        res.json({success: false, message: message});
+                        console.error(err);
                     }
-                    res.redirect('/workshops/members/' + req.params.workshop + '/' + req.params.session + '?message=' + message);
                 });
             } else {
-                res.send('Sorry, there was an error finding that member. Try again?');
+                res.json({success: false, message:'Sorry, there was an error finding that member. Try again?'});
                 console.error(err);
             }
         });
