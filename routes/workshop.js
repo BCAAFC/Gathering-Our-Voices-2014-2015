@@ -28,7 +28,7 @@ module.exports = function(data) {
                     res.render('workshops', {
                         title     : 'Workshops',
                         session   : req.session,
-                        data      : workshops || {},
+                        data      : workshops || [],
                         keys      : [
                             {
                                 "orderable":      false,
