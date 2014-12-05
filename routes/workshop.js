@@ -131,14 +131,25 @@ module.exports = function(data) {
                         } else {
                             return next(null, []);
                         }
-                    }
+                    },
+                    admin: ['workshops', function (next, data) {
+                        if (req.session && req.session.isAdmin) {
+                            var sessions = data.workshops._sessions.map(function (v) {
+                                return v._id;
+                            });
+                            return Member.find({ _workshops: { $in: sessions }}).sort('name').exec(next);
+                        } else {
+                            return next(null, {});
+                        }
+                    }]
                 }, function complete(err, data) {
                     if (!err && data.workshops) {
                         res.render('workshop', {
                             title    : "Workshop Details",
                             session  : req.session,
                             workshop : data.workshops,
-                            members  : data.members
+                            members  : data.members,
+                            admin    : data.admin
                         });
                     } else {
                         res.send('There was an error or we weren\'t able to find that workshop. Try again?');

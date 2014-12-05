@@ -44,7 +44,7 @@ block content
                 #sessions
                     ul.list-group
                         for workshopSession in workshop._sessions
-                            li.list-group-item(data-session="#{session._id}")
+                            li.list-group-item(data-session="#{workshopSession._id}")
                                 if session.isAdmin
                                     code Remove Session:
                                     a.btn.btn-xs.btn-danger.tooltipped.sessionDel(disabled data-toggle="tooltip" title="Remove Session")
@@ -62,32 +62,42 @@ block content
                                     strong Attendees:
                                     |  #{workshopSession._registered.length}/#{workshopSession.capacity}
                                     br
-                                
-                                strong Add Member:
-                                br
-                                button.btn.btn-xs.btn-success.memberAdd(data-toggle="tooltip" title="Add Member")
-                                    .fa.fa-plus
-                                |  
-                                select.memberSelect
-                                    option Please choose...
+                                if session.group
+                                    strong Add Member:
+                                    br
+                                    button.btn.btn-xs.btn-success.memberAdd(data-toggle="tooltip" title="Add Member")
+                                        .fa.fa-plus
+                                    |  
+                                    select.memberSelect
+                                        option Please choose...
+                                        for member in members
+                                            if member._workshops.indexOf(workshopSession._id) != -1
+                                                //- Do nothing.
+                                            else if workshop.allows.indexOf(member.type) == -1
+                                                option(disabled) #{member.name} (Wrong type!)
+                                            else if member._state.complete === false
+                                                option(disabled) #{member.name} (Not complete!)
+                                            else
+                                                option(value='#{member._id}')= member.name
+                                    br
+                                    .memberMessage
+                                    br
+                                    p.text-muted.pull-right Group
                                     for member in members
                                         if member._workshops.indexOf(workshopSession._id) != -1
-                                            //- Do nothing.
-                                        else if workshop.allows.indexOf(member.type) == -1
-                                            option(disabled) #{member.name} (Wrong type!)
-                                        else if member._state.complete === false
-                                            option(disabled) #{member.name} (Not complete!)
-                                        else
-                                            option(value='#{member._id}')= member.name
-                                br
-                                .memberMessage
-                                br
-                                for member in members
-                                    if member._workshops.indexOf(workshopSession._id) != -1
-                                        a.btn.btn-xs.btn-danger.memberDel(disabled data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
-                                            .fa.fa-minus
-                                        span  #{member.name}
-                                        br
+                                            a.btn.btn-xs.btn-danger.memberDel(disabled data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
+                                                .fa.fa-minus
+                                            span  #{member.name}
+                                            br
+                                    if session.isAdmin
+                                        hr
+                                        p.text-muted.pull-right All
+                                        for member in admin
+                                            if member._workshops.indexOf(workshopSession._id) != -1
+                                                a.btn.btn-xs.btn-danger.memberDel(disabled data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
+                                                    .fa.fa-minus
+                                                span  #{member.name}
+                                                br
         hr.featurette-divider
         if session.isAdmin
             .row
