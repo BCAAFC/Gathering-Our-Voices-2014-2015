@@ -97,6 +97,7 @@ block content
                                                 a.btn.btn-xs.btn-danger.memberDel(disabled data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
                                                     .fa.fa-minus
                                                 span  #{member.name}
+                                                a(href="/manage/#{member._group}")  Group
                                                 br
         hr.featurette-divider
         if session.isAdmin
