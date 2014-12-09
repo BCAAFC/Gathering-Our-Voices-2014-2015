@@ -15,7 +15,7 @@ casper.test.begin('Index seems healthy', function suite(test) {
     casper.start(host, function () {
         test.assertExists("nav", "There is a nav");
         test.assertExists(".timer", "There is a timer");
-        test.assertExists(".progress > .progress-bar", "There is a progress bar");
+        // test.assertExists(".progress > .progress-bar", "There is a progress bar");
         test.assertExists("a[href='/register']", "There is a link to registration");
     }).run(function () {
         test.done();
