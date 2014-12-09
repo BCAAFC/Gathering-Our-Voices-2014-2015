@@ -78,7 +78,7 @@ module.exports = function(data) {
                     res.redirect('/?message=' + message);
                     // Send an email to Greg.
                     util.mail({
-                        email: 'gatheringourvoices.bcaafc.com',
+                        email: 'gatheringourvoices@bcaafc.com',
                         name: 'Greg Forsberg',
                         affiliation: 'BCAAFC'
                     }, 'GOV2015 New Facilitator Application', './mails/facilitator.md', [{
