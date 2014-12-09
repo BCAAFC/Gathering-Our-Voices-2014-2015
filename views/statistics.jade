@@ -213,13 +213,24 @@ block content
                     total['Young Adult'] += val['Young Adult'];
                     total['Chaperone'] += val['Chaperone'];
                     total['Young Chaperone'] += val['Young Chaperone'];
-                    return [index, total['Youth'], total['Young Adult'], total['Chaperone'], total['Young Chaperone'],
-                        new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + total]; //
+                    return [index, 
+                        total['Youth'],
+                        new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + total['Youth'],
+                        total['Young Adult'],
+                        new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + total['Young Adult'],
+                        total['Chaperone'],
+                        new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + total['Chaperone'],
+                        total['Young Chaperone'],
+                        new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + total['Young Chaperone']]; //
                 })
-                dates.unshift(["Days since Sept 1, 2014", "Youth", "Young Adults", "Chaperones", "Young Chaperones", { type: 'string', role: 'tooltip' } ])
+                dates.unshift(["Days since Sept 1, 2014",
+                    "Youth", { type: 'string', role: 'tooltip' },
+                    "Young Adults", { type: 'string', role: 'tooltip' },
+                    "Chaperones", { type: 'string', role: 'tooltip' },
+                    "Young Chaperones", { type: 'string', role: 'tooltip' } ])
                 var data = google.visualization.arrayToDataTable(dates);
                 var options = {
-                    title: 'Members over time (since Sept 1, 2014)'
+                    title: 'Members over time (since Sept 1, 2014)',
                 };
                 var chart = new google.visualization.LineChart(document.getElementById('dateChart'));
                 chart.draw(data, options);
