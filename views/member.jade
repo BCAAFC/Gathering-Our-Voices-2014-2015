@@ -61,7 +61,7 @@ block content
                             option(value="December", selected=member && member.birthDate.month == "December") December
                     .form-group
                         label Birth Year*
-                        input.form-control(type="number", name="birthYear", min="1900", max="2000", placeholder="1990", value=(member && member.birthDate.year)? member.birthDate.year : '')
+                        input.form-control(type="number", name="birthYear", min="1900", max="2001", placeholder="1990", value=(member && member.birthDate.year)? member.birthDate.year : '')
                     .form-group
                         label Email
                         input.form-control(type="email", name="email", placeholder="someone@somewhere.ca", value=(member && member.email)? member.email : '')

@@ -9,6 +9,10 @@ var async    = require('async'),
     ObjectId = mongoose.Schema.ObjectId,
     Session  = require('./Session');
 
+var EVENT_YEAR = 2015,
+    YOUTH_MIN = 14,
+    CHAPERONE_MIN = 21;
+
 var MemberSchema = new Schema({
     // Members aren't required to immediately have all their information.
     name: {
@@ -240,8 +244,13 @@ MemberSchema.pre('save', function (next) {
         self._state.ticketType = 'Early';
     }
 
+    // Old enough to actually be a member at all?
+    if (self.birthDate.year && self.birthDate.year < (EVENT_YEAR - YOUTH_MIN)) {
+        next(new Error("Member " + self._id + " not old enough"));
+    }
+    
     // Old enough to actually be a chaperone if they are?
-    if (self.type === "Chaperone" && (self.birthDate.year && self.birthDate.year > (2014-21))) {
+    if (self.type === "Chaperone" && (self.birthDate.year && self.birthDate.year > (EVENT_YEAR - CHAPERONE_MIN))) {
         next(new Error("Chaperone not old enough"));
     }
 
