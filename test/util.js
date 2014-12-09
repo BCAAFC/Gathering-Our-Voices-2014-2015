@@ -27,6 +27,24 @@ module.exports = {
         phone           : '(123) 456-7890',
         affiliationType : 'Other'
     },
+    workshop: {
+        name: 'Test workshop',
+        host: 'Test host',
+        description: 'Test description',
+        'allows-youth': 'on',
+        'allows-youngAdult': 'on',
+        'allows-youngChaperone': 'on',
+        'allows-chaperone': 'on',
+        category: 'Mental',
+        tags: 'test1,test2'
+    },
+    session: {
+        start: 'March 20, 2015 9:00 PDT',
+        end: 'March 20, 2015 9:00 PDT',
+        room: 'Test Room',
+        venue: 'Test Venue',
+        capacity: 20
+    },
     memberCount: 0,
     member: function (type, year) {
         this.memberCount += 1;

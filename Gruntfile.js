@@ -36,14 +36,12 @@ module.exports = function(grunt) {
         casper: {
             options: {
                 test: true,
-                // parallel: true, // Mangles output
                 'fail-fast': true
             },
             test: {
                 src: [
-                    'test/registration-flow.js',
-                    'test/admin-flow.js'
-
+                    'test/admin-flow.js',
+                    'test/registration-flow.js'
                 ]
             }
         },
