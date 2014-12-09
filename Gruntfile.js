@@ -40,6 +40,7 @@ module.exports = function(grunt) {
             },
             test: {
                 src: [
+                    // Tests are run **last to first**.
                     'test/admin-flow.js',
                     'test/registration-flow.js'
                 ]

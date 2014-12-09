@@ -66,7 +66,7 @@ module.exports = function(data) {
 
     router.route('/facilitator')
         .post(function (req, res) {
-            Facilitator.create(facilitatorParser(req.body), function (err) {
+            Facilitator.create(facilitatorParser(req.body), function (err, facilitator) {
                 var message;
                 if (err) {
                     req.session.lastForm = req.body;
@@ -76,6 +76,20 @@ module.exports = function(data) {
                     req.session.lastForm = {};
                     message              = "Thank you for your facilitator application for Gathering Our Voices 2015. Workshop Selection will occur in early December and you should be notified about the status of your application by mid-December 2015. If you have any questions or require any further information please contact Gregory Forsberg at gatheringourvoices@bcaafc.com or 1-800-990-2432.";
                     res.redirect('/?message=' + message);
+                    // Send an email to Greg.
+                    util.mail({
+                        email: 'gatheringourvoices.bcaafc.com',
+                        name: 'Greg Forsberg',
+                        affiliation: 'BCAAFC'
+                    }, 'GOV2015 New Facilitator Application', './mails/facilitator.md', [{
+                        name: 'workshop',
+                        content: facilitator.workshop
+                    }], function (err, result) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        return; // Discard.
+                    });
                 }
             });
         })
