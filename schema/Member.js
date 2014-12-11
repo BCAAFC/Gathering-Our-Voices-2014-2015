@@ -245,10 +245,10 @@ MemberSchema.pre('save', function (next) {
     }
 
     // Old enough to actually be a member at all?
-    if (self.birthDate.year && self.birthDate.year < (EVENT_YEAR - YOUTH_MIN)) {
+    if (self.birthDate.year && self.birthDate.year > (EVENT_YEAR - YOUTH_MIN)) {
         next(new Error("Member " + self._id + " not old enough"));
     }
-    
+
     // Old enough to actually be a chaperone if they are?
     if (self.type === "Chaperone" && (self.birthDate.year && self.birthDate.year > (EVENT_YEAR - CHAPERONE_MIN))) {
         next(new Error("Chaperone not old enough"));
