@@ -129,6 +129,7 @@ module.exports = function(data) {
                                 res.redirect('/account');
                             });
                         } else {
+                            console.error(err);
                             var message = "There was an error in the validation and saving of the member. Are they old enough? Did you fill out at least their name and delegate type?";
                             res.redirect('/account?message=' + message);
                         }
