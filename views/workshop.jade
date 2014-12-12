@@ -96,8 +96,7 @@ block content
                                             if member._workshops.indexOf(workshopSession._id) != -1
                                                 a.btn.btn-xs.btn-danger.memberDel(disabled data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
                                                     .fa.fa-minus
-                                                a(href='/member/#{member._id}')  #{member.name} 
-                                                a(href='/manage/#{member._group}') (Group)
+                                                a(href='/manage/#{member._group}')  #{member.name} 
                                                 br
         hr.featurette-divider
         if session.isAdmin

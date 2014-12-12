@@ -13,14 +13,15 @@ module.exports = function(data) {
 
         router.get('/workshops', function (req, res) {
             // Build output.
-            Workshop.find({}).sort('name').select("-description").populate('_sessions', 'start end capacity _registered').exec(function (err, workshops) {
+            Workshop.find({}).sort('name').select("-description").populate('_sessions', 'start end capacity _registered').lean().exec(function (err, workshops) {
                 if (!err) {
                     // We only care about how many there are,
                     // and we don't really want to send this otherwise.
                     workshops = workshops.map(function (workshop) {
                         workshop._sessions = workshop._sessions.map(function (session) {
                             session.registered = session._registered.length;
-                            delete session._registered; // Don't send it.
+                            session._registered = null; // Don't send it.
+                            delete session._registered;
                             return session;
                         });
                         return workshop;

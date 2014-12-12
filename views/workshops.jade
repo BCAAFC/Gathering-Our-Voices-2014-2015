@@ -53,7 +53,17 @@ block content
                                 var date = new Date(data[i].start).getDate(),
                                     start = new Date(data[i].start).toLocaleTimeString({formatMatcher: "hour, minute"}),
                                     end = new Date(data[i].end).toLocaleTimeString({formatMatcher: "hour, minute"}),
-                                out = out.concat("<span class='label label-default'>" + date + "th, " + start + "-" + end + "</span><br>");
+                                    label = '';
+                                if ((data[i].registered / data[i].capacity) < .25) { // Not yet full
+                                    label = 'label-success';
+                                } else if ((data[i].registered / data[i].capacity) < .50) { // Half full
+                                    label = 'label-warning';
+                                } else if ((data[i].registered / data[i].capacity) < .75) { // Almost full!
+                                    label = 'label-danger';
+                                } else {
+                                    label = 'label-default'
+                                }
+                                out = out.concat("<span class='label " + label + "'>" + data[i].registered + "/" + data[i].capacity + "</span> " + date + "th, " + start + "-" + end + "<br>");
                             }
                             return out;
                         },
