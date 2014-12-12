@@ -99,7 +99,8 @@ module.exports = function(data) {
             Member.findById(req.body.id).exec(function (err, member) {
                 if (!err && member) {
                     member.name                      = req.body.name;
-                    member._group                    = req.session.group._id;
+                    // **Don't re-assign group**
+                    // member._group                    = req.session.group._id;
                     member.type                      = req.body.type;
                     member.gender                    = req.body.gender;
                     member.birthDate.day             = req.body.birthDay;
