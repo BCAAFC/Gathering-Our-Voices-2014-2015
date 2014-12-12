@@ -229,7 +229,7 @@ module.exports = function(data) {
         }
         function members(callback) {
             var startDate = new Date('Sept 01 2014'),
-                    stopDate = new Date('Mar 21 2015');
+                stopDate = new Date('Mar 21 2015');
             Member.find({}).populate('_group').exec(function (err, members) {
                 // Cleverness below!
                 var ages = _.range(14, 24+1).concat(['over', '']),
@@ -238,7 +238,7 @@ module.exports = function(data) {
                         types = ['Youth', 'Young Adult', 'Young Chaperone', 'Chaperone', ''],
                         dates = (function () {
                             var oneDay = 24*60*60*1000, // hours*minutes*seconds*milliseconds
-                                    numDays = Math.round(Math.abs((startDate.getTime() - stopDate.getTime())/(oneDay)));
+                                numDays = Math.round(Math.abs((startDate.getTime() - stopDate.getTime())/(oneDay)));
                             return Array.apply(null, new Array(numDays)).map(function (v) { return {
                                 'Youth': 0,
                                 'Young Adult': 0,

@@ -213,29 +213,23 @@ block content
                     total['Young Adult'] += val['Young Adult'];
                     total['Chaperone'] += val['Chaperone'];
                     total['Young Chaperone'] += val['Young Chaperone'];
-                    return [index, 
+                    return [
+                        new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString(),
                         total['Youth'],
-                        'Youth on ' + new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + total['Youth'],
                         total['Young Adult'],
-                        'Young Adults on ' + new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + total['Young Adult'],
                         total['Young Chaperone'],
-                        'Young Chaperones on ' + new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + total['Young Chaperone'],
-                        total['Chaperone'],
-                        'Chaperones on ' + new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + total['Chaperone'],
-                        // Total of all.
-                        total['Youth'] + total['Young Adult'] + total['Young Chaperone'] + total['Chaperone'],
-                        'Total on ' + new Date(Date.UTC(2014, 8, 1) + (86400000 * index)).toString() + ": " + (total['Young Chaperone'] + total['Young Adult'] + total['Young Chaperone'] + total['Chaperone'])];
+                        total['Chaperone']
+                    ]
                 })
-                dates.unshift(["Days since Sept 1, 2014",
-                    "Youth", { type: 'string', role: 'tooltip' },
-                    "Young Adults", { type: 'string', role: 'tooltip' },
-                    "Young Chaperones", { type: 'string', role: 'tooltip' },
-                    "Chaperones", { type: 'string', role: 'tooltip' },
-                    "Total", { type: 'string', role: 'tooltip' } ])
+                dates.unshift(['Date', 'Youth', 'Young Adults', 'Young Chaperones', 'Chaperones'])
                 var data = google.visualization.arrayToDataTable(dates);
                 var options = {
-                    title: 'Members over time (since Sept 1, 2014)',
+                    title: 'Registration',
+                    hAxis: { title: 'Date'},
+                    vAxis: { title: 'Members' },
+                    isStacked: true,
+                    focusTarget: 'category'
                 };
-                var chart = new google.visualization.LineChart(document.getElementById('dateChart'));
+                var chart = new google.visualization.AreaChart(document.getElementById('dateChart'));
                 chart.draw(data, options);
             }
