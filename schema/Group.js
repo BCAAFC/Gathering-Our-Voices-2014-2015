@@ -284,8 +284,8 @@ GroupSchema.methods.getCost = function getCost(next) {
             }, {'Early': 0, 'Regular': 0});
             // Figure out how many are free.
             var free =  { 'Early': 0, 'Regular': 0 };
-            free.Early += Math.floor(counts.Early / 5);
-            free.Regular += Math.floor(counts.Regular / 5);
+            free.Early += Math.floor(counts.Early / 6);
+            free.Regular += Math.floor(counts.Regular / 6);
             // Decrement the counts by the number of free.
             counts.Early -= free.Early;
             counts.Regular -= free.Regular;
