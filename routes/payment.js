@@ -12,6 +12,7 @@ module.exports = function(data) {
     router.get('/payments', util.auth, function (req, res) {
         Group.findById(req.session.group._id)
             .populate('_payments')
+            .populate('_members')
             .exec(function (err, group) {
                 if (!err && group) {
                     async.auto({
@@ -24,7 +25,9 @@ module.exports = function(data) {
                                 session : req.session,
                                 group   : group,
                                 cost    : data.cost,
-                                paid    : data.paid
+                                paid    : data.paid,
+                                early   : group._members.filter(function (v) { return v._state.ticketType === 'Early'; }).length,
+                                regular : group._members.filter(function (v) { return v._state.ticketType === 'Regular'; }).length
                             });
                         } else {
                             res.send('Sorry, there was an error, please try again.');

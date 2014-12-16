@@ -11,8 +11,8 @@ var async    = require('async'),
     Member   = require('./Member');
 
 /* Vars */
-var earlyTicket   = 125,
-    regularTicket = 175;
+var EARLY_TICKET   = 125,
+    REGULAR_TICKET = 175;
 
 var GroupSchema = new Schema({
     email: {
@@ -283,14 +283,29 @@ GroupSchema.methods.getCost = function getCost(next) {
                 return sum;
             }, {'Early': 0, 'Regular': 0});
             // Figure out how many are free.
-            var free =  { 'Early': 0, 'Regular': 0 };
-            free.Early += Math.floor(counts.Early / 6);
-            free.Regular += Math.floor(counts.Regular / 6);
+            var free = Math.floor((counts.Early + counts.Regular) / 6),
+                newFree = 0;
             // Decrement the counts by the number of free.
-            counts.Early -= free.Early;
-            counts.Regular -= free.Regular;
+            // Do regular tickets first.
+            if (free >= counts.Regular) { // More free then regular tickets.
+                counts.Regular -= free;
+                free = 0; // Used them all.
+            } else { // free < counts.Regular
+                newFree = free - counts.Regular; // Remaining free will roll over.
+                counts.Regular -= free;
+                free = newFree; // The remaining free... To be used against Early tickets.
+            }
+            // Then Early tickets as the remainder.
+            if (free >= counts.Early) {
+                counts.Early -= free;
+                free = 0; // Used them all.
+            } else { // free < counts.Early
+                newFree = free - counts.Early;
+                counts.Early -= free;
+                free = newFree;
+            }
             // Get the due value.
-            var due = (counts.Early * 125) + (counts.Regular * 175);
+            var due = (counts.Early * EARLY_TICKET) + (counts.Regular * REGULAR_TICKET);
             self._state.balance.cost = due; // Not saved. Save in your function.
             next(null, due);
         } else {
