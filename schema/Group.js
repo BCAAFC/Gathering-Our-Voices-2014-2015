@@ -277,13 +277,20 @@ GroupSchema.methods.getCost = function getCost(next) {
     var self = this;
     Member.find({_id: {$in: self._members }}).exec(function (err, members) {
         if (!err) { // Its'ok if members is []
-            var due = _.reduce(members, function (sum, member) {
-                if (member._state.ticketType === 'Early') {
-                    return sum + earlyTicket;
-                } else {
-                    return sum + regularTicket;
-                }
-            }, 0);
+            // Count number of early and regular tickets.
+            var counts = _.reduce(members, function (sum, member) {
+                sum[member._state.ticketType] += 1;
+                return sum;
+            }, {'Early': 0, 'Regular': 0});
+            // Figure out how many are free.
+            var free =  { 'Early': 0, 'Regular': 0 };
+            free.Early += Math.floor(counts.Early / 5);
+            free.Regular += Math.floor(counts.Regular / 5);
+            // Decrement the counts by the number of free.
+            counts.Early -= free.Early;
+            counts.Regular -= free.Regular;
+            // Get the due value.
+            var due = (counts.Early * 125) + (counts.Regular * 175);
             self._state.balance.cost = due; // Not saved. Save in your function.
             next(null, due);
         } else {
@@ -337,9 +344,10 @@ GroupSchema.methods.enoughChaperones = function (next) {
                     'Chaperone'       : 0,
                     'Young Chaperone' : 0
                 });
+                // 5 youth under 1 chaperone
                 var youth      = vals.Youth,
                     chaperones = (vals.Chaperone + vals['Young Chaperone']) * 5;
-                next(null, chaperones > youth);
+                next(null, chaperones >= youth);
             } else {
                 next(err, false);
             }
