@@ -188,7 +188,7 @@ casper.test.begin('Member Step', function suite(test) {
         this.fill("form[action='/login']", { email: util.group.email, password: util.group.password }, true);
     }).waitForUrl(/account$/, function () {
         // Visual verification
-        test.assertExists("#members button.btn.btn-danger[disabled] > i.fa.fa-2x.fa-remove", "Members check is off, is disabled");
+        test.assertExists("#members button.btn.btn-danger > i.fa.fa-2x.fa-remove", "Members check is off"); // Should not be disabled since they're technically a valid group.
         test.assertExists("#members a[href='/member']", "Link to members section is present");
         test.assertExists("#members table", "Member table present");
         test.assertElementCount("#members table tbody tr", 0, "No members in table yet");
