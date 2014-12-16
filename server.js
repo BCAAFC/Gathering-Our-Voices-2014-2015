@@ -193,25 +193,25 @@ function complete(error, data) {
         console.error(error);
         return;
     } else {
-        // once();
+        once();
         data.httpd.listen(process.env.PORT, function allDone() {
             console.log("Listening on port " + process.env.PORT);
         });
     }
 }
 
-// function once() {
-//     var Group = require('./schema/Group');
-//     Group.find({}).exec(function (err, data) {
-//         if (!err && data) {
-//             async.each(data, function (group, cb) {
-//                 console.log('Processing group ' + group.affiliation);
-//                 group.getBalance(function () {
-//                     group.save(cb);
-//                 });
-//             }, function done(err) {
-//                 console.log('All done mapping.');
-//             });
-//         }
-//     });
-// }
+function once() {
+    var Group = require('./schema/Group');
+    Group.find({}).exec(function (err, data) {
+        if (!err && data) {
+            async.each(data, function (group, cb) {
+                console.log('Processing group ' + group.affiliation);
+                group.getBalance(function () {
+                    group.save(cb);
+                });
+            }, function done(err) {
+                console.log('All done mapping.');
+            });
+        }
+    });
+}

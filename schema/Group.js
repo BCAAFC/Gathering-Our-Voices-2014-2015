@@ -284,12 +284,14 @@ GroupSchema.methods.getCost = function getCost(next) {
             }, {'Early': 0, 'Regular': 0});
             // Figure out how many are free.
             var free = Math.floor((counts.Early + counts.Regular) / 6),
-                newFree = 0;
+                newFree = 0,
+                old = 0;
             // Decrement the counts by the number of free.
             // Do regular tickets first.
             if (free >= counts.Regular) { // More free then regular tickets.
-                counts.Regular -= free;
-                free = 0; // Used them all.
+                old = counts.Regular;
+                counts.Regular = 0;
+                free = free - old; // Used them all.
             } else { // free < counts.Regular
                 newFree = free - counts.Regular; // Remaining free will roll over.
                 counts.Regular -= free;
@@ -297,8 +299,9 @@ GroupSchema.methods.getCost = function getCost(next) {
             }
             // Then Early tickets as the remainder.
             if (free >= counts.Early) {
-                counts.Early -= free;
-                free = 0; // Used them all.
+                old = counts.Free;
+                counts.Early = 0;
+                free = free - old; // Used them all.
             } else { // free < counts.Early
                 newFree = free - counts.Early;
                 counts.Early -= free;
