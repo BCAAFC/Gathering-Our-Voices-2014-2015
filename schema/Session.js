@@ -95,18 +95,36 @@ SessionSchema.methods.conflicts = function conflicts(start, end) {
 /* Middleware */
 SessionSchema.pre('remove', function (next) {
     var Member = require('./Member'),
+        Group = require('./Group'),
+        Workshop = require('./Workshop'),
         self = this;
-    Member.find({_id: {$in: self._registered}}).exec(function (err, members) {
-        if (!err) {
-            async.eachSeries(members, function iterator(member, cb) {
-                // The session is being removed, so we don't need to manipulate it.
-                member.removeWorkshop(self._id);
-                member.save(cb);
-            }, next);
-        } else {
-            next(err);
+    async.series([
+        function membersRemove(callback) {
+            // Remove all members.
+            Member.find({_id: {$in: self._registered} }).exec(function (err, members) {
+                if (!err) {
+                    async.eachSeries(members, function iterator(member, cb) {
+                        // The session is being removed, so we don't need to manipulate it.
+                        member.removeWorkshop(self._id, function save(err, member) {
+                            if (err) { cb(err, member); }
+                            else { member.save(cb); }
+                        });
+                    }, callback);
+                } else {
+                    callback(err);
+                }
+            });
+        },
+        function workshopModify(callback) {
+            // Remove the session from workshop.
+            // Don't need to worry about middleware here.
+            Workshop.findByIdAndUpdate(self._workshop, {
+                $pull: {
+                    _sessions: self._id
+                }
+            }, callback);
         }
-    });
+    ], next);
 });
 
 module.exports = mongoose.model('Session', SessionSchema);

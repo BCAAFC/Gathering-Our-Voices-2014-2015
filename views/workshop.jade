@@ -42,62 +42,66 @@ block content
                                 |  Allow Removals
                 h2 Sessions
                 #sessions
-                    ul.list-group
-                        for workshopSession in workshop._sessions
-                            li.list-group-item(data-session="#{workshopSession._id}")
-                                if session.isAdmin
-                                    code Remove Session:
-                                    a.btn.btn-xs.btn-danger.tooltipped.sessionDel(disabled data-toggle="tooltip" title="Remove Session")
-                                        .fa.fa-minus
-                                .description
-                                    strong Start:
-                                    |  #{workshopSession.start.toLocaleString()}
-                                    br
-                                    strong End:
-                                    |  #{workshopSession.end.toLocaleString()}
-                                    br
-                                    strong Location:
-                                    |  #{workshopSession.room} <strong>at</strong> #{workshopSession.venue}
-                                    br
-                                    strong Attendees:
-                                    |  #{workshopSession._registered.length}/#{workshopSession.capacity}
-                                    br
-                                if session.group
-                                    strong Add Member:
-                                    br
-                                    button.btn.btn-xs.btn-success.memberAdd(data-toggle="tooltip" title="Add Member")
-                                        .fa.fa-plus
-                                    |  
-                                    select.memberSelect
-                                        option Please choose...
-                                        for member in members
-                                            if member._workshops.indexOf(workshopSession._id) != -1
-                                                //- Do nothing.
-                                            else if workshop.allows.indexOf(member.type) == -1
-                                                option(disabled) #{member.name} (Wrong type!)
-                                            else if member._state.complete === false
-                                                option(disabled) #{member.name} (Not complete!)
-                                            else
-                                                option(value='#{member._id}')= member.name
-                                    br
-                                    .memberMessage
-                                    br
-                                    p.text-muted.pull-right Group
-                                    for member in members
-                                        if member._workshops.indexOf(workshopSession._id) != -1
-                                            a.btn.btn-xs.btn-danger.memberDel(disabled data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
-                                                .fa.fa-minus
-                                            span  #{member.name}
-                                            br
+                    if workshop._sessions.length != 0
+                        ul.list-group
+                            for workshopSession in workshop._sessions
+                                li.list-group-item(data-session="#{workshopSession._id}")
                                     if session.isAdmin
-                                        hr
-                                        p.text-muted.pull-right All
-                                        for member in admin
+                                        code Remove Session:
+                                        a.btn.btn-xs.btn-danger.tooltipped.sessionDel(disabled data-toggle="tooltip" title="Remove Session" href="/session/delete/#{workshopSession._id}")
+                                            .fa.fa-minus
+                                    .description
+                                        strong Start:
+                                        |  #{workshopSession.start.toLocaleString()}
+                                        br
+                                        strong End:
+                                        |  #{workshopSession.end.toLocaleString()}
+                                        br
+                                        strong Location:
+                                        |  #{workshopSession.room} <strong>at</strong> #{workshopSession.venue}
+                                        br
+                                        strong Attendees:
+                                        |  #{workshopSession._registered.length}/#{workshopSession.capacity}
+                                        br
+                                    if session.group
+                                        strong Add Member:
+                                        br
+                                        button.btn.btn-xs.btn-success.memberAdd(data-toggle="tooltip" title="Add Member")
+                                            .fa.fa-plus
+                                        |  
+                                        select.memberSelect
+                                            option Please choose...
+                                            for member in members
+                                                if member._workshops.indexOf(workshopSession._id) != -1
+                                                    //- Do nothing.
+                                                else if workshop.allows.indexOf(member.type) == -1
+                                                    option(disabled) #{member.name} (Wrong type!)
+                                                else if member._state.complete === false
+                                                    option(disabled) #{member.name} (Not complete!)
+                                                else
+                                                    option(value='#{member._id}')= member.name
+                                        br
+                                        .memberMessage
+                                        br
+                                        p.text-muted.pull-right Group
+                                        for member in members
                                             if member._workshops.indexOf(workshopSession._id) != -1
                                                 a.btn.btn-xs.btn-danger.memberDel(disabled data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
                                                     .fa.fa-minus
-                                                a(href='/manage/#{member._group}')  #{member.name} 
+                                                span  #{member.name}
                                                 br
+                                        if session.isAdmin
+                                            hr
+                                            p.text-muted.pull-right All
+                                            for member in admin
+                                                if member._workshops.indexOf(workshopSession._id) != -1
+                                                    a.btn.btn-xs.btn-danger.memberDel(disabled data-member="#{member._id}" data-toggle="tooltip" title="Remove Member")
+                                                        .fa.fa-minus
+                                                    a(href='/manage/#{member._group}')  #{member.name} 
+                                                    br
+                    else
+                        .well
+                            p.lead No sessions have been added yet. Please check back soon!
         if session.isAdmin
             hr.featurette-divider
             .row
@@ -196,7 +200,7 @@ block content
                     });
                 });
                 $('#allowRemovals').click(function () {
-                    var state = $('.memberDel').attr('disabled');
+                    var state = $('.memberDel, .sessionDel').attr('disabled');
                     if (state === 'disabled') {
                         $('.memberDel, .sessionDel').attr('disabled', false);
                     } else {

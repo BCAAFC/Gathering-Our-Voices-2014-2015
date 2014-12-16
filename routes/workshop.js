@@ -113,10 +113,29 @@ module.exports = function(data) {
             });
         });
 
+        router.get('/session/delete/:session', util.admin, function (req, res) {
+            // GET request so we don't need to send a form.
+            Session.findById(req.params.session).exec(function (err, session) {
+                if (!err && session) {
+                    session.remove(function (err) {
+                        if (!err) {
+                            res.redirect('/workshop/' + session._workshop);
+                        } else {
+                            console.err(err);
+                            res.redirect('/workshop/?message=' + err);
+                        }
+                    });
+                } else {
+                    console.err('There was an error here.');
+                    res.send('That workshop could not be found. This is a strange error. Please report it.');
+                }
+            });
+        });
+
         router.route('/workshop/:id')
             .get(function (req, res) {
                 async.auto({
-                    workshops: function (next) {
+                    workshop: function (next) {
                         return Workshop.findById(req.params.id).populate({
                             path: '_sessions',
                             options: {
@@ -124,7 +143,13 @@ module.exports = function(data) {
                                     start: 1
                                 }
                             }
-                        }).exec(next);
+                        }).exec(function (err, result) {
+                            if (!err && result === null) {
+                                next(new Error('No workshop found'));
+                            } else {
+                                next(err, result);
+                            }
+                        });
                     },
                     members: function (next) {
                         if (req.session && req.session.group) {
@@ -133,9 +158,9 @@ module.exports = function(data) {
                             return next(null, []);
                         }
                     },
-                    admin: ['workshops', function (next, data) {
+                    admin: ['workshop', function (next, data) {
                         if (req.session && req.session.isAdmin) {
-                            var sessions = data.workshops._sessions.map(function (v) {
+                            var sessions = data.workshop._sessions.map(function (v) {
                                 return v._id;
                             });
                             return Member.find({ _workshops: { $in: sessions }}).sort('name').exec(next);
@@ -144,11 +169,11 @@ module.exports = function(data) {
                         }
                     }]
                 }, function complete(err, data) {
-                    if (!err && data.workshops) {
+                    if (!err && data.workshop) {
                         res.render('workshop', {
                             title    : "Workshop Details",
                             session  : req.session,
-                            workshop : data.workshops,
+                            workshop : data.workshop,
                             members  : data.members,
                             admin    : data.admin
                         });
@@ -228,23 +253,23 @@ module.exports = function(data) {
                 });
             });
 
-        router.delete('/workshop/delete/:id', util.admin, function (req, res) {
-            Workshop.findById(req.params.id).exec(function (err, workshop) {
-                if (!err && workshop) {
-                    workshop.remove(function (err) {
-                        if (!err) {
-                            res.redirect('/workshops?message=Workshop deleted!');
-                        } else {
-                            res.redirect('/workshops?message=Workshop not deleted!');
-                            console.error(err);
-                        }
-                    });
-                } else {
-                    res.redirect('/workshops?message=Could not find workshop!');
-                    console.error(err);
-                }
-            });
-        });
+        // router.delete('/workshop/delete/:id', util.admin, function (req, res) {
+        //     Workshop.findById(req.params.id).exec(function (err, workshop) {
+        //         if (!err && workshop) {
+        //             workshop.remove(function (err) {
+        //                 if (!err) {
+        //                     res.redirect('/workshops?message=Workshop deleted!');
+        //                 } else {
+        //                     res.redirect('/workshops?message=Workshop not deleted!');
+        //                     console.error(err);
+        //                 }
+        //             });
+        //         } else {
+        //             res.redirect('/workshops?message=Could not find workshop!');
+        //             console.error(err);
+        //         }
+        //     });
+        // });
 
         return router;
 };
