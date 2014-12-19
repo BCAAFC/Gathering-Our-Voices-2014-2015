@@ -110,5 +110,12 @@ module.exports = function(data) {
         });
     });
 
+    router.get('/sponsors', function (req, res) {
+        res.render('sponsors', {
+            title   : 'sponsors',
+            session : req.session
+        });
+    });
+
     return router;
 };
