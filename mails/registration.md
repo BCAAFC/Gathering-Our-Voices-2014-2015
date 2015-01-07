@@ -15,7 +15,7 @@ There are 6 steps:
   * This year, there is a cap on the number of Youth, Young Adults, and Young Chaperones that may attend the conference. Please try to ensure you have adequate placeholders.
   * There must be at least one Chaperone or Young Chaperone per 5 Youth. No restrictions are placed on Young Adults.
 * **Useful Documents**: There are a number of opportunities to get more deeply involved with the conference, like participating in the Talent Show. You can find these documents here.
-* **Payments**: Payment for your group. If the payment options detailed do not work for you, please contact us.
+* **Payments**: Payment for your group. Payments are due **February 27th, 2015**. If the payment options detailed do not work for you, please contact us.
 * **Workshops**: The workshop schedule will be released mid-February, once released, you may sign your members up for workshops.
 
 **Once you have all 6 steps checked off, your group is ready to attend.**

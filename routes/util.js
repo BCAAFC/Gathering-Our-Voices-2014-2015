@@ -62,12 +62,17 @@ module.exports = {
             subject    : subject,
             html       : marked(content),
             text       : content,
-            from_email : 'gatheringourvoices@bcaafc.com',
+            from_email : 'govcoordinator@bcaafc.com',
             from_name  : 'Gathering Our Voices',
             to: [{
                 email : group.email,
                 name  : group.name,
                 type  : 'to'
+            }, {
+                email : 'govcoordinator@bcaafc.com',
+                name  : 'Tara Skobel',
+                type  : 'to'
+
             }],
             // http://help.mandrill.com/entries/21678522-How-do-I-use-merge-tags-to-add-dynamic-content-
             global_merge_vars: [{
