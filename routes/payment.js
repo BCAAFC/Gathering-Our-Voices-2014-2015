@@ -76,7 +76,7 @@ module.exports = function(data) {
                 console.error(err);
             } else {
                 req.session.group = result;
-                res.redirect('/account');
+                res.redirect('/account#payments');
             }
         });
     });
