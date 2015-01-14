@@ -30,7 +30,8 @@ var PaymentSchema = new Schema({
             "Money Order",
             "Invoice",
             "Credit Card",
-            "Paypal"
+            "Paypal",
+            "Waived"
         ]
     },
     description: {
