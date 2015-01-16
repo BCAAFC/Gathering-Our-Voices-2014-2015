@@ -22,10 +22,14 @@ There are 6 steps:
 
 *Please note this site is best used with Firefox, Chrome, Safari, Opera, or Internet Explorer 9+. We do not support Internet Explorer 8 or below, if you are still using one of these web browsers, please consider upgrading as they represent serious security concerns for your organization. If you cannot upgrade, contact the registration team and we will assist you in registration.*
 
-In friendship,
+If you have any other questions or need help with anything please email or call me.  Looking forward to connecting with you.
 
-The Gathering Our Voices Team
+In Friendship,
 
-[dpreston@bcaafc.com](mailto:dpreston@bcaafc.com)
+Tara Skobel
 
-Phone: (250) 388-5522, Toll-free: 1-800-990-2432
+Registration & Exhibitor Coordinator
+
+govassistant@bcaafc.com
+
+250-388-5522 or toll free 1-800-990-2432
