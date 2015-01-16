@@ -37,6 +37,8 @@ module.exports = function(data) {
                         { title: 'Type', data: 'affiliationType'},
                         { title: 'Reg Date', data: 'registrationDate'},
                         { title: 'Email', data: 'email' },
+                        { title: 'Cost', data: '_state.balance.cost'},
+                        { title: 'Paid', data: '_state.balance.paid' },
                         { title: 'Tags', data: '_state.tags' },
                         {
                             "orderable":      false,
