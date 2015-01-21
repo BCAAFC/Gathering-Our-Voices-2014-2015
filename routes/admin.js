@@ -336,7 +336,7 @@ module.exports = function(data) {
         });
     });
 
-    router.route('/news/:id').delete(util.admin, function (req, res) {
+    router.get('/news/del/:id', util.admin, function (req, res) {
         News.remove({_id: req.params.id}).exec(function (err) {
             if (!err) {
                 res.redirect('/news');
