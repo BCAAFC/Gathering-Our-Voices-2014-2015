@@ -112,8 +112,15 @@ module.exports = function(data) {
 
     router.get('/sponsors', function (req, res) {
         res.render('sponsors', {
-            title   : 'sponsors',
+            title   : 'Sponsors',
             session : req.session
+        });
+    });
+
+    router.get('/social-enterprise', function (req, res) {
+        res.render('social-enterprise', {
+            title: 'Social Enterprise',
+            session: req.session
         });
     });
 
