@@ -6,6 +6,8 @@ block content
             ul.nav.nav-tabs#options
                 li.tabled#groups(class=selected === 'groups' ? 'active' : '')
                     a(href='/admin/groups') Groups
+                li.tabled#groups(class=selected === 'waitlist' ? 'active' : '')
+                    a(href='/admin/waitlist') Waitlist
                 li.tabled#members(class=selected === 'members' ? 'active' : '')
                     a(href='/admin/members') Members
                 li.tabled#facilitators(class=selected === 'facilitators' ? 'active' : '')
@@ -31,12 +33,13 @@ block content
                     //- scrollX: true
                 };
                 var reorderOptions = {};
-                if (selected === 'groups') {
+                if (selected === 'groups' || selected === 'waitlist') {
                     //- reorderOptions.fixedColumns = 1;
                     //- reorderOptions.fixedColumnsLeft = 2;
                     options.scrollX = true;
                     options.columnDefs = [
                         {
+                            // Steps
                             render: function (data, type, row) {
                                 var steps = ['conduct', 'details', 'youthInCare', 'members', 'documents', 'payments', 'workshops', 'checkin'];
                                 var output = steps.map(function (v) {
@@ -55,6 +58,7 @@ block content
                             targets: 0
                         },
                         {
+                            // Tags
                             render: function (data, type, row) {
                                 data = data.map(function (v) {
                                     return "<span class='badge badge-default'>" + v + "</span><br>";
@@ -64,14 +68,19 @@ block content
                             targets: -2
                         },
                         {
+                            // Edit and manage buttons.
                             render: function (data, type, row) {
                                 var out = "<a class='btn btn-primary btn-xs' href='/manage/" + row._id + "'><i class='fa fa-edit'></i> Manage</a>";
                                 out = out.concat("<a class='btn btn-info btn-xs' href='/notes/" + row._id + "'><i class='fa fa-file'></i> Notes</a>");
+                                if (selected === 'waitlist') {
+                                    out = out.concat("<a class='btn btn-warning btn-xs' href='/approve/" + row._id + "'><i class='fa fa-check'></i> Approve</a>")
+                                }
                                 return out;
                             },
                             targets: -1
                         },
                         {
+                            // Member count.
                             render: function (data, type, row) {
                                 return data.length;
                             },

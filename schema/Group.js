@@ -135,6 +135,10 @@ var GroupSchema = new Schema({
         trim: true
     },
     _state: {
+        waitlist: {
+            type: Number,
+            default: 0
+        },
         tags: {
             type: [{
                 type    : String,

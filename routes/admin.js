@@ -18,7 +18,7 @@ module.exports = function(data) {
     router.get('/admin/:type', util.admin, function (req, res) {
         var data, keys, selected = req.params.type;
         if (selected == 'groups') {
-            Group.find().select('-hash -password').exec(function (err, groups) {
+            Group.find({'_state.waitlist':  0}).select('-hash -password').exec(function (err, groups) {
                 if (!err) {
                     data = groups.map(function (v) { v.actions = ' '; return v; });
                     keys = [
@@ -58,6 +58,48 @@ module.exports = function(data) {
                     console.error(err);
                 }
             });
+        } else if (selected == 'waitlist') {
+                Group.find({'_state.waitlist': {'$ne': 0}}).select('-hash -password').exec(function (err, groups) {
+                    if (!err) {
+                        data = groups.map(function (v) { v.actions = ' '; return v; });
+                        keys = [
+                            { title: 'Steps', data: '_state.steps' },
+                            { title: 'id', data: '_id' },
+                            { title: 'Name', data: 'name' },
+                            { title: 'Affiliation', data: 'affiliation' },
+                            { title: 'Members', data: '_members' },
+                            { title: 'Address', data: 'address' },
+                            { title: 'City', data: 'city'},
+                            { title: 'Province', data: 'province'},
+                            { title: 'Postal Code', data: 'postalCode'},
+                            { title: 'Fax', data: 'fax'},
+                            { title: 'Phone', data: 'phone'},
+                            { title: 'Region', data: 'region'},
+                            { title: 'Type', data: 'affiliationType'},
+                            { title: 'Reg Date', data: 'registrationDate'},
+                            { title: 'Email', data: 'email' },
+                            { title: 'Cost', data: '_state.balance.cost'},
+                            { title: 'Paid', data: '_state.balance.paid' },
+                            { title: 'Requested', data: '_state.waitlist' },
+                            { title: 'Tags', data: '_state.tags' },
+                            {
+                                "orderable":      false,
+                                "data":           null,
+                                "defaultContent": ''
+                            }
+                        ];
+                        res.render('admin', {
+                            title    : 'Administration',
+                            session  : req.session,
+                            data     : data,
+                            keys     : keys,
+                            selected : selected
+                        });
+                    } else {
+                        res.send('There was an error.');
+                        console.error(err);
+                    }
+                    });
         } else if (selected == 'members') {
             Member.find().exec(function (err, members) {
                 if (!err) {
@@ -197,6 +239,56 @@ module.exports = function(data) {
                 }
             });
         });
+
+    router.get('/approve/:id', util.admin, function (req, res) {
+        Group.findById(req.params.id).exec(function (err, group) {
+            if (!err && group) {
+                addPlaceholders(group._state.waitlist, group._id, function (err) {
+                    if (err) {
+                        res.send("Something went rather horribly wrong. Please let me know.");
+                        console.error(err);
+                    } else {
+                        Group.findById(req.params.id).exec(function (err, group) {
+                            group._state.waitlist = 0;
+                            group.getCost(function (err, cost) {
+                                console.log("COST " + cost);
+                                group._state.balance.cost = cost;
+                                group.save(function (err) {
+                                    if (err) {
+                                        res.send("Something went rather horribly wrong. Please let me know.");
+                                        console.error(err);
+                                    } else {
+                                        res.redirect('/manage/' + req.params.id);
+                                    }
+                                });
+                            });
+                        });
+                    }
+                });
+            } else {
+                res.send('There was an error, or there is no such group.');
+                console.error(err);
+            }
+        });
+    });
+
+    function addPlaceholders (number, group, next) {
+        function recurser (left, group) {
+            if (left <= 0) { return next(null); }
+            Member.create({
+                name             : "Placeholder",
+                _group           : group,
+                type             : "Youth"
+            }, function (err) {
+                if (err) {
+                    next(err);
+                } else {
+                    recurser(left-1, group);
+                }
+            });
+        }
+        recurser(number, group);
+    }
 
     router.get('/statistics', util.admin, function (req, res) {
         async.auto({

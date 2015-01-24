@@ -12,9 +12,10 @@ async.auto({
     // Database
     mongo       : ['environment', mongo],
     redis       : ['environment', redis],
+    flags       : ['environment', 'mongo', flags],
     // httpd
     httpd       : ['environment', 'redis', httpd],
-    routes      : ['httpd', routes]
+    routes      : ['httpd', 'flags', routes]
 }, complete);
 
 /**
@@ -60,6 +61,11 @@ function environment(callback) {
         // Used for Mandrill, for mailing.
         console.warn('$MANDRILL_APIKEY not set. Expect errors on mailing.');
     }
+    if (process.env.MAX_YOUTH === undefined) {
+        // Used to determine if we should allow more registrants.
+        process.env.MAX_YOUTH = 1000;
+        console.warn("$MAX_YOUTH not set, setting to default: " + process.env.MAX_YOUTH);
+    }
     callback();
 }
 
@@ -91,6 +97,23 @@ function redis(callback, data) {
     client.on('ready', function () {
         console.log('Connected to redis');
         callback(null, client);
+    });
+}
+
+/**
+ * Persisted flags for the application.
+ * Depends on: 'environment', 'mongo'
+ * @param  {Function} callback The callback for `async.auto`
+ * @param  {Object}   data     `async.auto`'s data object.
+ */
+function flags(callback, data) {
+    var Flag = require('./schema/Flag');
+    Flag.find().exec(function (error, theFlags) {
+        var flags = {};
+        _.each(theFlags, function (val) {
+            flags[val.key] = val.value;
+        });
+        callback(error, flags);
     });
 }
 
@@ -199,16 +222,15 @@ function complete(error, data) {
         });
     }
 }
-
+//
 // function once() {
 //     var Group = require('./schema/Group');
 //     Group.find({}).exec(function (err, data) {
 //         if (!err && data) {
 //             async.each(data, function (group, cb) {
 //                 console.log('Processing group ' + group.affiliation);
-//                 group.getBalance(function () {
-//                     group.save(cb);
-//                 });
+//                 group._state.waitlist = 0;
+//                 group.save(cb);
 //             }, function done(err) {
 //                 console.log('All done mapping.');
 //             });

@@ -6,14 +6,17 @@ var async = require('async'),
 module.exports = function(data) {
     var router = require('express').Router(),
         Group  = require('../schema/Group'),
+        Member = require('../schema/Member'),
         util   = require('./util');
 
     router.route('/register')
         .get(function (req, res) {
+            console.log(data.flags.waitlist);
             res.render('register', {
                 title    : 'Register or Log In',
                 session  : req.session,
-                lastForm : req.session.lastForm || {}
+                lastForm : req.session.lastForm || {},
+                waitlist : data.flags.waitlist
             });
         }).post(function (req, res) {
             if (req.body.passwordConfirm && req.body.passwordConfirm === req.body.password) {
@@ -29,7 +32,12 @@ module.exports = function(data) {
                     postalCode      : req.body.postalCode,
                     fax             : req.body.fax,
                     phone           : req.body.phone,
-                    affiliationType : req.body.affiliationType
+                    affiliationType : req.body.affiliationType,
+                    _state: {
+                        // Rest will be filled in from defaults.
+                        // If it's 0 they're not on the waitlist.
+                        waitlist: req.body.waitlist || 0
+                    }
                 }, function (err, group) {
                     if (!err) {
                         util.mail(group, 'GOV2015 New Registration', './mails/registration.md', [], function (err, result) {

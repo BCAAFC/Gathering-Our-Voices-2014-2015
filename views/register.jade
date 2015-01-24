@@ -36,6 +36,9 @@ block content
                     h1 Register a New Group
                     p Welcome, please be aware this <b>does not</b> register you (the primary contact) as a group member. You must do that later!
                     p.text-muted Fields with a star (*) are required.
+                    if waitlist
+                        .alert.alert-danger
+                            p.lead.text-center Please note the conference is now full. We are taking a waitlist. If we are able to accomodate your group we will notify you via the email address you specify.
                     legend Login Details
                     .form-group
                         label.control-label Email Address*
@@ -97,6 +100,11 @@ block content
                         .form-group
                             label Fax # (Optional)
                             input.form-control(type="text", name="fax" placeholder="(123) 456-7890" value=lastForm.fax)
+                        if waitlist
+                            .form-group
+                                label Group Size
+                                p Please fill in the number of members you'd like to attend the conference with, if we are able to accomadate this amount, we will approve you.
+                                input.form-control(type="number" name="waitlist" placeholder="5" value=lastForm.waitlist)
                         .form-group
                             label Group Type*
                             select.form-control(name="affiliationType" required value=lastForm.affiliationType)

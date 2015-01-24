@@ -7,77 +7,84 @@ module.exports = function(data) {
     var router = require('express').Router(),
         Member = require('../schema/Member'),
         Group = require('../schema/Group'),
-        util = require('./util'),
-        max_youth_delegates = 1000;
+        Flag = require('../schema/Flag'),
+        util = require('./util');
 
     router.route('/member')
         .post(util.auth, function (req, res) {
-            Member.count({type: {$ne: 'Chaperone'}}, function (err, count) {
-                if (err || (count >= max_youth_delegates && (!req.session.isAdmin || req.body.type !== 'Chaperone'))) {
-                    var message = "The conference has reached capacity, sorry!";
-                    res.redirect('/account?message=' + message);
-                } else {
-                    Member.create({
-                        name             : req.body.name,
-                        _group           : req.session.group._id,
-                        type             : req.body.type,
-                        gender           : req.body.gender,
-                        birthDate        : {
-                            day          : req.body.birthDay,
-                            month        : req.body.birthMonth,
-                            year         : req.body.birthYear
-                        },
-                        phone            : req.body.phone,
-                        email            : req.body.email,
-                        emergencyContact : {
-                            name         : req.body.emergName,
-                            relation     : req.body.emergRelation,
-                            phone        : req.body.emergPhone
-                        },
-                        emergencyInfo    : {
-                            medicalNum   : req.body.emergMedicalNum,
-                            allergies    : req.body.emergAllergies.split(',').sort(),
-                            conditions   : req.body.emergConditions.split(',').sort()
-                        }
-                    }, function (err, member) {
-                        if (!err && member) {
-                            // Refresh the group, make sure that steps are unset.
-                            Group.findById(member._group).exec(function (err, group) {
-                                if (!err && group) {
-                                    group.getCost(function (err, cost) {
-                                        group._state.steps.members = false;
-                                        group._state.steps.payments = false;
-                                        group._state.balance.cost = cost;
-                                        group.save(function (err, group) {
-                                            req.session.group = group;
-                                            res.redirect('/account#members');
-                                        });
+            if (!req.session.isAdmin && data.flags.waitlist && req.body.type !== 'Chaperone') {
+                var message = "The conference has reached capacity, sorry!";
+                res.redirect('/account?message=' + message);
+            } else {
+                Member.create({
+                    name             : req.body.name,
+                    _group           : req.session.group._id,
+                    type             : req.body.type,
+                    gender           : req.body.gender,
+                    birthDate        : {
+                        day          : req.body.birthDay,
+                        month        : req.body.birthMonth,
+                        year         : req.body.birthYear
+                    },
+                    phone            : req.body.phone,
+                    email            : req.body.email,
+                    emergencyContact : {
+                        name         : req.body.emergName,
+                        relation     : req.body.emergRelation,
+                        phone        : req.body.emergPhone
+                    },
+                    emergencyInfo    : {
+                        medicalNum   : req.body.emergMedicalNum,
+                        allergies    : req.body.emergAllergies.split(',').sort(),
+                        conditions   : req.body.emergConditions.split(',').sort()
+                    }
+                }, function (err, member) {
+                    if (!err && member) {
+                        // If we're now full... Flag the waitlist.
+                        Member.count({type: {$ne: 'Chaperone'}}, function (err, count) {
+                            if (count + 1 >= Number(process.env.MAX_YOUTH)) {
+                                Flag.update({ key: 'waitlist' },
+                                { key: 'waitlist', value: true }, {upsert: true})
+                                .exec(function () {
+                                    data.flags.waitlist = true;
+                                    console.log("Setting waitlist variable to `true`");
+                                });
+                            }
+                        });
+                        // Refresh the group, make sure that steps are unset.
+                        Group.findById(member._group).exec(function (err, group) {
+                            if (!err && group) {
+                                group.getCost(function (err, cost) {
+                                    group._state.steps.members = false;
+                                    group._state.steps.payments = false;
+                                    group._state.balance.cost = cost;
+                                    group.save(function (err, group) {
+                                        req.session.group = group;
+                                        res.redirect('/account#members');
                                     });
-                                } else {
-                                    console.error(err);
-                                    var message = "Couldn't refresh your group details. You might need to relog!";
-                                    res.redirect('/account?message=' + message);
-                                }
-                            });
-                        } else {
-                            // TODO Better error messages.
-                            console.error(err);
-                            var message = "There was an error in the validation and saving of the member. Are they old enough? Did you fill out at least their name and delegate type?";
-                            res.redirect('/account?message=' + message);
-                        }
-                    });
-                }
-            });
+                                });
+                            } else {
+                                console.error(err);
+                                var message = "Couldn't refresh your group details. You might need to relog!";
+                                res.redirect('/account?message=' + message);
+                            }
+                        });
+                    } else {
+                        // TODO Better error messages.
+                        console.error(err);
+                        var message = "There was an error in the validation and saving of the member. Are they old enough? Did you fill out at least their name and delegate type?";
+                        res.redirect('/account?message=' + message);
+                    }
+                });
+            }
         })
         .get(util.auth, function (req, res) {
-            Member.count({type: {$ne: 'Chaperone'}}, function (err, count) {
-                if (err || (count >= max_youth_delegates)) {
-                    req.session.message = "The conference has reached capacity! You will only be able to add chaperones and edit members.";
-                }
-                // Empty form.
-                res.render('member', {
-                    session: req.session
-                });
+            if (data.flags.waitlist) {
+                req.session.message = "The conference has reached capacity! You will only be able to add chaperones and edit members.";
+            }
+            // Empty form.
+            res.render('member', {
+                session: req.session
             });
         });
     router.route('/member/:id')
@@ -243,10 +250,10 @@ module.exports = function(data) {
                 if (!err && count) {
                     runningStats.count = count;
                 }
-                res.json({count: runningStats.count, limit: max_youth_delegates});
+                res.json({count: runningStats.count, limit: Number(process.env.MAX_YOUTH) });
             });
         } else {
-            res.json({count: runningStats.count, limit: max_youth_delegates});
+            res.json({count: runningStats.count, limit: Number(process.env.MAX_YOUTH) });
         }
     });
 
