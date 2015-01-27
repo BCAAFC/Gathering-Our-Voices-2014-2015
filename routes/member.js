@@ -41,16 +41,18 @@ module.exports = function(data) {
                 }, function (err, member) {
                     if (!err && member) {
                         // If we're now full... Flag the waitlist.
-                        Member.count({type: {$ne: 'Chaperone'}}, function (err, count) {
-                            if (count + 1 >= Number(process.env.MAX_YOUTH)) {
-                                Flag.update({ key: 'waitlist' },
-                                { key: 'waitlist', value: true }, {upsert: true})
-                                .exec(function () {
-                                    data.flags.waitlist = true;
-                                    console.log("Setting waitlist variable to `true`");
-                                });
-                            }
-                        });
+                        if (data.flags.waitlist !== true) {
+                            Member.count({type: {$ne: 'Chaperone'}}, function (err, count) {
+                                if (count + 1 >= Number(process.env.MAX_YOUTH)) {
+                                    require('../schema/Flag').update({ key: 'waitlist' },
+                                    { key: 'waitlist', value: true }, {upsert: true})
+                                    .exec(function () {
+                                        data.flags.waitlist = true;
+                                        console.log("Setting waitlist variable to `true`");
+                                    });
+                                }
+                            });
+                        }
                         // Refresh the group, make sure that steps are unset.
                         Group.findById(member._group).exec(function (err, group) {
                             if (!err && group) {

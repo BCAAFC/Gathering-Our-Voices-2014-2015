@@ -283,16 +283,18 @@ module.exports = function(data) {
                         console.error(err);
                     } else {
                         // If we're now full... Flag the waitlist.
-                        Member.count({type: {$ne: 'Chaperone'}}, function (err, count) {
-                            if (count + 1 >= Number(process.env.MAX_YOUTH)) {
-                                require('../schema/Flag').update({ key: 'waitlist' },
-                                { key: 'waitlist', value: true }, {upsert: true})
-                                .exec(function () {
-                                    data.flags.waitlist = true;
-                                    console.log("Setting waitlist variable to `true`");
-                                });
-                            }
-                        });
+                        if (data.flags.waitlist !== true) {
+                            Member.count({type: {$ne: 'Chaperone'}}, function (err, count) {
+                                if (count + 1 >= Number(process.env.MAX_YOUTH)) {
+                                    require('../schema/Flag').update({ key: 'waitlist' },
+                                    { key: 'waitlist', value: true }, {upsert: true})
+                                    .exec(function () {
+                                        data.flags.waitlist = true;
+                                        console.log("Setting waitlist variable to `true`");
+                                    });
+                                }
+                            });
+                        }
                         // Refresh data.
                         Group.findById(req.params.id).exec(function (err, group) {
                             group.getCost(function (err, cost) {

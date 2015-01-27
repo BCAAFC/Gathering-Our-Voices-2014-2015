@@ -39,10 +39,7 @@ block content
                     i.fa.fa-edit
                     | Edit Details
         hr.featurette-divider
-        if session.group._state.waitlist != 0 && !session.isAdmin
-            .alert.alert-danger.text-center
-                p.lead Unfortunately you are waitlisted, and cannot progress further.
-        else 
+        if session.group._state.waitlist == 0 || session.isAdmin
             #youthInCare.row.featurette
                 .col-xs-2
                     if session.group._state.steps.youthInCare
@@ -143,51 +140,54 @@ block content
                     a.btn.btn-block.btn-primary(href="/member")
                         i.fa.fa-plus
                         |  Add Member
-                    form(method="POST" action="/placeholders/#{session.group._id}")
-                        p (Admin only) Reserve placeholders amounting to:
-                        .row
-                            .col-xs-4
-                                input(type="number" name="amount" min=0 max=100)
-                            .col-xs-4
-                                input.btn.btn-danger(type="submit")
+                    if session.isAdmin
+                        form(method="POST" action="/placeholders/#{session.group._id}")
+                            p (Admin only) Reserve placeholders amounting to:
+                            .row
+                                .col-xs-4
+                                    input(type="number" name="amount" min=0 max=100)
+                                .col-xs-4
+                                    input.btn.btn-danger(type="submit")
             hr.featurette-divider
-
-            #documents.row.featurette
-                .col-xs-2
-                    if session.group._state.steps.documents
-                            button.btn.btn-success(style="margin-top: 50%;")
-                                i.fa.fa-2x.fa-check.fa-fw
-                        else
-                            button.btn.btn-danger(style="margin-top: 50%;")
-                                i.fa.fa-2x.fa-remove.fa-fw
-                .col-xs-8
-                    h2.featurette-heading Useful Documents
-                    p Please take a look at these documents and forms. When you're done, check it off!
-                    .row
-                        .col-sm-4
-                            ul
-                                li
-                                    a(href="/documents/talent.pdf") Talent Show Application
-                                li
-                                    a(href="/documents/dance-rules.pdf") Dance Rules
-                                li
-                                    a(href="/documents/fundraising.pdf") Fundraising Suggestions
-                                li
-                                    a(href="/social-enterprise") Social Enterprise Competition Information
-                                li
-                                    a(href="/documents/social_enterprise_app.pdf") Social Enterprise Competition Application
-                        .col-sm-4
-                            ul
-                                li
-                                    a(href="/documents/honour-a-youth.pdf") Honour a Youth Application
-                                li
-                                    a(href="/documents/reg-package.pdf") Printable Registration Package
-                                li
-                                    a(href="/documents/youth-brochure.pdf") Youth Brochure
-                                li
-                                    a(href="/documents/parking.pdf") Parking Map
-            hr.featurette-divider
-
+        #documents.row.featurette
+            .col-xs-2
+                if session.group._state.steps.documents
+                        button.btn.btn-success(style="margin-top: 50%;")
+                            i.fa.fa-2x.fa-check.fa-fw
+                    else
+                        button.btn.btn-danger(style="margin-top: 50%;")
+                            i.fa.fa-2x.fa-remove.fa-fw
+            .col-xs-8
+                h2.featurette-heading Useful Documents
+                p Please take a look at these documents and forms. When you're done, check it off!
+                .row
+                    .col-sm-4
+                        ul
+                            li
+                                a(href="/documents/talent.pdf") Talent Show Application
+                            li
+                                a(href="/documents/dance-rules.pdf") Dance Rules
+                            li
+                                a(href="/documents/fundraising.pdf") Fundraising Suggestions
+                            li
+                                a(href="/social-enterprise") Social Enterprise Competition Information
+                            li
+                                a(href="/documents/social_enterprise_app.pdf") Social Enterprise Competition Application
+                    .col-sm-4
+                        ul
+                            li
+                                a(href="/documents/honour-a-youth.pdf") Honour a Youth Application
+                            li
+                                a(href="/documents/reg-package.pdf") Printable Registration Package
+                            li
+                                a(href="/documents/youth-brochure.pdf") Youth Brochure
+                            li
+                                a(href="/documents/parking.pdf") Parking Map
+        hr.featurette-divider
+        if session.group._state.waitlist != 0 && !session.isAdmin
+            .alert.alert-danger.text-center
+                p.lead Unfortunately you are waitlisted, and cannot progress further.
+        else
             #payments.row.featurette
                 .col-xs-2
                     if session.group._state.steps.payments
