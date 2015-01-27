@@ -143,6 +143,13 @@ block content
                     a.btn.btn-block.btn-primary(href="/member")
                         i.fa.fa-plus
                         |  Add Member
+                    form(method="POST" action="/placeholders/#{session.group._id}")
+                        p (Admin only) Reserve placeholders amounting to:
+                        .row
+                            .col-xs-4
+                                input(type="number" name="amount" min=0 max=100)
+                            .col-xs-4
+                                input.btn.btn-danger(type="submit")
             hr.featurette-divider
 
             #documents.row.featurette

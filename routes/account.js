@@ -11,7 +11,6 @@ module.exports = function(data) {
 
     router.route('/register')
         .get(function (req, res) {
-            console.log(data.flags.waitlist);
             res.render('register', {
                 title    : 'Register or Log In',
                 session  : req.session,

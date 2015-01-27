@@ -248,10 +248,10 @@ module.exports = function(data) {
                         res.send("Something went rather horribly wrong. Please let me know.");
                         console.error(err);
                     } else {
+                        // Refresh data.
                         Group.findById(req.params.id).exec(function (err, group) {
                             group._state.waitlist = 0;
                             group.getCost(function (err, cost) {
-                                console.log("COST " + cost);
                                 group._state.balance.cost = cost;
                                 group.save(function (err) {
                                     if (err) {
@@ -259,6 +259,50 @@ module.exports = function(data) {
                                         console.error(err);
                                     } else {
                                         res.redirect('/manage/' + req.params.id);
+                                    }
+                                });
+                            });
+                        });
+                    }
+                });
+            } else {
+                res.send('There was an error, or there is no such group.');
+                console.error(err);
+            }
+        });
+    });
+
+    router.post('/placeholders/:id', util.admin, function (req, res) {
+        if (!req.body.amount) { res.send('Need more info...'); }
+        else if (req.body.amount <= 0) { res.send('Need more members...'); }
+        Group.findById(req.params.id).exec(function (err, group) {
+            if (!err && group) {
+                addPlaceholders(req.body.amount, group._id, function (err) {
+                    if (err) {
+                        res.send("Something went rather horribly wrong. Please let me know.");
+                        console.error(err);
+                    } else {
+                        // If we're now full... Flag the waitlist.
+                        Member.count({type: {$ne: 'Chaperone'}}, function (err, count) {
+                            if (count + 1 >= Number(process.env.MAX_YOUTH)) {
+                                require('../schema/Flag').update({ key: 'waitlist' },
+                                { key: 'waitlist', value: true }, {upsert: true})
+                                .exec(function () {
+                                    data.flags.waitlist = true;
+                                    console.log("Setting waitlist variable to `true`");
+                                });
+                            }
+                        });
+                        // Refresh data.
+                        Group.findById(req.params.id).exec(function (err, group) {
+                            group.getCost(function (err, cost) {
+                                group._state.balance.cost = cost;
+                                group.save(function (err) {
+                                    if (err) {
+                                        res.send("Something went rather horribly wrong. Please let me know.");
+                                        console.error(err);
+                                    } else {
+                                        res.redirect('/account#members');
                                     }
                                 });
                             });
