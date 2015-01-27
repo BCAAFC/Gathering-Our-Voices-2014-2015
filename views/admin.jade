@@ -85,6 +85,13 @@ block content
                                 return data.length;
                             },
                             targets: 4
+                        },
+                        {
+                            // Reg Date
+                            render: function (data, type, row) {
+                                return new Date(data).toDateString();
+                            },
+                            targets: 13
                         }
                     ];
                     options.createdRow = function(row, data, dataIndex) {
