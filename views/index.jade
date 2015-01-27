@@ -140,13 +140,13 @@ block content
                 } else {
                     $('.timer').html("GOV 2015 has begun!");
                 }
-                //- var count = function count() {
-                //-     $.getJSON('/members/count').done(function (data) {
-                //-         console.log(data);
-                //-         $('.progress-bar').css('width', ((data.count / data.limit) * 100) + '%');
-                //-         $('#count').text(data.count + '/' + data.limit);
-                //-     });
-                //-     setTimeout(count, 1000*60*2); // 2 mins.
-                //- }
-                //- count();
+                var count = function count() {
+                    $.getJSON('/members/count').done(function (data) {
+                        console.log(data);
+                        $('.progress-bar').css('width', ((data.count / data.limit) * 100) + '%');
+                        $('#count').text(data.count + '/' + data.limit);
+                    });
+                    setTimeout(count, 1000*60*2); // 2 mins.
+                }
+                count();
             })();
