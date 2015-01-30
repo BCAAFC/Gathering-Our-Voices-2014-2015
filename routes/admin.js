@@ -22,8 +22,8 @@ module.exports = function(data) {
                 if (!err) {
                     data = groups.map(function (v) {
                         v.actions = ' ';
-                        if (v._notes) { v._notes = true; }
-                        else { v._notes = false; }
+                        if (v._notes === '' || v._notes === undefined) { v._notes = false; }
+                        else { v._notes = true; }
                         return v;
                     });
                     keys = [

@@ -53,7 +53,7 @@ block content
                                     var yic = "<div class='tooltipped label label-success' data-toggle='tooltip' title='This group has " + row['youthInCare'] + " youth in care, " + row['youthInCareSupport'] + " support. '><i class='fa fa-flag fa-fw'></i>" + row['youthInCare'] + ", " + row['youthInCareSupport'] + "</div>";
                                     output = output.concat(yic);
                                 }
-                                if (row._notes) {
+                                if (row._notes === "true") {
                                     var star = "<div class='tooltipped label label-warning' data-toggle='tooltip' title='This group has notes.'><i class='fa fa-star fa-fw'></i></div>";
                                     output = output.concat(star);
                                 }
