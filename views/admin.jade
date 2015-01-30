@@ -50,8 +50,12 @@ block content
                                     }
                                 }).join('');
                                 if (row['youthInCareSupport'] > 0 || row['youthInCare'] > 0) {
-                                    var yic = "<div class='label label-success'><i class='fa fa-flag fa-fw'></i>" + row['youthInCare'] + ", " + row['youthInCareSupport'] + "</div>";
+                                    var yic = "<div class='tooltipped label label-success' data-toggle='tooltip' title='This group has " + row['youthInCare'] + " youth in care, " + row['youthInCareSupport'] + " support. '><i class='fa fa-flag fa-fw'></i>" + row['youthInCare'] + ", " + row['youthInCareSupport'] + "</div>";
                                     output = output.concat(yic);
+                                }
+                                if (row._notes) {
+                                    var star = "<div class='tooltipped label label-warning' data-toggle='tooltip' title='This group has notes.'><i class='fa fa-star fa-fw'></i></div>";
+                                    output = output.concat(star);
                                 }
                                 return output;
                             },
@@ -117,6 +121,7 @@ block content
                                 button.removeAttr('disabled');
                             });
                         });
+                        $(row).find('.tooltipped').tooltip();
                     };
                 } else if (selected === 'members') {
                     options.scrollX = true;

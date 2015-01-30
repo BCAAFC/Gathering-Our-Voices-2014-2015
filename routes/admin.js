@@ -20,7 +20,12 @@ module.exports = function(data) {
         if (selected == 'groups') {
             Group.find({'_state.waitlist':  0}).select('-hash -password').exec(function (err, groups) {
                 if (!err) {
-                    data = groups.map(function (v) { v.actions = ' '; return v; });
+                    data = groups.map(function (v) {
+                        v.actions = ' ';
+                        if (v._notes) { v._notes = true; }
+                        else { v._notes = false; }
+                        return v;
+                    });
                     keys = [
                         { title: 'Steps', data: '_state.steps' },
                         { title: 'id', data: '_id' },
