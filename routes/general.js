@@ -26,14 +26,19 @@ module.exports = function(data) {
 
 
     router.get('/news', function (req, res) {
-        News.find({}).sort('-date').exec(function (err, news) {
+        var query = News.find({}).sort('-date').limit(5);
+        if (req.query.skip) {
+            query.skip(req.query.skip);
+        }
+        query.exec(function (err, news) {
             res.render('news', {
                 title   : 'News',
                 session : req.session,
                 news    : _.map(news, function (val) {
                     val.content = marked(val.content);
                     return val;
-                })
+                }),
+                skip    : Number(req.query.skip) || 0
             });
         });
     });
