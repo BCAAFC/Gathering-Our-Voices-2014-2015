@@ -122,6 +122,13 @@ module.exports = function(data) {
         });
     });
 
+    router.get('/beyondbannock', function (req, res) {
+        res.render('beyondbannock', {
+            title   : 'Beyond Bannock',
+            session : req.session
+        })
+    });
+
     router.get('/social-enterprise', function (req, res) {
         res.render('social-enterprise', {
             title: 'Social Enterprise',
