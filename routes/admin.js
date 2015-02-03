@@ -305,6 +305,7 @@ module.exports = function(data) {
                             group.getCost(function (err, cost) {
                                 group._state.balance.cost = cost;
                                 group.save(function (err) {
+                                    req.session.group = group;
                                     if (err) {
                                         res.send("Something went rather horribly wrong. Please let me know.");
                                         console.error(err);
