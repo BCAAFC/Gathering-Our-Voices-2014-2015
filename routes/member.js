@@ -163,7 +163,7 @@ module.exports = function(data) {
                                         group._state.balance.cost = cost;
                                         group.save(function (err, group) {
                                             req.session.group = group;
-                                            res.redirect('/account#members');
+                                            res.redirect('/account?removals#members');
                                         });
                                     });
                                 } else {

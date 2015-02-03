@@ -259,6 +259,11 @@ block content
                         var state = $('.removeButton').attr('disabled');
                         $('.removeButton').attr('disabled', !state);
                     });
+                    // Allow removals if it's flagged.
+                    if (window.location.search === "?removals") {
+                        var state = $('.removeButton').attr('disabled');
+                        $('.removeButton').attr('disabled', !state);
+                    }
                     // Checkboxes
                     $('.row.featurette > .col-xs-2 > button').click(function() {
                         var button = $(this),
