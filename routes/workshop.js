@@ -1,7 +1,8 @@
 'use strict';
 
-var async = require('async'),
-    _     = require('lodash');
+var async  = require('async'),
+    _      = require('lodash'),
+    moment = require('moment');
 
 module.exports = function(data) {
         var router   = require('express').Router(),
@@ -175,7 +176,8 @@ module.exports = function(data) {
                             session  : req.session,
                             workshop : data.workshop,
                             members  : data.members,
-                            admin    : data.admin
+                            admin    : data.admin,
+                            moment   : moment
                         });
                     } else {
                         res.send('There was an error or we weren\'t able to find that workshop. Try again?');
