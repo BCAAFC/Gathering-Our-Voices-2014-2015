@@ -24,6 +24,7 @@ module.exports = function(data) {
                     password        : req.body.password,
                     name            : req.body.name,
                     affiliation     : req.body.affiliation,
+                    registrationDate: new Date(),
                     address         : req.body.address,
                     city            : req.body.city,
                     region          : req.body.region,

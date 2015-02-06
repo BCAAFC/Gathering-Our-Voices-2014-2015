@@ -93,7 +93,7 @@ block content
                         {
                             // Reg Date
                             render: function (data, type, row) {
-                                return new Date(data).toDateString();
+                                return "<small class='text-muted'>" + Date.parse(data) + "</small><br>" + new Date(data).toLocaleString();
                             },
                             targets: 13
                         }
