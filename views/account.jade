@@ -141,13 +141,21 @@ block content
                         i.fa.fa-plus
                         |  Add Member
                     if session.isAdmin
+                        form(method="POST" action="/waitlist/")
+                            p (Admin only) Set waitlist to:
+                            small.text-muted (This WILL reset their Reg Date, be aware!)
+                            .row
+                                .col-xs-4
+                                    input(type="number" name="requested" value="#{session.group._state.waitlist}" min=0 max=100)
+                                .col-xs-4
+                                    input.btn.btn-danger(type="submit" value="Set Waitlist")
                         form(method="POST" action="/placeholders/#{session.group._id}")
                             p (Admin only) Reserve placeholders amounting to:
                             .row
                                 .col-xs-4
                                     input(type="number" name="amount" min=0 max=100)
                                 .col-xs-4
-                                    input.btn.btn-danger(type="submit")
+                                    input.btn.btn-danger(type="submit" value="Reserve")
             hr.featurette-divider
         #documents.row.featurette
             .col-xs-2

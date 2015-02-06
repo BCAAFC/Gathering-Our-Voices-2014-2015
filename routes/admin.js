@@ -277,9 +277,29 @@ module.exports = function(data) {
         });
     });
 
+    router.post('/waitlist', util.admin, function (req, res) {
+        if (!req.body.requested) { return res.send('Need more info...'); }
+        else if (req.body.requested <= 0) { return res.send('Need more members...'); }
+
+        Group.findByIdAndUpdate(req.session.group._id, {
+            '_state.waitlist': req.body.requested,
+            'registrationDate': new Date()
+        }).exec(function (err, group) {
+            if (err) {
+                console.error(err);
+                return res.send("There was an odd error... Ask me to check the logs.");
+            } else {
+                req.session.group = group;
+                res.redirect('/account#members');
+            }
+        });
+    });
+
+    // Uses `:id` because it's an Admin only thing.
     router.post('/placeholders/:id', util.admin, function (req, res) {
-        if (!req.body.amount) { res.send('Need more info...'); }
-        else if (req.body.amount <= 0) { res.send('Need more members...'); }
+        if (!req.body.amount) { return res.send('Need more info...'); }
+        else if (req.body.amount <= 0) { return res.send('Need more members...'); }
+
         Group.findById(req.params.id).exec(function (err, group) {
             if (!err && group) {
                 addPlaceholders(req.body.amount, group._id, function (err) {
