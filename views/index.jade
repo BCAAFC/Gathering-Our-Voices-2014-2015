@@ -3,11 +3,11 @@ extends templates/layout
 block content
     .container
         .row
-            .col-sm-12.text-center
-                h3.timer GOV 2015 in Prince George, B.C., March 17th-20th!
-                p Youth delegate spots filled: <span id='count'></span>
-                .progress
-                    .progress-bar(role="progressbar" style="width: 0%")
+            //- .col-sm-12.text-center
+            //-     h3.timer GOV 2015 in Prince George, B.C., March 17th-20th!
+            //-     p Youth delegate spots filled: <span id='count'></span>
+            //-     .progress
+            //-         .progress-bar(role="progressbar" style="width: 0%")
         .row
             .col-sm-3(style="text-align: center")
                 img.img-rounded.lazy(src="/img/index/register.jpg", style="height: 150px")
@@ -144,13 +144,13 @@ block content
                 } else {
                     $('.timer').html("GOV 2015 has begun!");
                 }
-                var count = function count() {
-                    $.getJSON('/members/count').done(function (data) {
-                        console.log(data);
-                        $('.progress-bar').css('width', ((data.count / data.limit) * 100) + '%');
-                        $('#count').text(data.count + '/' + data.limit);
-                    });
-                    setTimeout(count, 1000*60*2); // 2 mins.
-                }
-                count();
+                //- var count = function count() {
+                //-     $.getJSON('/members/count').done(function (data) {
+                //-         console.log(data);
+                //-         $('.progress-bar').css('width', ((data.count / data.limit) * 100) + '%');
+                //-         $('#count').text(data.count + '/' + data.limit);
+                //-     });
+                //-     setTimeout(count, 1000*60*2); // 2 mins.
+                //- }
+                //- count();
             })();
