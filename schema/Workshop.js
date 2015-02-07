@@ -56,7 +56,8 @@ var WorkshopSchema = new Schema({
             type: String,
             trim: true
         }],
-        required: false
+        required: false,
+        default: []
     },
     _sessions: [{
         type: ObjectId,
