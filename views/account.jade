@@ -125,7 +125,8 @@ block content
                                             i.fa.fa-remove.fa-fw
                                     td= member.name
                                     td= member.type
-                                    td= member._workshops.length
+                                    td 
+                                        a.btn.btn-default(href="/member/#{member._id}/workshops") #{member._workshops.length} workshops
                                     td= member._state.ticketType
                                     td
                                         a.btn.btn-block.btn-xs.btn-default(href="/member/#{member._id}")

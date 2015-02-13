@@ -128,7 +128,7 @@ var MemberSchema = new Schema({
     _workshops: {
         type: [{
             type : ObjectId,
-            ref  : 'session' // Sessions of workshops.
+            ref  : 'Session' // Sessions of workshops.
         }],
         default: []
     },

@@ -1,0 +1,44 @@
+extends templates/layout
+
+block content
+    .container
+        .row.text-center
+            h1 Workshops for #{member.name}
+        for session in member._workshops
+            - var workshop = workshops[session._workshop]
+            .row
+                .col-sm-10.col-sm-offset-1
+                    .panel.panel-default
+                        .panel-heading
+                            h3.panel-title #{workshop.name}
+                        .panel-body
+                            .col-sm-6
+                                p #{workshop.description}
+                            .col-sm-6
+                                strong Host:
+                                span  #{workshop.host}
+                                br
+                                strong Start Time:
+                                span  #{moment(session.start).format('MMM Do H:mm A')}
+                                br
+                                strong End Time:
+                                span  #{moment(session.end).format('MMM Do H:mm A')}
+                                br
+                                strong Room:
+                                span  #{session.room}
+                                br
+                                strong Venue:
+                                span  #{session.venue}
+                                br
+                                br
+                                .text-center
+                                    a.btn.btn-primary 
+                                        .fa.fa-fw.fa-eye
+                                        |  View Workshop
+        else
+            .row
+                .alert.alert-warning.text-center
+                    p.lead This member isn't in any workshops.
+        .row.text-center
+            p.lead Want to be in more workshops?
+            a.btn.btn-primary(href="/workshops") Explore here.

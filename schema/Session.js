@@ -42,11 +42,7 @@ var SessionSchema = new Schema({
     _registered: [{
         type: ObjectId,
         ref: 'Member'
-    }],
-    workshop: {
-        type: ObjectId,
-        ref: 'Workshop'
-    }
+    }]
 });
 
 /* Statics */

@@ -1,11 +1,13 @@
 'use strict';
 
 var async = require('async'),
+    moment = require('moment'),
     _     = require('lodash');
 
 module.exports = function(data) {
     var router = require('express').Router(),
         Member = require('../schema/Member'),
+        Workshop = require('../schema/Workshop'),
         Group = require('../schema/Group'),
         Flag = require('../schema/Flag'),
         util = require('./util');
@@ -185,16 +187,23 @@ module.exports = function(data) {
 
     router.get('/member/:id/workshops', util.auth, function (req, res) {
         Member.findById(req.params.id)
-            .populate("_workshops._id").exec(function (err, member) {
-                if (!err && member) {
-                    res.render('templates/memberWorkshops', {
-                        session: req.session,
-                        member: member
-                    });
-                } else {
-                    var message = "There was an error getting that member and their workshops.";
-                    res.redirect('/account?message=' + message);
-                }
+            .populate("_workshops").exec(function (err, member) {
+                Workshop.find({_id: { $in: _.pluck(member._workshops, '_workshop') } })
+                    .exec(function (err, workshops) {
+                        if (!err && member) {
+                            // Data prep.
+                            var workshopMap = _.indexBy(workshops, '_id');
+                            res.render('membersWorkshops', {
+                                session: req.session,
+                                member: member,
+                                workshops: workshopMap,
+                                moment: moment
+                            });
+                        } else {
+                            var message = "There was an error getting that member and their workshops.";
+                            res.redirect('/account?message=' + message);
+                        }
+                });
             });
     });
 
