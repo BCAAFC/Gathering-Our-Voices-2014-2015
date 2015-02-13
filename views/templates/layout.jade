@@ -23,7 +23,7 @@ html(xmlns="http://www.w3.org/1999/xhtml", xmlns:og="http://ogp.me/ns#")
         link(rel="shortcut icon" href="/favicon.ico")
     body
         #wrap
-            header
+            header.hidden-print
                 .jumbotron(style="margin: 0 auto; max-height: 350px;")
                     .wrap(style="text-align: right;")
                         img(src="/img/gov.png" style="max-height: 300px;")
@@ -36,7 +36,7 @@ html(xmlns="http://www.w3.org/1999/xhtml", xmlns:og="http://ogp.me/ns#")
                             .row.text-center
                                 p.lead.alert.alert-danger= session.message
                 block content
-                .container
+                .container.hidden-print
                     .row
                         hr.featurette-divider
                         .text-center
@@ -50,7 +50,7 @@ html(xmlns="http://www.w3.org/1999/xhtml", xmlns:og="http://ogp.me/ns#")
                             br
                             br
                             br
-            footer
+            footer.hidden-print
                 .container
                     .row
                         .col-sm-4
