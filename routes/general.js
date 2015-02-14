@@ -44,7 +44,7 @@ module.exports = function(data) {
     });
 
     router.get('/news/:id', function (req, res) {
-        News.findById(req.params.id).exec(function (err, news) {
+        News.findById(req.params.id).select('-image').exec(function (err, news) {
             news.content = marked(news.content);
             res.render('news', {
                 title   : 'News',
@@ -53,6 +53,13 @@ module.exports = function(data) {
             });
         });
     });
+
+    // Make images load nicer.
+    router.get('/news/:id/img', function (req, res) {
+        News.findById(req.params.id).select('image').exec(function (err, news) {
+            res.send(new Buffer(news.image, 'base64'));
+        });
+    })
 
     router.get('/faq', function (req, res) {
         Faq.find({}).sort('title').exec(function (err, sections) {
