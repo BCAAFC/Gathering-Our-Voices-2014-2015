@@ -25,7 +25,7 @@ block content
                     render: function (data, type, row) {
                         return "<a class='btn btn-primary btn-xs' href='/workshop/" + row._id + "'><span class='fa fa-arrow-right'>View</span></a>"
                     },
-                    targets: [0]
+                    targets: [0] // View button
                 }, {
                     render: function (data, type, row) {
                         var out = "";
@@ -43,7 +43,7 @@ block content
                         }
                         return out;
                     },
-                    targets: [3]
+                    targets: [3] // Eligible types
                 }, {
                     render: function (data, type, row) {
                         var out = "";
@@ -65,7 +65,8 @@ block content
                         }
                         return out;
                     },
-                    targets: [-1]
+                    width: "250px",
+                    targets: [-1] // Attenting.
                 }, {
                     render: function (data, type, row) {
                         // Can't use .map since IE doesn't have any brains.
@@ -75,7 +76,7 @@ block content
                         }
                         return out;
                     },
-                    targets: [5]
+                    targets: [5] // Labels.
                 }];
                 options.createdRow = function(row, data, dataIndex) {
                     $(row).find('.label').tooltip();
