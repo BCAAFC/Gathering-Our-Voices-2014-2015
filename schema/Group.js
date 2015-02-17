@@ -299,7 +299,11 @@ GroupSchema.methods.getCost = function getCost(next) {
             } else { // free < counts.Regular
                 newFree = free - counts.Regular; // Remaining free will roll over.
                 counts.Regular -= free;
-                free = newFree; // The remaining free... To be used against Early tickets.
+                if (newFree > 0) {
+                    free = newFree; // The remaining free... To be used against Early tickets.
+                } else {
+                    free = 0;
+                }
             }
             // Then Early tickets as the remainder.
             if (free >= counts.Early) {

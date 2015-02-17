@@ -20,6 +20,7 @@ module.exports = function(data) {
                         cost: group.getCost.bind(group)
                     }, function complete(err, data) {
                         if (!err && data.paid !== null && data.cost !== null) {
+                            group.save();
                             res.render('payments', {
                                 title   : 'Payments',
                                 session : req.session,
