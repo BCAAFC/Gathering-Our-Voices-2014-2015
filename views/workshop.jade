@@ -75,23 +75,20 @@ block content
                                             if session.group
                                                 strong Add Member:
                                                 br
-                                                if session.isAdmin
-                                                    button.btn.btn-xs.btn-success.memberAdd(data-toggle="tooltip" title="Add Member")
-                                                        .fa.fa-plus
-                                                    |  
-                                                    select.memberSelect
-                                                        option Please choose...
-                                                        for member in members
-                                                            if member._workshops.indexOf(workshopSession._id) != -1
-                                                                //- Do nothing.
-                                                            else if workshop.allows.indexOf(member.type) == -1
-                                                                option(disabled) #{member.name} (Wrong type!)
-                                                            else if member._state.complete === false
-                                                                option(disabled) #{member.name} (Not complete!)
-                                                            else
-                                                                option(value='#{member._id}')= member.name
-                                                else
-                                                    p Unfortunately workshops aren't available to join yet. We're still populating our lists. Please check back mid-February.
+                                                button.btn.btn-xs.btn-success.memberAdd(data-toggle="tooltip" title="Add Member")
+                                                    .fa.fa-plus
+                                                |  
+                                                select.memberSelect
+                                                    option Please choose...
+                                                    for member in members
+                                                        if member._workshops.indexOf(workshopSession._id) != -1
+                                                            //- Do nothing.
+                                                        else if workshop.allows.indexOf(member.type) == -1
+                                                            option(disabled) #{member.name} (Wrong type!)
+                                                        else if member._state.complete === false
+                                                            option(disabled) #{member.name} (Not complete!)
+                                                        else
+                                                            option(value='#{member._id}')= member.name
                                                 br
                                                 .memberMessage
                                                 br
