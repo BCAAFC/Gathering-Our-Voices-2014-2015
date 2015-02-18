@@ -4,7 +4,7 @@
   "description": "The registration website for GOV 2015.",
   "main": "server.js",
   "engines": {
-    "node": "0.10.x",
+    "node": "0.12.x",
     "npm": "2.x.x"
   },
   "directories": {
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "async": "0.9.0",
-    "bcrypt": "0.8.0",
+    "bcrypt": "0.8.1",
     "body-parser": "1.7.0",
     "compression": "1.0.11",
     "connect-redis": "2.1.0",
@@ -34,7 +34,7 @@
     "express": "4.8.8",
     "express-session": "1.7.6",
     "gm": "1.16.0",
-    "hiredis": "0.1.17",
+    "hiredis": "0.2.0",
     "jade": "1.7.0",
     "lodash": "2.4.1",
     "mandrill-api": "1.0.40",
