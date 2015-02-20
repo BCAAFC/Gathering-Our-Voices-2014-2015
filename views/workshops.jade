@@ -50,11 +50,11 @@ block content
                                 start = new Date(data[i].start).toLocaleTimeString({formatMatcher: "hour, minute"}),
                                 end = new Date(data[i].end).toLocaleTimeString({formatMatcher: "hour, minute"}),
                                 label = '';
-                            if ((data[i].registered / data[i].capacity) < .25) { // Not yet full
+                            if ((data[i].registered / data[i].capacity) <= .50) { // Not yet full
                                 label = 'label-success';
-                            } else if ((data[i].registered / data[i].capacity) < .50) { // Half full
+                            } else if ((data[i].registered / data[i].capacity) <= .75) { // Half full
                                 label = 'label-warning';
-                            } else if ((data[i].registered / data[i].capacity) < .75) { // Almost full!
+                            } else if ((data[i].registered / data[i].capacity) < 1) { // Almost full!
                                 label = 'label-danger';
                             } else {
                                 label = 'label-default'
@@ -64,7 +64,7 @@ block content
                         return out;
                     },
                     width: "250px",
-                    targets: [-1] // Attenting.
+                    targets: [-1] // Attending.
                 }, {
                     render: function (data, type, row) {
                         // Can't use .map since IE doesn't have any brains.

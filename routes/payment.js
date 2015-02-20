@@ -106,7 +106,7 @@ module.exports = function(data) {
             }
         ], function complete(err, result) {
             if (err) {
-                console.err(err);
+                console.error(err);
                 res.redirect('/account?message=' + err);
             } else {
                 req.session.group = result; // Is the group
