@@ -122,13 +122,26 @@ module.exports = function(data) {
                         if (!err) {
                             res.redirect('/workshop/' + session._workshop);
                         } else {
-                            console.err(err);
+                            console.error(err);
                             res.redirect('/workshop/?message=' + err);
                         }
                     });
                 } else {
-                    console.err('There was an error here.');
+                    console.error('There was an error here.');
                     res.send('That workshop could not be found. This is a strange error. Please report it.');
+                }
+            });
+        });
+
+        router.post('/session/update/:session', util.admin, function (req, res) {
+            Session.findByIdAndUpdate(req.params.session, {
+                capacity: req.body.capacity
+            }).exec(function (err, session) {
+                if (!err && session) {
+                    res.redirect('/workshop/' + session._workshop);
+                } else {
+                    console.error(err);
+                    res.redirect('/workshop/?message=' + err);
                 }
             });
         });
