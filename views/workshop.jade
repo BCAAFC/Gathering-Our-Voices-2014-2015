@@ -51,7 +51,7 @@ block content
                                     .panel-heading(role="tab")
                                         h4.panel-title
                                             a(data-toggle="collapse" data-parent="#accordion" href="##{workshopSession._id}-body")
-                                                | #{moment(workshopSession.start).format('MMM Do H:mm A')} - #{moment(workshopSession.end).format('H:mm A')}
+                                                | #{moment(workshopSession.start).format('MMM Do h:mm A')} - #{moment(workshopSession.end).format('h:mm A')}
                                                 span.pull-right #{workshopSession._registered.length}/#{workshopSession.capacity}
                                     .panel-collapse.collapse(id="#{workshopSession._id}-body" role="tabpanel")
                                         .panel-body
