@@ -57,7 +57,7 @@ SessionSchema.methods.register = function register(memberId, next) {
             }
         }, next);
     } else {
-        next('Session full.');
+        next(new Error('Session full.'));
     }
 };
 

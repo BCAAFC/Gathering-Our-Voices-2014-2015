@@ -217,8 +217,8 @@ module.exports = function(data) {
                         res.json({success: true, message: message});
                     } else {
                         // The error here is a bit odd... It's an object.
-                        err.success = false;
-                        res.json(err);
+                        // err.success = false; // Can't do this!
+                        res.json({success: false, message: err.message});
                         console.error(err);
                     }
                 });

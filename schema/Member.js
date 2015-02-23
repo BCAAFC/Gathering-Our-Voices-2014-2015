@@ -181,7 +181,7 @@ MemberSchema.methods.addWorkshop = function addWorkshop(sessionId, next) {
             if (data.session._workshop.permits(self.type)) {
                 cb(null);
             } else {
-                cb('Workshop does not allow that member type.');
+                cb(new Error('Workshop does not allow that member type.'));
             }
         }],
         registerSession: ['session', 'conflicts', 'allows', function registerSession(cb, data) {
