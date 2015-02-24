@@ -12,6 +12,6 @@ In friendship,
 
 The Gathering Our Voices Team
 
-[gatheringourvoices@bcaafc.com](mailto:gatheringourvoices@bcaafc.com)
+[govassistant@bcaafc.com](mailto:govassistant@bcaafc.com)
 
 Phone: (250) 388-5522, Toll-free: 1-800-990-2432
