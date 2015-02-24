@@ -465,8 +465,8 @@ module.exports = function(data) {
                 res.render('emails', {
                     title   : 'Email listing',
                     session : req.session,
-                    groups  : _.uniq(data.groups),
-                    members : _.uniq(data.members),
+                    groups  : _.uniq(data.groups, 'email'),
+                    members : _.uniq(data.members, 'email'),
                     data    : JSON.stringify(data, null, 2)
                 });
             } else {
