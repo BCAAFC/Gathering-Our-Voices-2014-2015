@@ -45,12 +45,16 @@ module.exports = function(data) {
 
     router.get('/news/:id', function (req, res) {
         News.findById(req.params.id).select('-image').exec(function (err, news) {
-            news.content = marked(news.content);
-            res.render('news', {
-                title   : 'News',
-                session : req.session,
-                news    : [news]
-            });
+            if (!err && news) {
+                news.content = marked(news.content);
+                res.render('news', {
+                    title   : 'News',
+                    session : req.session,
+                    news    : [news]
+                });
+            } else {
+                res.redirect('/news');
+            }
         });
     });
 
