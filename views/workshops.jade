@@ -53,9 +53,8 @@ block content
                     render: function (data, type, row) {
                         var out = "";
                         for (i=0; i<data.length; i++) {
-                            var date = new Date(data[i].start).getDate(),
-                                start = new Date(data[i].start).toLocaleTimeString({formatMatcher: "hour, minute"}),
-                                end = new Date(data[i].end).toLocaleTimeString({formatMatcher: "hour, minute"}),
+                            var start = data[i].start,
+                                end = data[i].end,
                                 label = '';
                             if ((data[i].registered / data[i].capacity) <= .50) { // Not yet full
                                 label = 'label-success';
@@ -66,7 +65,7 @@ block content
                             } else {
                                 label = 'label-default'
                             }
-                            out = out.concat("<span class='label " + label + "'>" + data[i].registered + "/" + data[i].capacity + "</span> " + date + "th, " + start + "-" + end + "<br>");
+                            out = out.concat("<span class='label " + label + "'>" + data[i].registered + "/" + data[i].capacity + "</span> " + start + "-" + end + "<br>");
                         }
                         return out;
                     },

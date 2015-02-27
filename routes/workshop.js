@@ -23,6 +23,9 @@ module.exports = function(data) {
                             session.registered = session._registered.length;
                             session._registered = null; // Don't send it.
                             delete session._registered;
+                            // Dates
+                            session.start = moment(session.start).format('MMM Do h:mm A');
+                            session.end = moment(session.end).format('h:mm A'); // Only show hour
                             return session;
                         });
                         return workshop;
