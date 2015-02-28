@@ -376,19 +376,26 @@ module.exports = function(data) {
                 totals                  : data.members.totals,
                 dates                   : data.members.dates,
                 youthInCareCount        : data.groups.youthInCare,
-                youthInCareSupportCount : data.groups.youthInCareSupport
+                youthInCareSupportCount : data.groups.youthInCareSupport,
+                affiliationType         : data.groups.affiliationType
             });
         });
         function groups(callback) {
-            Group.find({}).select('youthInCare youthInCareSupport region')
+            Group.find({}).select('youthInCare youthInCareSupport region affiliationType')
                 .exec(function (err, groups) {
                     // console.log(groups);
                     var result = _.reduce(groups, function (sum, group) {
                         // Need Youth In Care Feat Counts
                         sum.youthInCare += group.youthInCare;
                         sum.youthInCareSupport += group.youthInCareSupport;
+                        sum.affiliationType[group.affiliationType] += 1;
                         return sum;
-                    }, {youthInCare: 0, youthInCareSupport: 0});
+                    }, {youthInCare: 0, youthInCareSupport: 0, affiliationType: {
+                        "Friendship Centre": 0,
+                        "Off-reserve": 0,
+                        "On-reserve": 0,
+                        "Other": 0
+                    }});
                     // console.log(result);
                     callback(null, result);
                 });
