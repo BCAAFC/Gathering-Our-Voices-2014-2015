@@ -465,14 +465,20 @@ module.exports = function(data) {
 
     router.get('/emails', util.admin, function (req, res) {
         async.auto({
-            groups  : function (next) { Group.find({}).select('name email').exec(next); },
+            groups  : function (next) { Group.find({}).select('name email _state').exec(next); },
             members : function (next) { Member.find({email: {$ne: ""}}).select('name email').exec(next); }
         }, function complete(err, data) {
             if (!err) {
+                var groups = _(data.groups).uniq('email').groupBy(function (x) {
+                    if (x._state.waitlist == 0) {
+                        return 'normal';
+                    } else { return 'waitlisted' };
+                }).value();
                 res.render('emails', {
                     title   : 'Email listing',
                     session : req.session,
-                    groups  : _.uniq(data.groups, 'email'),
+                    groups  : groups.normal,
+                    waitlisted: groups.waitlisted,
                     members : _.uniq(data.members, 'email'),
                     data    : JSON.stringify(data, null, 2)
                 });
