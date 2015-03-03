@@ -117,7 +117,7 @@ block content
             .col-sm-12
                 #affiliationTypesChart(style="height: 400px; width: 100%;")
             .col-sm-12
-                p.lead Dates of Birth
+                p.lead Regional types
                 table.table.table-striped
                     thead
                         tr
@@ -126,8 +126,8 @@ block content
                     tbody
                         each key, val in affiliationType
                             tr
-                                td= key
                                 td= val
+                                td= key
             hr.featurette-divider
 
         .row.featurette
