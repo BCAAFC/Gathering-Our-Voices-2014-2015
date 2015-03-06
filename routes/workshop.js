@@ -138,7 +138,9 @@ module.exports = function(data) {
 
         router.post('/session/update/:session', util.admin, function (req, res) {
             Session.findByIdAndUpdate(req.params.session, {
-                capacity: req.body.capacity
+                capacity: req.body.capacity,
+                venue: req.body.venue,
+                room: req.body.room
             }).exec(function (err, session) {
                 if (!err && session) {
                     res.redirect('/workshop/' + session._workshop);
