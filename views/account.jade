@@ -9,12 +9,20 @@ block content
                 p The workshop schedule will be released mid-February. Please stay tuned.
         #conduct.row.featurette
             .col-xs-2
-                if session.group._state.steps.conduct
-                    button.btn.btn-success(style="margin-top: 50%;")
-                        i.fa.fa-2x.fa-check.fa-fw
+                if session.isAdmin
+                    if session.group._state.steps.conduct
+                        button.btn.btn-success(style="margin-top: 50%;")
+                            i.fa.fa-2x.fa-check.fa-fw
+                    else
+                        button.btn.btn-danger(style="margin-top: 50%;")
+                            i.fa.fa-2x.fa-remove.fa-fw
                 else
-                    button.btn.btn-danger(style="margin-top: 50%;")
-                        i.fa.fa-2x.fa-remove.fa-fw
+                    if session.group._state.steps.conduct
+                        button.btn.btn-success(style="margin-top: 50%;" disabled)
+                            i.fa.fa-2x.fa-check.fa-fw
+                    else
+                        button.btn.btn-danger(style="margin-top: 50%;" disabled)
+                            i.fa.fa-2x.fa-remove.fa-fw
             .col-xs-8
                 h2.featurette-heading Code of Conduct
                 p Please ensure that your entire group has read and reviewed the code of conduct.
