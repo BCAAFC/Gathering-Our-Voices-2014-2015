@@ -227,6 +227,15 @@ module.exports = function(data) {
                         enoughChaperones : group.enoughChaperones.bind(group),
                         allComplete      : group.allComplete.bind(group)
                     }, function complete(err, data) {
+                        if (data.enoughChaperones && data.allComplete) {
+                            // This will get done ~eventually~ and won't immediately reflect on the group.
+                            Group.findById(req.session.group._id).exec(function (err, theGroup) {
+                                if (!err) {
+                                    theGroup._state.steps['members'] = true;
+                                    theGroup.save();
+                                }
+                            });
+                        }
                         res.render('account', {
                             session          : req.session,
                             title            : 'Account',
