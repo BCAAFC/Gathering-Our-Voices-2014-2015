@@ -5,7 +5,8 @@
 'use strict';
 
 var async = require('async'),
-    _     = require('lodash');
+    _     = require('lodash'),
+    morgan = require('morgan')
 
 async.auto({
     environment : environment,
@@ -152,6 +153,7 @@ function httpd(callback, data) {
             return method;
         }
     }));
+    server.use(morgan('common'))
     // server.use(require('cookie-parser')(process.env.SECRET));
     // Session handling.
     var session = require('express-session'),
