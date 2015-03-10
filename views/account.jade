@@ -42,7 +42,14 @@ block content
             .col-xs-8
                 h2.featurette-heading Group Details
                 p Update your group details if needed, this information was entered when you first registered.
-                p Each year the conference hosts a feast to honour Youth In Care.    Please indicate how many youth, and support chaperones from your group would like to attend.
+                p Each year the conference hosts a feast to honour Youth In Care. Please indicate how many youth, and support chaperones from your group would like to attend.
+                .row.text-center
+                    .col-sm-6
+                        p Primary Contact: #{session.group.name}
+                        p Phone: #{session.group.phone}
+                    .col-sm-6
+                        p Email: #{session.group.email}
+                        p Affiliation: #{session.group.affiliation}
                 a.btn.btn-block.btn-primary(href="/details")
                     i.fa.fa-edit
                     | Edit Details
