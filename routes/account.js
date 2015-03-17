@@ -116,16 +116,20 @@ module.exports = function(data) {
                         }
                     });
                 } else if (req.params.step === 'members') {
-                    async.auto({
-                        chaperones: group.enoughChaperones.bind(group),
-                        complete:   group.allComplete.bind(group)
-                    }, function complete(err, data) {
-                        if (data.chaperones && data.complete) {
-                            toggleAndSave(group);
-                        } else {
-                            res.json({done: false, error: true});
-                        }
-                    });
+                    if (group._state.steps.members === true) {
+                        toggleAndSave(group);
+                    } else {
+                        async.auto({
+                            chaperones: group.enoughChaperones.bind(group),
+                            complete:   group.allComplete.bind(group)
+                        }, function complete(err, data) {
+                            if (data.chaperones && data.complete) {
+                                toggleAndSave(group);
+                            } else {
+                                res.json({done: false, error: true});
+                            }
+                        });
+                    }
                 } else {
                     // No requirements
                     toggleAndSave(group);
