@@ -45,7 +45,7 @@ block content
                 #sessions
                     if workshop._sessions.length != 0
                         #accordion.panel-group(role="tablist")
-                            for workshopSession in workshop._sessions
+                            for workshopSession in workshop._sessionst
                                 .panel.panel-default(data-session="#{workshopSession._id}")
                                     .panel-heading(role="tab")
                                     .panel-heading(role="tab")
@@ -55,22 +55,22 @@ block content
                                                 span.pull-right #{workshopSession._registered.length}/#{workshopSession.capacity}
                                     .panel-collapse.collapse(id="#{workshopSession._id}-body" role="tabpanel")
                                         .panel-body
-                                            //- if session.isAdmin
-                                            //-     .alert.alert-success
-                                            //-         form.form-inline(method="POST" action="/session/update/#{workshopSession._id}")
-                                            //-             label Set Capacity:
-                                            //-             input(type="text" name="capacity" value="#{workshopSession.capacity}")
-                                            //-             br
-                                            //-             label Set Venue:
-                                            //-             input(type="text" name="venue" value="#{workshopSession.venue}")
-                                            //-             br
-                                            //-             label Set Room:
-                                            //-             input(type="text" name="room" value="#{workshopSession.room}")
-                                            //-             br
-                                            //-             input(type="submit" value="Update")
-                                            //-         strong Remove Session:
-                                            //-         a.btn.btn-xs.btn-danger.tooltipped.sessionDel(disabled data-toggle="tooltip" title="Remove Session" href="/session/delete/#{workshopSession._id}")
-                                            //-             .fa.fa-minus
+                                            if session.isAdmin
+                                                .alert.alert-success
+                                                    form.form-inline(method="POST" action="/session/update/#{workshopSession._id}")
+                                                        label Set Capacity:
+                                                        input(type="text" name="capacity" value="#{workshopSession.capacity}")
+                                                        br
+                                                        label Set Venue:
+                                                        input(type="text" name="venue" value="#{workshopSession.venue}")
+                                                        br
+                                                        label Set Room:
+                                                        input(type="text" name="room" value="#{workshopSession.room}")
+                                                        br
+                                                        input(type="submit" value="Update")
+                                                    strong Remove Session:
+                                                    a.btn.btn-xs.btn-danger.tooltipped.sessionDel(disabled data-toggle="tooltip" title="Remove Session" href="/session/delete/#{workshopSession._id}")
+                                                        .fa.fa-minus
                                             .description
                                                 strong Start:
                                                 |  #{workshopSession.start.toLocaleString()}

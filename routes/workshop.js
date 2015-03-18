@@ -14,7 +14,7 @@ module.exports = function(data) {
 
         router.get('/workshops', function (req, res) {
             // Build output.
-            Workshop.find({}).sort('name').select("-description").populate('_sessions', 'start end capacity _registered').lean().exec(function (err, workshops) {
+            Workshop.find({}).sort('name').select("-description").populate('_sessions', 'start end venue capacity _registered').lean().exec(function (err, workshops) {
                 if (!err) {
                     // We only care about how many there are,
                     // and we don't really want to send this otherwise.
@@ -24,7 +24,7 @@ module.exports = function(data) {
                             session._registered = null; // Don't send it.
                             delete session._registered;
                             // Dates
-                            session.start = moment(session.start).format('MMM Do h:mm A');
+                            session.start = moment(session.start).format('Do h:mm A');
                             session.end = moment(session.end).format('h:mm A'); // Only show hour
                             return session;
                         });
