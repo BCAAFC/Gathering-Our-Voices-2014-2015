@@ -381,7 +381,7 @@ module.exports = function(data) {
             });
         });
         function groups(callback) {
-            Group.find({}).select('youthInCare youthInCareSupport region affiliationType')
+            Group.find({'_state.waitlist': 0}).select('youthInCare youthInCareSupport region affiliationType')
                 .exec(function (err, groups) {
                     // console.log(groups);
                     var result = _.reduce(groups, function (sum, group) {
